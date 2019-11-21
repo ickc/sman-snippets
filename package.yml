@@ -1,0 +1,149 @@
+pip:update:
+  do: exec
+  command: pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
+pip:install:
+  do: exec
+  desc: Always access PyPI with no-cache-dir. This may help if the cache got stuck.
+  command: pip install -U --no-cache-dir <<packages>>
+
+jupyter:ls:
+  do: exec
+  command: jupyter kernelspec list
+
+conda:ls:
+  do: exec
+  command: conda info --env
+conda:batch:
+  do: exec
+  desc: running a certain command across all conda env. excluding root
+  command: conda info --env | grep -v -E '#|root' - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c '. activate $0 && <<command>>' {}
+conda:batch:ch:
+  do: exec
+  desc: similar to conda:batch, but restricted to env. with <<channel>> in the name, and install packages from that channel
+  command: conda info --env | grep -v -E '#|root' - | grep <<channel(defaults,intel)>> - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c '. activate $0 && conda install -c <<channel>> <<packages>> -y' {}
+conda:batch:rm:
+  do: exec
+  desc: remove all conda environments
+  command: conda info --env | grep -v -E '#|root' - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c 'conda remove -n $0 --all -y' {}
+conda:batch:rm:inteldefaults:
+  do: exec
+  desc: remove all intel/defaults environments
+  command: conda info --env | grep -v -E '#|root' - | grep -E '(defaults|intel)' - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c 'conda remove -n $0 --all -y' {}
+conda:ch:
+  do: exec
+  desc: set a highest priority channel
+  command: conda config --prepend channels <<channel(defaults,intel)>> && cat ~/.condarc
+conda:update:
+  do: exec
+  desc: update conda and anaconda
+  command: conda update -n base -c defaults conda anaconda
+conda:env:update:
+  do: exec
+  desc: update current conda environment
+  command: conda update --all
+conda:clean:
+  do: exec
+  desc: conda cleanup all
+  command: conda clean --all -y
+
+pip:dev:
+  do: exec
+  desc: pip install current directory in editable mode
+  command: pip install -e .
+
+# macOS brew
+brew:update:
+  do: exec
+  command: brew update && brew update && brew upgrade && brew cleanup && brew doctor
+brew:ls:
+  do: exec
+  command: brew leaves
+brew:lsv:
+  do: exec
+  command: brew ls --versions $(brew leaves)
+brew:cleanup:
+  do: exec
+  desc: force cleanup and clear cache
+  command: brew cleanup -s && rm -rf $(brew --cache)
+brew:linux:ca:nersc:
+  do: exec
+  desc: ln ca cert on NERSC
+  command: ln -s /etc/ssl/certs ~/.linuxbrew/etc/openssl && ln -s /var/lib/ca-certificates/ca-bundle.pem ~/.linuxbrew/etc/openssl/cert.pem && ~/.linuxbrew/opt/openssl/bin/c_rehash
+# linux apt
+apt:update:
+  do: exec
+  desc: update ubuntu
+  command: sudo apt -y update && sudo apt -y full-upgrade && sudo apt -y autoremove
+apt:upgrade:
+  do: exec
+  desc: upgrade ubuntu to next release
+  command: sudo apt update -y && sudo apt dist-upgrade -y && sudo apt install update-manager-core -y && do-release-upgrade -d
+apt:ls:
+  do: exec
+  desc: list installed apt packages
+  command: |
+    comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
+
+# arch
+gpg:aurutils:
+  do: exec
+  desc: trust gpg key of aurutils
+  command: gpg --recv-keys DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A
+
+pm:upgrade:
+  do: exec
+  desc: yay upgrade all
+  command: yay -Syu --sudoloop --nomakepkgconf --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade --nocleanmenu --nodiffmenu --noeditmenu --noupgrademenu --norebuild --noredownload
+pm:rm:
+  do: exec
+  desc: remove a package using yay
+  command: yay -Rs <<package>>
+pm:ls:local:
+  do: exec
+  desc: list locally installed packages (likely from AUR)
+  command: yay -Qm
+
+aur:install:
+  do: exec
+  desc: install packages from AUR
+  command: aursync <<package>>
+aur:upgrade:
+  do: exec
+  desc: upgrade packages form AUR
+  command: aursync -cu
+
+# go
+go:update:
+  do: exec
+  desc: update all go packages
+  command: go get -u all
+
+# jupyter
+jupyter:install:
+  do: exec
+  desc: install a jupyter lab extension
+  command: jupyter labextension install <<extension>>
+jupyter:update:
+  do: exec
+  desc: update all packages
+  command: jupyter labextension update --all
+jupyter:ls:
+  do: exec
+  desc: list installed jupyter lab extensions
+  command: jupyter labextension list
+
+# vscode
+code:ls:
+  do: exec
+  desc: list vscode installed extensions
+  command: code --list-extensions 2>/dev/null
+
+xcode:
+  do: exec
+  desc: install xcode command line tools.
+  command: xcode-select --install && sudo xcodebuild -license accept
+
+port:update:
+  do: exec
+  desc: update macport
+  command: sudo port selfupdate && sudo port upgrade outdated

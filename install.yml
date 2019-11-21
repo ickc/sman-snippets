@@ -1,0 +1,24 @@
+install:rmate:
+  do: exec
+  desc: install bash version of rmate
+  command: wget -O $HOME/.local/bin/rmate https://raw.github.com/aurora/rmate/master/rmate && chmod +x $HOME/.local/bin/rmate
+install:neofetch:
+  do: exec
+  desc: install neofetch to ~/.local/bin
+  command: wget -O $HOME/.local/bin/neofetch https://raw.githubusercontent.com/dylanaraps/neofetch/master/neofetch && chmod +x $HOME/.local/bin/neofetch
+install:neofetch:conf:
+  do: exec
+  desc: install custom neofetch config file
+  command: wget -q https://github.com/ickc/neofetch-config/raw/kolen/config.conf -O ${HOME}/.config/neofetch/config.conf
+install:github-release:
+  do: exec
+  desc: install github-release
+  command: go get github.com/aktau/github-release
+install:exa:
+  do: exec
+  desc: install exa in current directory. Linux only. Check update from https://the.exa.website/#installation
+  command: url='https://github.com/ogham/exa/releases/download/v0.8.0/exa-linux-x86_64-0.8.0.zip'; zipfilename=${url##*/}; filename=${zipfilename%-*}; wget "$url"; unzip "$zipfilename"; rm -f "$zipfilename"; mv "$filename" exa
+install:marky:
+  do: exec
+  desc: install marky a.k.a. heckyesmarkdown
+  command: wget -q https://gist.githubusercontent.com/ttscoff/2960951/raw/e35f8e8515be55014d647a7e49ec337155e799cf/marky.rb  -O "$HOME/.local/bin/marky.rb" && chmod +x "$HOME/.local/bin/marky.rb"

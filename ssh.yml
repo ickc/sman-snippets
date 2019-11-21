@@ -1,0 +1,92 @@
+mosh:co:
+  do: exec
+  desc: convenient command to 1) get NERSC key, 2) find cori login node according to load balancer, 3) mosh to that login node
+  command: s r ssh:nersc:gen; mosh $(ssh cori hostname)
+scan:co:
+  do: exec
+  desc: login to all Cori login nodes once to update known_hosts
+  command: s r ssh:nersc:gen; for i in {01..12}; do ssh cori$i 'getconf _NPROCESSORS_ONLN'; done
+ssh:nersc:gen:
+  do: exec
+  desc: generate NERSC ssh key
+  command: (. activate all3-defaults && s r dautil-py && ~/git/fork/NERSC-MFA/sshproxy.sh -u khcheung)
+ssh:tunnel:
+  do: exec
+  desc: tunnel a port from client to server.
+  command: ssh <<identity( ,-i ~/.ssh/nersc)>> -N -<<direction(L,R)#R to reverse>> localhost:<<port(8080,8989,8096,52698)#8080-snakeviz; 8989-Juptyer; 8096-emby; 52698-rmate.>>:localhost:<<port>> <<URL(khcheung@cori.nersc.gov,khcheung@gordita.physics.berkeley.edu)>>
+
+rsync:
+  do: exec
+  command: rsync -avmz <<DELETE( ,--delete)>> --stats --cvs-exclude --exclude='.DS_Store' --exclude .git/ --exclude .gitignore <<inDir>> <<outDir>>
+rsync:to:co:
+  do: exec
+  command: rsync -avmz <<DELETE( ,--delete)>> --stats -e 'ssh -i ~/.ssh/nersc' --cvs-exclude --exclude='.DS_Store' --exclude .git/ --exclude .gitignore <<inDir>> khcheung@cori.nersc.gov:<<outDir>>
+rsync:fm:co:
+  do: exec
+  command: rsync -avmz <<DELETE( ,--delete)>> --stats -e 'ssh -i ~/.ssh/nersc' --cvs-exclude --exclude='.DS_Store' --exclude .git/ --exclude .gitignore khcheung@cori.nersc.gov:<<inDir>> <<outDir>>
+
+rsync:to:go:
+  do: exec
+  command: rsync -avmz <<DELETE( ,--delete)>> --stats -e ssh --cvs-exclude --exclude='.DS_Store' --exclude .git/ --exclude .gitignore <<inDir>> khcheung@gordita.physics.berkeley.edu:<<outDir>>
+rsync:fm:go:
+  do: exec
+  command: rsync -avmz <<DELETE( ,--delete)>> --stats -e ssh --cvs-exclude --exclude='.DS_Store' --exclude .git/ --exclude .gitignore khcheung@gordita.physics.berkeley.edu:<<inDir>> <<outDir>>
+
+rsync:to:
+  do: exec
+  command: rsync -avmz <<DELETE( ,--delete)>> --stats -e ssh --cvs-exclude --exclude='.DS_Store' --exclude .git/ --exclude .gitignore <<inDir>> <<host>>:<<outDir>>
+rsync:fm:
+  do: exec
+  command: rsync -avmz <<DELETE( ,--delete)>> --stats -e ssh --cvs-exclude --exclude='.DS_Store' --exclude .git/ --exclude .gitignore <<host>>:<<inDir>> <<outDir>>
+
+sshfs:co:
+  do: exec
+  command: sudo sshfs -o IdentityFile=~/.ssh/nersc,allow_other,defer_permissions,volname=cori khcheung@cori.nersc.gov:/ /mnt/cori/
+sshfs:go:
+  do: exec
+  command: sudo sshfs -o IdentityFile=~/.ssh/id_rsa,allow_other,defer_permissions,volname=gordita khcheung@gordita.physics.berkeley.edu:/ /mnt/gordita/
+sshfs:lpc:
+  do: exec
+  command: sudo sshfs -o IdentityFile=~/.ssh/id_rsa,allow_other,defer_permissions,volname=lpc kolen@172.22.2.7:/ /mnt/lpc/
+
+sshfs:mkdir:
+  do: exec
+  command: sudo mkdir -p /mnt/<<host(cori,gordita,lpc)>>/
+sshfs:umount:
+  do: exec
+  command: sudo umount -f /mnt/<<host(cori,gordita,lpc)>>/
+sshfs:kill:
+  do: exec
+  command: sudo pkill -9 sshfs
+sshfs:pgrep:
+  do: exec
+  desc: show running sshfs processes.
+  command: pgrep -lf sshfs
+
+# mount lpc
+lpc:git:nfs:
+  do: exec
+  desc: mount NFS
+  command: sudo mkdir -p /Volumes/git && sudo mount lpc-mini.dyn.berkeley.edu:/home/kolen/git /Volumes/git
+lpc:raid:nfs:
+  do: exec
+  desc: mount NFS
+  command: sudo mkdir -p /Volumes/raid24 && sudo mount lpc-mini.dyn.berkeley.edu:/mnt/raid24 /Volumes/raid24
+
+# wakeonlan
+wake:
+  do: exec
+  desc: wake on LAN
+  command: |
+    wakeonlan <<address(1c:1b:0d:ec:19:de,78:7b:8a:b8:14:59)#1: lpc, 2: thunderbolt ethernet>> || wol <<address>>
+
+nx:fix:
+  do: exec
+  desc: modify ~/.nx/config/player.cfg according to https://docs.nersc.gov/connect/nx/
+  command: sed -i 's/<option key="SSH client mode" value="library" \/>/<option key="SSH client mode" value="native" \/>/g' $HOME/.nx/config/player.cfg
+
+# sshuttle
+sshuttle:
+  do: exec
+  desc: sshuttle as vpn
+  command: sshuttle -r <<address(lpc,khcheung@bolowiki)>> 0/0

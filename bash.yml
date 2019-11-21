@@ -1,0 +1,366 @@
+# find #########################################################################
+fd:ext:
+  do: exec
+  desc: show counts of all extensions inside current directory, if no extension, show name instead. Ignore .git
+  command: find . \! -path '*/.git/*' -type f | sed -E 's/^.*([./][^./]+)$/\1/' | sort | uniq -c | sort -n
+fd:longext:
+  do: exec
+  desc: similar to fd:ext, but treat the first . as the beginning of ext e.g. .tar.gz. No extension is regarded as empty string
+  command: find . \! -path '*/.git/*' -type f | sed -E 's/^.*\/[^./]*([^/]*)$/\1/' | sort | uniq -c | sort -n
+fd:part:ext:
+  do: exec
+  desc: similar to fd:ext, but ignoring .part
+  command: find . \! -path '*/.git/*' -type f | grep -o -E '[./][^./]+\.part$' | sort | uniq -c | sort -n
+fd:name:
+  do: exec
+  desc: find a name pattern, show counts of filenames. Ignore .git
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' | sed -E 's/^.*\/([^/]+)$/\1/g' | sort | uniq -c | sort -n
+fd:unread:
+  do: exec
+  desc: find unreadable files
+  command: find . \! -readable 2> /dev/null
+fd:git:
+  do: exec
+  desc: find all git repositories recursively
+  command: find . -name '.git' | sed -E 's/^(.*)\/[^/]*$/\1/g'
+fd:git:level:
+  do: exec
+  desc: find all git repositories and do a statistics on how depth the levels are
+  command: echo "count\tlevel"; find -name '.git' | awk -F/ '{print NF - 2}' | sort | uniq -c | sort -n -k2
+fd:git:ig:ext:
+  do: exec
+  desc: find all git-ignored files and print a stat. on the extentions similar to fd:ext
+  command: git status --porcelain=1 --ignored | grep -E "^\!\!" | sed -E 's/^.*([./][^./]+)[/]?$/\1/' | sort | uniq -c | sort -n
+fd:git:ig:rm:
+  do: exec
+  desc: find all git-ignored files and delete them. Note that it is not safe if the pathnames contain special characters
+  command: git status --porcelain=1 --ignored | grep -E "^\!\!" | sed 's/^..//g' | xargs -i rm -rf "{}"
+fd:not:git:level:
+  do: exec
+  desc: find directories at a level that is not a git repo
+  command: find . -maxdepth <<level>> -mindepth <<level>> -type d -exec bash -c '[[ -d "$0/.git" ]] || echo $0' {} \;
+fd:dir:
+  do: exec
+  desc: find a name pattern and show counts of the parent directories. Ignore .git
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' | sed -E 's/^(.*)\/[^/]*$/\1/g' | sort | uniq -c | sort -n
+fd:dir1:
+  do: exec
+  desc: find a name pattern, and show counts per 1st level sub-directory. Ignore .git
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' | awk -F '/' '{print $2}' | sort | uniq -c | sort -n
+fd:dir2:
+  do: exec
+  desc: find a name pattern, and show counts per 2nd level sub-directory. Ignore .git
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' | awk -F '/' '{print $2"/"$3}' | sort | uniq -c | sort -n
+fd:dir3:
+  do: exec
+  desc: find a name pattern, and show counts per 3rd level sub-directory. Ignore .git
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' | awk -F '/' '{print $2"/"$3"/"$4}' | sort | uniq -c | sort -n
+fd:poor:name:
+  do: exec
+  desc: find poor pathnames
+  command: find . -exec bash -c 'for name do [[ "$name" =~ ^[a-zA-Z0-9./_-]*$ ]] || echo $name; done' bash {} +
+fd:x:
+  do: exec
+  desc: Find executables. Ignore .git
+  command: find . \! -path '*/.git/*' -type f -executable
+fd:em:
+  do: exec
+  desc: find empty files or directories. Ignore .git
+  command: find . \! -path '*/.git/*' -empty <<options( ,-delete)>>
+# aux. files
+fd:conflict:
+  do: exec
+  desc: find Dropbox's conflicted copy.
+  command: find . \! -path '*/.dropbox.cache/*' -name '*conflicted copy*' <<options( ,-delete)>>
+fd:dss:
+  do: exec
+  desc: find mac's DS_Store files.
+  command: find . \( -name '._.DS_Store' -o -name '.DS_Store' \) <<options( ,-delete)>>
+fd:mac:dump:
+  do: exec
+  desc: find mac's auto-created files on external drives and delete them.
+  command: find . \( -name '.Trashes' -o -name '.fseventsd' -o -name '.Spotlight-V100' \) -exec sudo rm -rf {} +
+fd:ncol:
+  do: exec
+  desc: find number of columns for files with given pattern.
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' -exec awk '{print NF}' {} + | sort -nu
+fd:cat:all:
+  do: exec
+  desc: find files of a name pattern and cat all
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' -exec <<options(cat,less)>> {} +
+fd:cat:dir:
+  do: exec
+  desc: find files with extension in directories at a certain level and cat & sort together into a file with the same extension besides the directories.
+  command: find . \! -path '*/.git/*' -mindepth <<level>> -maxdepth <<level>> -type d -exec bash -c 'find $0 -name "*.<<extension>>" | xargs cat | sort > $0.<<extension>>' {} \;
+fd:gp:
+  do: exec
+  desc: find files of a name pattern and grep another pattern from them
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' -exec grep --color=auto -HnE '<<pattern>>' {} +
+fd:gp:match:
+  do: exec
+  desc: find files of a name pattern and grep another pattern from them, show match only, unique.
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' -exec grep -ho '<<pattern>>' {} + | sort -u
+fd:gp:time:ram:
+  do: exec
+  desc: assume <<pattern>> finds output of GNU time, get the row of max. mem. used, cut and sort by the numbers.
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' -exec gre --color=autop -h 'Maximum resident set size' {} + | cut -d' ' -f 6 | sort -n
+fd:gp:time:
+  do: exec
+  desc: assume <<pattern>> finds output of GNU time, get the row of time used, cut and sort by the time.
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' -exec grep --color=auto -h 'Elapsed (wall clock) time' {} + | cut -d' ' -f 8 | sort -V
+# file stat
+fd:size:
+  do: exec
+  desc: find files with a name pattern and print its size
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' -printf "%kKB %p\n" | sort -h
+# text processing
+fd:level:sed:
+  do: exec
+  desc: find files with a name pattern at a certain level and run inplace sed substitution on it.
+  command: find . \! -path '*/.git/*' -type f -maxdepth <<level>> -mindepth <<level>> -name "<<name>>" -exec sed -i 's/<<from>>/<<to>>/g' {} +
+fd:py:def:
+  do: exec
+  desc: find all function definitions in *.py files and print the freq. per function name
+  command: find . \! -path '*/.git/*' -type f -name '*.py' -exec grep -ohE 'def[ ]+([^(]+)\(' {} + | sort | uniq -c | sort -n
+fd:sed:linefeed:
+  do: exec
+  desc: Convert carriage return (e.g. from Windows) to line feed
+  command: find . \! -path '*/.git/*' -type f -name '<<name>>' -exec sed -i -e 's/\r\n/\n/g' -e 's/\r/\n/g' {} +
+fd:md5:
+  do: exec
+  desc: save md5sum of all files into md5sum.txt
+  command: find . \! -path '*/.git/*' -type f \! -name 'md5sum.txt' -exec md5sum {} + | sort > md5sum.txt
+fd:check:md5:
+  do: exec
+  desc: find all md5sum.txt and enter its directory to check all files
+  command: find -name 'md5sum.txt' -exec bash -c 'cd ${0%/*}; md5sum -c md5sum.txt' {} \;
+fd:tar:xz:ext:
+  do: exec
+  desc: find files with a name pattern and compress them as .tar.xz with level 9
+  command: find . \! -path '*/.git/*' -type f -name '*.<<ext>>' | XZ_OPT=-9 tar -cJf $(basename $(pwd)).<<ext>>.tar.xz -T -
+fd:tar:xz:txt:
+  do: exec
+  desc: find text files with a predefined name pattern and compress them as .txt.tar.xz with level e9
+  command: find . \! -path '*/.git/*' -type f -regextype posix-egrep -regex ".*/.*(-stdout_[[:digit:]]*|-stderr_[[:digit:]]*|makefile|.txt|.err|.csv|.out|.time|.in)" | XZ_OPT=-e9 tar -cJf $(basename $(pwd)).txt.tar.xz -T -
+fd:make:clean:
+  do: exec
+  desc: find all makefiles in any sub-directories and run 'make clean'
+  #  && make clean && cd -
+  command: find . -type f \( -name GNUmakefile -o -name makefile -o -name Makefile \) -exec bash -c 'for makefile do cd "${makefile%/*}"; make -f "${makefile##*/}" clean; cd -; done' bash {} +
+fd:mv:
+  do: exec
+  desc: mv files under current directory into directories named after its extensions
+  command: find -maxdepth 1 -type f -exec bash -c 'dir="${0##*.}"; mkdir -p "$dir"; mv "$0" "$dir"' {} \;
+
+# grep #########################################################################
+gp:
+  do: exec
+  desc: grep a pattern under current dir.
+  command: grep --color=auto -irHn '<<pattern>>' .
+gp:email:
+  do: exec
+  desc: grep all email patterns from file
+  command: grep -EiEio '\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b' '<<filename>>'
+gp:tp:tag:
+  do: exec
+  desc: show all unique tags in TaskPaper format.
+  command: grep -o '@[^( ]\+' '<<filename#taskpaper file>>' | sort -u
+
+# tar ##########################################################################
+
+# file archive
+untar:
+  do: exec
+  desc: untar a file, can be compressed, to a dir
+  command: mkdir <<dir>>; tar -xf <<filename>> -C <<dir>>
+tar:ls:
+  do: exec
+  desc: list the content of a tar file, can be compressed
+  command: tar -tf <<filename>>
+tar:gz:
+  do: exec
+  desc: tar and gzip a dir
+  command: tar -czf <<dirname>>.tar.gz <<dirname>>
+tar:xz:
+  do: exec
+  desc: tar and xz a dir
+  command: XZ_OPT=-<<level(e9)>> tar -cJf <<dirname>>.tar.xz <<dirname>>
+
+################################################################################
+
+du:
+  do: exec
+  desc: show sizes of everything up to a certain level using du.
+  command: du -h -d <<level>> . | sort -h
+# file indexing
+createdb:
+  do: exec
+  desc: create locate.db
+  command: slocate --database=~/.locate.db
+updatedb:
+  do: exec
+  desc: update locate.db
+  command: updatedb --require-visibility 0 -o ~/.locate.db
+sort:max:
+  do: exec
+  desc: ignore header and show maximum. Assume file is something like a CSV with one row header and first column to be sorted.
+  command: tail -n +2 <<filename>> | sort -n | tail -n1
+
+# ACLs
+ls:grp:
+  do: exec
+  desc: List users in a group name
+  command: lid -g <<group>>
+chgrp:
+  do: exec
+  desc: Change group and add sticky bit recursively
+  command: chgrp -R <<group name>> . && chmod -R g+s .
+permission:
+  do: exec
+  desc: recursively change ownership, add sticky bit, etc.
+  command: <<sudo( ,sudo)>> chown -R <<user(kolen,khcheung)>> . && <<sudo>> chgrp -R <<group(kolen,khcheung,polar)>> . && find . -type d -exec <<sudo>> chmod <<permDir(2750,2755)>> {} + && find . -type f -exec <<sudo>> chmod <<permFile(640,644)>> {} +
+# File systems
+df:
+  do: exec
+  desc: List file system mount points
+  command: df -Th
+writetest:
+  do: exec
+  desc: perform write test at 1G/512. test1.img and test2.img will be written temporarily.
+  command: dd if=/dev/zero of=test1.img bs=1G count=1 oflag=dsync && dd if=/dev/zero of=test2.img bs=512 count=1000 oflag=dsync && rm test1.img test2.img
+
+# wget #########################################################################
+download:all:
+  do: exec
+  desc: download all from the URL using wget
+  command: wget -mke robots=off <<URL>>
+download:level:
+  do: exec
+  desc: download up to a certian level from the URL using wget
+  command: wget -r -l <<level>> --no-remove-listing -ke robots=off <<URL>>
+wget:untar:
+  do: exec
+  command: wget -qO- '<<URL>>' | tar -xzf -
+wget:unzip:
+  do: exec
+  desc: wget and unzip a zip file, on macOS only.
+  command: wget -qO- '<<URL>>' | bsdtar -xf-
+
+# gs ###########################################################################
+
+gs:merge:
+  do: exec
+  desc: use ghostscript to merge PDFs
+  command: gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile="<<output>>" -f *.pdf
+
+# misc #########################################################################
+openconnect:
+  do: exec
+  command: until sudo openconnect ucbvpn.berkeley.edu; do sleep 2; done
+pkill:
+  do: exec
+  desc: kill all process of current user
+  command: pkill -u $USER
+smb:
+  do: exec
+  desc: connect to samda on router
+  command: sudo mount -t cifs -o username=admin //192.168.1.1/Seagate_Backup_SGC42 /media/kolen/dir-860l
+smb:reload:
+  do: exec
+  desc: reload samba conf
+  command: sudo smbcontrol all reload-config
+
+# disks
+badblocks:
+  do: exec
+  desc: check badblocks of a device. n for non-destructive read/write, w for write
+  command: sudo badblocks -<<destructive(n,w)>>vsb 4096 /dev/<<disk>>
+info:smart:
+  do: exec
+  command: sudo smartctl -x /dev/<<disk>>
+info:hdparm:
+  do: exec
+  command: sudo hdparm -I /dev/<<disk>>
+
+# PATH
+path:print:
+  do: exec
+  desc: pretty-print PATH
+  command: echo $<<var(PATH,LD_LIBRARY_PATH)>> | tr ':' '\n'
+path:stat:
+  do: exec
+  desc: print stat of PATH, useful for inspecting duplicated paths
+  command: echo $PATH | tr ':' '\n' | sort | uniq -c | sort -n
+
+redirect:
+  do: exec
+  desc: redirect stdout, stderr seperately while also print to terminal
+  command: |
+    {{<<command>> <<outfile>>} > >(tee <<outfile>>.out)} 2> >(tee <<outfile>>.err)
+
+fd:pandoc:
+  do: exec
+  desc: find and run pandoc
+  command: find -name '<<pattern>>' -exec bash -c 'pandoc -s -o "${0%.*}.<<ext>>" "$0" <<args>>' {} \;
+
+# IP related
+
+ip:public:
+  do: exec
+  desc: check public IP (even if it is behind another router). See https://www.linuxtrainingacademy.com/determine-public-ip-address-command-line-curl/
+  command: curl <<url(ipecho.net/plain,http://checkip.amazonaws.com)>>
+
+ip:local:
+  do: exec
+  desc: get all local IP addresses
+  command: python3 -c 'import socket, psutil; [print(interface.ljust(10), snic.address.rjust(15)) for interface, snics in psutil.net_if_addrs().items() for snic in snics if snic.family == socket.AF_INET]'
+
+ip:local:router:
+  do: exec
+  desc: get local IP address to router
+  command: if [[ $(uname) == Darwin ]]; then hostname -i; else (ip route get 1.1.1.1 | grep 1.1.1.1 | awk '{print $7}'); fi
+
+ip:router:
+  do: exec
+  desc: get router IP address
+  command: if [[ $(uname) == Darwin ]]; then (route -n get default | grep gateway | awk '{print $2}'); else (ip r | grep default | awk '{print $3}'); fi
+
+ip:network:
+  do: exec
+  desc: get all networks connected to. e.g. 192.168.1.0/24
+  command: if [[ $(uname) == Darwin ]]; then (netstat -nr | awk '{print $1}' | grep -E '^[0-9a-f:.]+/[0-9]+$' | sort -u); else (ip r | grep -v default | awk '{print $1}'); fi
+
+ip:list:network:
+  do: exec
+  desc: 'list all IP within a connected network. Hint: use ip:network to find out the network first.'
+  command: sudo nmap -sn <<network>>
+
+ip:mac:
+  do: exec
+  desc: get mac address
+  command: if [[ $(uname) == Darwin ]]; then networksetup -listallhardwareports; else ip link show; fi
+
+pdfimages:
+  do: exec
+  desc: extract original images from PDF
+  command: pdfimages -all -p <<input>> <<outputPrefix>>
+
+server:
+  do: exec
+  desc: serve current directory
+  command: python3 -m http.server <<port>>
+
+# iperf test network
+iperf:s:
+  do: exec
+  desc: testing network performance. Start iperf server listening...
+  command: iperf3 -s
+iperf:c:
+  do: exec
+  desc: testing network performance. Start iperf server listening...
+  command: iperf3 -c <<ip>> -l <<size(64,128,256)>>K -w <<size>>K
+
+bit:
+  do: exec
+  desc: show OS 64bit or 32bit
+  command: getconf LONG_BIT

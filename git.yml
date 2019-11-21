@@ -1,0 +1,84 @@
+# show info
+git:log:author:
+  do: exec
+  command: git shortlog -s
+git:log:email:
+  do: exec
+  command: git log --all --format='%aN <%cE>' | sort -u
+git:diff:
+  do: exec
+  desc: show diff. except deleted files
+  command: git diff --name-status --diff-filter=d <<tobranch>>..<<frombranch>>
+# routines
+git:remote:add:
+  do: exec
+  command: git remote add <<remote>> <<URL>>
+git:submodule:update:
+  do: exec
+  desc: update submodules recursively
+  command: git submodule update --init --recursive --remote
+git:submodule:reset:
+  do: exec
+  desc: reset the submodule status, useful when it is dirty
+  command: git submodule foreach --recursive git checkout .
+# overriding / deleting
+git:reset:remote:
+  do: exec
+  desc: override local branch from remote
+  command: git fetch <<remote>> && git reset --hard <<remote>>/<<branch>>
+git:reset:upstream:
+  do: exec
+  desc: reset branch at origin from remote (e.g. origin is forked from an upstream remote)
+  command: git fetch <<remote>> && git checkout <<branch>> && git reset --hard <<remote>>/<<branch>> && git push origin <<branch>> --force
+git:reset:all:
+  do: exec
+  desc: remove changes and untracked files
+  command: git reset --hard && git clean -d -f
+git:merge:upstream:
+  do: exec
+  desc: merge from upstream
+  command: git fetch <<remote(upstream)>> && git merge <<remote>>/<<branch(master)>>
+git:rm:branch:
+  do: exec
+  desc: remove a git branch both locally and remotely
+  command: git branch -D <<branch>> && git push origin :<<branch>>
+git:rm:tag:
+  do: exec
+  desc: remove a git tag both locally and remotely
+  command: git tag -d <<tag>> && git push origin :<<tag>>
+git:cp:
+  do: exec
+  desc: git cherry-pick a range
+  command: git cherry-pick <<from>>^..<<to>>
+git:batch:
+  do: exec
+  desc: batch pull/psuh at all repositories at a certain level
+  command: level=$((<<level>> + 1)); find . -maxdepth $level -mindepth $level -type d -name '.git' -print0 | xargs -0 -n1 -P0 bash -c 'cd $0/.. && git <<action(pull,push)>>'
+git:batch:debug:
+  do: exec
+  desc: batch pull/psuh at all repositories at a certain level
+  command: level=$((<<level>> + 1)); find . -maxdepth $level -mindepth $level -type d -name '.git' -print0 | xargs -0 -n1 -P1 bash -c 'echo $0 && cd $0/.. && git <<action(pull,push)>>'
+git:reset:batch:
+  do: exec
+  desc: batch reset at all repositories at a certain level
+  command: level=$((<<level>> + 1)); find . -maxdepth $level -mindepth $level -type d -name '.git' -print0 | xargs -0 -n1 -P0 bash -c 'cd $0/.. && git reset --hard && git clean -d -f'
+git:push:merge:
+  do: exec
+  desc: perform a common pattern---git push then checkout then merge then push
+  command: git checkout <<from(master)>> && git push && git checkout <<to(gh-pages)>> && git merge --no-edit <<from>> && git push
+git:undo:
+  do: exec
+  desc: undo last commit while keeping change
+  command: bash -c 'git reset HEAD^'
+git:force:push:
+  do: exec
+  desc: force fush to remote
+  command: git push -f
+hub:rm:draft:
+  do: exec
+  desc: remove Draft in GitHub Releases
+  command: hub release -f "%T (%S) %n" --include-drafts | grep " (draft)" | awk '{print $1}' | xargs -n1 hub release delete
+git:commit:all:
+  do: exec
+  desc: commit all staged and unstaged changes.
+  command: git add -A && git commit

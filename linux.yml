@@ -1,0 +1,37 @@
+ls:mount:
+  do: exec
+  desc: List mount points
+  command: mount -l
+ls:id:
+  do: exec
+  command: ls -la /dev/disk/by-id/
+
+ls:group:
+  do: exec
+  desc: List group members.
+  command: 'getent group | cut -d: -f1'
+
+lidswitch:ignore:
+  do: exec
+  desc: ignore lid-switch, e.g. on laptop.
+  command: sudo sh -c 'echo "HandleLidSwitch=ignore" >> /etc/systemd/logind.conf' && sudo service systemd-logind restart
+
+netctl:start:
+  do: exec
+  desc: start a WiFi profile
+  command: sudo netctl start <<profile(wlp1s0-rt)>>
+
+timedatectl:status:
+  do: exec
+  desc: check time synchronization status
+  command: timedatectl status
+
+inotify:
+  do: exec
+  desc: refresh inotify and show the before and after change; restart dropbox service
+  command: sysctl fs.inotify; sudo sysctl -p; sysctl fs.inotify; sudo systemctl restart dropbox@kolen.service && sudo systemctl restart system-dropbox.slice
+
+xrandr:
+  do: exec
+  desc: change resolution and/or framerate
+  command: xrandr --output <<output(HDMI-2,HDMI-3)>> --mode <<resolution(1920x1080,3840x2160)>> -r <<framerate(23.98,24.00,29.97,30.00,59.97,60.00)>>

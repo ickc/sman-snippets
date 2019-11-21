@@ -1,0 +1,79 @@
+c:style:
+  do: exec
+  command: find . \( -iname "*.c" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.cu" -o -iname "*.upc" \) -exec clang-format -i -style=WebKit {} \+
+
+python:snakeviz:
+  do: exec
+  command: BROWSER=echo snakeviz program.prof
+
+python:coverage:
+  do: exec
+  command: coverage run --branch --parallel-mode <<script>>
+
+python:rm:weave:
+  do: exec
+  desc: remove scipy weave's cache
+  command: rm -rf ~/.cache/scipy/ ~/.cache/weave/
+
+python:autopep8:
+  do: exec
+  command: autopep8 <<path>> --recursive --in-place --pep8-passes 2000 --verbose <<option( , --aggressive --aggressive)>> --ignore E501,E265
+
+python:isort:
+  do: exec
+  desc: sort all import statements
+  command: isort --recursive .
+
+fd:rm:ipycp:
+  do: exec
+  desc: find and remove all .ipynb_checkpoints
+  command: find . -type d -name '.ipynb_checkpoints' -exec rm -rf {} +
+
+fd:rm:py:aux:
+  do: exec
+  desc: remove python's auxiliary files
+  command: find . \( -type f -name '*.py[co]' -o -type d -name '__pycache__' -o -name '*.egg-info' \) -exec rm -rf {} +
+
+fd:ipy:clear:
+  do: exec
+  cesc: find all ipynb and clear output cells
+  command: find . -name '*.ipynb' -exec jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace {} +
+
+jupyter:nb:
+  do: exec
+  command: jupyter notebook --no-browser --port=8989
+
+ipcluster:
+  do: exec
+  command: ipcluster start -n <<processes>> --engines=MPIEngineSetLauncher
+
+fd:import:
+  do: exec
+  desc: Find .py recursively, and attempt to get all the modules imported in them.
+  command: find . -iname '*.py' -exec grep -E --color=auto '^[ ]*(import|from) ' '{}' \; | sed -E -e 's/^[ ]*(import|from) ([^. ]+).*$/\2/g' | sort -u
+
+# TeX
+tex:doc:
+  do: exec
+  desc: cd to TeXLive's documentation directory
+  command: cd /usr/local/texlive/*/texmf-dist/doc/
+
+ipy:ex:
+  do: exec
+  desc: execute Jupyter Notebook
+  command: jupyter-nbconvert --ExecutePreprocessor.timeout=1800000 --execute <<filename>>
+
+# open Jupyter
+jp:st:
+  do: exec
+  desc: start Jupyter
+  command: '"/Applications/<<chrome(Google Chrome,Google Chrome Canary)>>.app/Contents/MacOS/<<chrome>>" --app=<<address(http://172.22.2.7:8000,http://lpc-mini.dyn.berkeley.edu:8000,https://jupyter.nersc.gov/user/khcheung/cori-shared-node-cpu/lab)#1: lpc, 2: lpc-local, 3: NERSC>>'
+jp:st:lo:
+  do: exec
+  desc: start Jupyter by running a local server
+  command: . activate jupyterlab && cd && jupyter lab --NotebookApp.iopub_data_rate_limit=10000000000
+
+pandoc:rst:
+  do: exec
+  desc: find all rst within current directory and build using pandoc. Ordering is random. Useful to build documentations with "hidden" files not included in their Sphinx build.
+  command: find \( -name '*.txt' -o -name '*.rst' \) -exec pandoc -s -f rst -o <<filename>> {} +
