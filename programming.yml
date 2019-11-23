@@ -71,7 +71,7 @@ jp:st:
 jp:st:lo:
   do: exec
   desc: start Jupyter by running a local server
-  command: . activate jupyterlab && cd && jupyter lab --NotebookApp.iopub_data_rate_limit=10000000000
+  command: conda activate jupyterlab && cd && jupyter lab --NotebookApp.iopub_data_rate_limit=10000000000
 
 pandoc:rst:
   do: exec
