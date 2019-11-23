@@ -22,3 +22,12 @@ install:marky:
   do: exec
   desc: install marky a.k.a. heckyesmarkdown
   command: wget -q https://gist.githubusercontent.com/ttscoff/2960951/raw/e35f8e8515be55014d647a7e49ec337155e799cf/marky.rb  -O "$HOME/.local/bin/marky.rb" && chmod +x "$HOME/.local/bin/marky.rb"
+install:dotfiles:
+  do: exec
+  desc: install ickc/dotfiles
+  command: |
+    mkdir -p ~/git/source; cd ~/git/source
+    git clone git@github.com:ickc/dotfiles.git ||
+    git clone https://github.com/ickc/dotfiles.git
+    cd dotfiles
+    make uninstall && make install && make
