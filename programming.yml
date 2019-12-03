@@ -77,3 +77,33 @@ pandoc:rst:
   do: exec
   desc: find all rst within current directory and build using pandoc. Ordering is random. Useful to build documentations with "hidden" files not included in their Sphinx build.
   command: find \( -name '*.txt' -o -name '*.rst' \) -exec pandoc -s -f rst -o <<filename>> {} +
+
+# linting
+lint:flake8:c:
+  do: exec
+  desc: flake8, C error only. "Function is too complex"
+  command: flake8 --select C .
+lint:flake8:e:
+  do: exec
+  desc: flake8, E error only. "Error"
+  command: flake8 --select E .
+lint:flake8:f:
+  do: exec
+  desc: flake8, F error only. From pyflakes
+  command: flake8 --select F .
+lint:flake8:w:
+  do: exec
+  desc: flake8, W error only "Warning"
+  command: flake8 --select W .
+lint:bandit:b:
+  do: exec
+  desc: use bandit to check security
+  command: bandit --recursive .
+lint:bandit:html:
+  do: exec
+  desc: use bandit to check security
+  command: bandit --recursive --format html -o bandit.html .
+lint:mypy:
+  do: exec
+  desc: use mypy to type check
+  command: MYPYPATH="$PYTHONPATH" mypy --follow-imports=silent .
