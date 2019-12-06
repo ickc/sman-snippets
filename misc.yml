@@ -35,3 +35,8 @@ minify:
   do: exec
   desc: minify (written in go)
   command: minify --html-keep-document-tags --html-keep-end-tags --type=html -o <<filename>> <<filename>>
+
+ffmpeg:
+  do: exec
+  desc: ffmpeg to apply LUT and normalize audio
+  command: ffmpeg -i <<input>> -filter:v lut3d=<<LUT>> -filter:a loudnorm <<output>>
