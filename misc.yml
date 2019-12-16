@@ -40,3 +40,18 @@ ffmpeg:
   do: exec
   desc: ffmpeg to apply LUT and normalize audio
   command: ffmpeg -i <<input>> -filter:v lut3d=<<LUT>> -filter:a loudnorm <<output>>
+
+# f3 - Fight Flash Fraud
+f3:check:
+  do: exec
+  desc: use f3 to check memory cards
+  command: f3probe --destructive --time-ops <<disk>>
+f3:io:
+  do: exec
+  desc: use f3 to perform full read write cycle test
+  command: f3write <<diskMount>> && f3read <<diskMount>>
+
+spotlight:
+  do: exec
+  desc: 'do not allow macOS to index current directory. Hint: cd to external drive directory first.'
+  command: touch .metadata_never_index
