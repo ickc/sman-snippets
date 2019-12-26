@@ -51,7 +51,12 @@ f3:io:
   desc: use f3 to perform full read write cycle test
   command: f3write <<diskMount>> && f3read <<diskMount>>
 
-spotlight:
+prevent:spotlight:
   do: exec
   desc: 'do not allow macOS to index current directory. Hint: cd to external drive directory first.'
   command: touch .metadata_never_index
+
+prevent:dss:
+  do: exec
+  desc: prevent macOS generating .DS_Store on network drives
+  command: defaults write com.apple.desktopservices DSDontWriteNetworkStores true
