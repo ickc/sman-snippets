@@ -61,7 +61,7 @@ tex:doc:
 ipy:ex:
   do: exec
   desc: execute Jupyter Notebook
-  command: jupyter-nbconvert --ExecutePreprocessor.timeout=1800000 --execute <<filename>>
+  command: jupyter-nbconvert --ExecutePreprocessor.timeout=-1 --execute <<filename>>
 
 # open Jupyter
 jp:st:
