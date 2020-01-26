@@ -357,7 +357,7 @@ iperf:s:
   command: iperf3 -s
 iperf:c:
   do: exec
-  desc: testing network performance. Start iperf server listening...
+  desc: testing network performance. Start iperf client connecting...
   command: iperf3 -c <<ip>> -l <<size(64,128,256)>>K -w <<size>>K
 
 bit:
