@@ -16,11 +16,11 @@ zfs:im:
   desc: import a ZFS pool.
   command: |
     if [[ $(uname) == Darwin ]]; then base=/var/run; else base=/dev; fi &&
-    sudo zpool import -f -d $base/disk/by-id <<name(RAIDZ2TB,RAIDZ4TB,RAIDZ6TB,RAIDZ9TB,RAIDZ12TB)>> && sudo zpool status
+    sudo zpool import -f -l -d $base/disk/by-id <<name(RAIDZ2TB,RAIDZ4TB,RAIDZ6TB,RAIDZ9TB,RAIDZ12TB,RAIDZ24TB)>> && sudo zpool status
 zfs:ex:
   do: exec
   desc: export a ZFS pool.
-  command: sudo zpool export <<name(RAIDZ2TB,RAIDZ4TB,RAIDZ6TB,RAIDZ9TB,RAIDZ12TB)>> && sudo zpool status
+  command: sudo zpool export <<name(RAIDZ2TB,RAIDZ4TB,RAIDZ6TB,RAIDZ9TB,RAIDZ12TB,RAIDZ24TB)>> && sudo zpool status
 zfs:arc:
   do: exec
   desc: show arc. stats.
@@ -40,7 +40,7 @@ zfs:show:compress:
 zfs:sdrc:
   do: exec
   desc: ZFS send and receive. Double check how snapshot should be specified.
-  command: sudo zfs send <<input(RAIDZ2TB,RAIDZ4TB,RAIDZ6TB,RAIDZ9TB,RAIDZ12TB)>>/@<<snapshot>> | sudo zfs receive <<output(RAIDZ2TB,RAIDZ4TB,RAIDZ6TB,RAIDZ9TB,RAIDZ12TB)>>/
+  command: sudo zfs send <<input(RAIDZ2TB,RAIDZ4TB,RAIDZ6TB,RAIDZ9TB,RAIDZ12TB,RAIDZ24TB)>>/@<<snapshot>> | sudo zfs receive <<output(RAIDZ2TB,RAIDZ4TB,RAIDZ6TB,RAIDZ9TB,RAIDZ12TB,RAIDZ24TB)>>/
 zfs:version:
   do: exec
   desc: check zfs version
@@ -56,7 +56,7 @@ zfs:size:
 zfs:autoexpand:
   do: exec
   desc: set zpool to auto-expand
-  command: sudo zpool set autoexpand=on <<input(RAIDZ2TB,RAIDZ4TB,RAIDZ6TB,RAIDZ9TB,RAIDZ12TB)>>
+  command: sudo zpool set autoexpand=on <<input(RAIDZ2TB,RAIDZ4TB,RAIDZ6TB,RAIDZ9TB,RAIDZ12TB,RAIDZ24TB)>>
 zfs:get:
   do: exec
   desc: get zpool properties
