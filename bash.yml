@@ -2,15 +2,15 @@
 fd:ext:
   do: exec
   desc: show counts of all extensions inside current directory, if no extension, show name instead. Ignore .git
-  command: find . \! -path '*/.git/*' -type f | sed -E 's/^.*([./][^./]+)$/\1/' | sort | uniq -c | sort -n
+  command: find . \! -path '*/.git/*' -type f | sed -E 's/^.*([./][^./]+)$/\1/'<<caseSensitivity( , | tr '[:upper:]' '[:lower:]' )>>| sort | uniq -c | sort -n
 fd:longext:
   do: exec
   desc: similar to fd:ext, but treat the first . as the beginning of ext e.g. .tar.gz. No extension is regarded as empty string
-  command: find . \! -path '*/.git/*' -type f | sed -E 's/^.*\/[^./]*([^/]*)$/\1/' | sort | uniq -c | sort -n
+  command: find . \! -path '*/.git/*' -type f | sed -E 's/^.*\/[^./]*([^/]*)$/\1/'<<caseSensitivity( , | tr '[:upper:]' '[:lower:]' )>>| sort | uniq -c | sort -n
 fd:part:ext:
   do: exec
   desc: similar to fd:ext, but ignoring .part
-  command: find . \! -path '*/.git/*' -type f | grep -o -E '[./][^./]+\.part$' | sort | uniq -c | sort -n
+  command: find . \! -path '*/.git/*' -type f | grep -o -E '[./][^./]+\.part$'<<caseSensitivity( , | tr '[:upper:]' '[:lower:]' )>>| sort | uniq -c | sort -n
 fd:name:
   do: exec
   desc: find a name pattern, show counts of filenames. Ignore .git
@@ -29,8 +29,8 @@ fd:git:level:
   command: echo "count\tlevel"; find -name '.git' | awk -F/ '{print NF - 2}' | sort | uniq -c | sort -n -k2
 fd:git:ig:ext:
   do: exec
-  desc: find all git-ignored files and print a stat. on the extentions similar to fd:ext
-  command: git status --porcelain=1 --ignored | grep -E "^\!\!" | sed -E 's/^.*([./][^./]+)[/]?$/\1/' | sort | uniq -c | sort -n
+  desc: find all git-ignored files and print a stat. on the extensions similar to fd:ext
+  command: git status --porcelain=1 --ignored | grep -E "^\!\!" | sed -E 's/^.*([./][^./]+)[/]?$/\1/'<<caseSensitivity( , | tr '[:upper:]' '[:lower:]' )>>| sort | uniq -c | sort -n
 fd:git:ig:rm:
   do: exec
   desc: find all git-ignored files and delete them. Note that it is not safe if the pathnames contain special characters
