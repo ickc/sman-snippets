@@ -89,4 +89,4 @@ nx:fix:
 sshuttle:
   do: exec
   desc: sshuttle as vpn
-  command: sshuttle -r <<address(lpc,khcheung@bolowiki)>> 0/0
+  command: sshuttle -r <<server(lpc,khcheung@bolowiki)>> <<address(0/0,128.32.249.102)>>
