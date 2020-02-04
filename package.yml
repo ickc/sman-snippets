@@ -102,6 +102,10 @@ pm:ls:local:
   do: exec
   desc: list locally installed packages (likely from AUR)
   command: yay -Qm
+pm:clean:
+  do: exec
+  desc: remove all but 1 past version of cache of installed packages
+  command: sudo pacman -Sc && paccache --remove --keep 1
 
 aur:install:
   do: exec
