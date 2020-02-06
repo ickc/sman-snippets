@@ -90,14 +90,10 @@ clone:ab:
 
 # mirror #######################################################################
 
-bolo2github:local:
+bolo2github:
   do: exec
   desc: (routine) mirror bolowiki to github on bolowiki
   command: cd /home/khcheung/git/source/bolo2github && git pull && make mirror-github mirror-bitbucket && make clean
-bolo2github:remote:
-  do: exec
-  desc: (routine) mirror bolowiki to github on bolowiki remotely
-  command: ssh -t khcheung@bolowiki.berkeley.edu 's r bolo2github:local'
 
 # stats ########################################################################
 

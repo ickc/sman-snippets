@@ -16,8 +16,8 @@ routine:
     cd ~/git && s r git:batch 2 1
     cd ~/.sman && git pull
     zprezto-update
-    [[ "$__HOST" == gordita ]] && {rsync -av --stats ~/git/private/ssh-dir/.ssh/ ~/.ssh/; chmod 700 ~/.ssh && cd ~/.ssh && chmod 600 *} && s r bolo2github:remote
-    [[ "$__HOST" == bolo ]] && s r bolo2github:local
+    [[ "$__HOST" == gordita ]] && {rsync -av --stats ~/git/private/ssh-dir/.ssh/ ~/.ssh/; chmod 700 ~/.ssh && cd ~/.ssh && chmod 600 *}
+    [[ "$__HOST" == bolo ]] && s r bolo2github
     [[ -n "$NERSC_HOST" ]] && cd ~/git/fork/NERSC-MFA && s r merge:upstream upstream master && git push
 
 # cleanup
