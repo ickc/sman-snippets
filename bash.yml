@@ -154,7 +154,15 @@ fd:mv:
 fd:open:imag:
   do: exec
   desc: find all images and open it. By default on macOS it will all be opened in one single Preview window.
-  command: find . \! -path '*/.git/*' -type f -regextype posix-egrep -regex ".*/.*(.tiff|.gif|.png|.jpeg|.jpg)" -exec open {} +
+  command: |
+    find . \! -path '*/.git/*' -type f \( \
+      -iname '*.tiff' \
+      -o -iname '*.gif' \
+      -o -iname '*.png' \
+      -o -iname '*.jpeg' \
+      -o -iname '*.jpg' \
+      -o -iname '*.pdf' \
+    \) -exec open {} +
 # grep #########################################################################
 gp:
   do: exec
