@@ -151,7 +151,10 @@ fd:mv:
   do: exec
   desc: mv files under current directory into directories named after its extensions
   command: find -maxdepth 1 -type f -exec bash -c 'dir="${0##*.}"; mkdir -p "$dir"; mv "$0" "$dir"' {} \;
-
+fd:open:imag:
+  do: exec
+  desc: find all images and open it. By default on macOS it will all be opened in one single Preview window.
+  command: find . \! -path '*/.git/*' -type f -regextype posix-egrep -regex ".*/.*(.tiff|.gif|.png|.jpeg|.jpg)" -exec open {} +
 # grep #########################################################################
 gp:
   do: exec
