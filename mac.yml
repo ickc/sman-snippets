@@ -6,3 +6,7 @@ kext:
   do: exec
   desc: list loaded 3rd party kexts
   command: kextstat | grep -v com.apple | sort -bk 6
+log:sleep:
+  do: exec
+  desc: grep the log for wake reasons
+  command: pmset -g log | grep -e "Wake.*due to "
