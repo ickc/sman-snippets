@@ -9,4 +9,4 @@ kext:
 log:sleep:
   do: exec
   desc: grep the log for wake reasons
-  command: pmset -g log | grep -e "Wake.*due to "
+  command: pmset -g log | grep -iEe "(Wake|Sleep).*due to"
