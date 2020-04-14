@@ -149,5 +149,17 @@ xcode:
 
 port:update:
   do: exec
-  desc: update macport
+  desc: update macports
   command: sudo port selfupdate && sudo port upgrade outdated
+port:cleanup:
+  do: exec
+  desc: cleanup macports
+  command: sudo port -f clean --all all && sudo port -f uninstall inactive
+port:cutleaves:
+  do: exec
+  desc: remove "leaves" in macports
+  command: sudo port_cutleaves -b
+port:ls:
+  do: exec
+  desc: list installed packages
+  command: port installed
