@@ -48,6 +48,12 @@ ffmpeg:nb_frames:
   desc: use ffprobe to find total no. of frames
   command: ffprobe -select_streams v -show_streams "<<file>>" 2> /dev/null | grep nb_frames
 
+mediainfo:count:
+  do: exec
+  desc: count no. of frames using mediainfo
+  command: |
+    mediainfo --fullscan "<<file>>" | grep "Frame count"
+
 # f3 - Fight Flash Fraud
 f3:check:
   do: exec
