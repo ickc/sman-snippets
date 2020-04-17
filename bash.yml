@@ -163,6 +163,17 @@ fd:open:imag:
       -o -iname '*.jpg' \
       -o -iname '*.pdf' \
     \) -exec open {} +
+fd:mv:subdir:
+  do: exec
+  desc: find all files in current directory and move them into a subdirectory with the same name without extension
+  command: |
+    find . -mindepth 1 -maxdepth 1 -type f -exec bash -c '
+      for file do
+        dir="${file%.*}"
+        mkdir -p "$dir"
+        mv "$file" "$dir/$file"
+      done' bash {} +
+
 # grep #########################################################################
 gp:
   do: exec
