@@ -93,7 +93,7 @@ gpg:aurutils:
 pm:upgrade:
   do: exec
   desc: yay upgrade all
-  command: yay -Syu --sudoloop --nomakepkgconf --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade --nocleanmenu --nodiffmenu --noeditmenu --noupgrademenu --norebuild --noredownload
+  command: yay -Syu --sudoloop --nomakepkgconf --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade --nocleanmenu --nodiffmenu --noeditmenu --noupgrademenu --norebuild --noredownload --overwrite
 pm:rm:
   do: exec
   desc: remove a package using yay
