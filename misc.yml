@@ -83,4 +83,4 @@ prevent:dss:
 
 youtube-dl:
   do: exec
-  command: youtube-dl --write-sub --all-subs "<<url>>" -o "<<filename>>.%(ext)s"
+  command: youtube-dl --write-sub --all-subs --embed-subs "<<url>>" -o "<<filename>>.%(ext)s"
