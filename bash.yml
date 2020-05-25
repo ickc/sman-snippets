@@ -173,6 +173,10 @@ fd:mv:subdir:
         mkdir -p "$dir"
         mv "$file" "$dir/$file"
       done' bash {} +
+fd:sym:broken:
+  do: exec
+  desc: find broken symlink
+  command: find . -xtype l
 
 # grep #########################################################################
 gp:
