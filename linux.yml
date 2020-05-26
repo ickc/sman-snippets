@@ -35,3 +35,8 @@ xrandr:
   do: exec
   desc: change resolution and/or framerate
   command: xrandr --output <<output(HDMI-2,HDMI-3)>> --mode <<resolution(1920x1080,3840x2160)>> -r <<framerate(23.98,24.00,29.97,30.00,59.97,60.00)>>
+
+ls:kernel:
+  do: exec
+  desc: list installed kernel in Debian
+  command: dpkg --list | grep linux-image
