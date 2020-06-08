@@ -163,3 +163,8 @@ port:ls:
   do: exec
   desc: list installed packages
   command: port installed
+
+linux:update:terminal:
+  do: exec
+  desc: choose the default terminal emulator when Ctrl-Alt-T is pressed.
+  command: sudo update-alternatives --config x-terminal-emulator
