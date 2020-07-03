@@ -10,3 +10,7 @@ log:sleep:
   do: exec
   desc: grep the log for wake reasons
   command: pmset -g log | grep -iEe "(Wake|Sleep).*due to"
+restart:
+  do: exec
+  desc: restart macOS without asking for FileVault decryption again
+  command: sudo fdesetup authrestart
