@@ -390,3 +390,8 @@ bit:
   do: exec
   desc: show OS 64bit or 32bit
   command: getconf LONG_BIT
+
+zcompdump:rebuild:
+  do: exec
+  desc: rebuild .zcompdump after installing new zsh completions
+  command: rm -f ~/.zcompdump; compinit
