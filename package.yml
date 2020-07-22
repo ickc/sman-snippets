@@ -98,6 +98,10 @@ pm:rm:
   do: exec
   desc: remove a package using yay
   command: yay -Rs <<package>>
+pm:rm:orphan:
+  do: exec
+  desc: removing orphans and their configuration files (run this recursively until none)
+  command: yay -Rns $(yay -Qtdq)
 pm:ls:local:
   do: exec
   desc: list locally installed packages (likely from AUR)
