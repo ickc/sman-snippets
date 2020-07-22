@@ -49,9 +49,12 @@ ipcluster:
 
 fd:import:
   do: exec
-  desc: Find .py recursively, and attempt to get all the modules imported in them.
-  command: find . -iname '*.py' -exec grep -E --color=auto '^[ ]*(import|from) ' '{}' \; | sed -E -e 's/^[ ]*(import|from) ([^. ]+).*$/\2/g' | sort -u
-
+  desc: Find .py recursively, and attempt to get all the modules imported in them. 1st look for import, 2nd look for from ... import. c.f. https://unix.stackexchange.com/a/13472
+  command: |
+    {
+      find . \! -path '*/.git/*' -type f -name '*.py' -exec grep --color=auto -ohP '^ *import \K[^ ]*' {} +
+      find . \! -path '*/.git/*' -type f -name '*.py' -exec grep --color=auto -ohP '^ *from \K[^ ]*(?= import)' {} +
+    } | sort -u
 # TeX
 tex:doc:
   do: exec
