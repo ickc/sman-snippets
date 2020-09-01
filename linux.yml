@@ -40,3 +40,8 @@ ls:kernel:
   do: exec
   desc: list installed kernel in Debian
   command: dpkg --list | grep linux-image
+
+ip:interface:
+  do: exec
+  desc: self-assign an IP to an interface, set MTU
+  command: sudo ip link set <<interface(enx245ebe399ef8)>> mtu <<mtu(9000)>> && sudo ip address add <<ip>>/24 broadcast + dev <<interface>>; ip address; ethtool <<interface>>
