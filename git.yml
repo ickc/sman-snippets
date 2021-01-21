@@ -37,7 +37,7 @@ git:reset:all:
 git:merge:upstream:
   do: exec
   desc: merge from upstream
-  command: git fetch <<remote(upstream)>> && git merge <<remote>>/<<branch(master)>>
+  command: git fetch <<remote(upstream)>> && git <<strategy(rebase,merge)>> <<remote>>/<<branch(master)>>
 git:rm:branch:
   do: exec
   desc: remove a git branch both locally and remotely
