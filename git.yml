@@ -82,3 +82,7 @@ git:commit:all:
   do: exec
   desc: commit all staged and unstaged changes.
   command: git add -A && git commit
+git:ignore:
+  do: exec
+  desc: check git ignored files, ignoring common patterns
+  command: s r dautil-sh; gitignored.sh | grep -vE '(/__pycache__/|/\.pytest_cache/|/\.mypy_cache/|/\.sass-cache/|/\.tox/|/\.vscode/|/[^/]+\.pyc|/[^/]+\.egg-info|/\.ipynb_checkpoints/|/\.coverage|/coverage\.xml|/htmlcov/|/\.doit\.db\.db|/Gemfile\.lock|/dask-worker-space/)'
