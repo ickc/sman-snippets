@@ -39,4 +39,4 @@ sbatch:
 otp:
   do: exec
   desc: generate totp
-  command: (conda activate all3-defaults && s r dautil-py && totp.py ~/.nersc.totp)
+  command: (conda activate all38-defaults && s r dautil-py && totp.py ~/.nersc.totp)
