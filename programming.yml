@@ -67,18 +67,18 @@ ipy:ex:
   command: jupyter-nbconvert --ExecutePreprocessor.timeout=-1 --execute <<filename>>
 
 # open Jupyter
-jp:st:
+jupyter:start:
   do: exec
   desc: start Jupyter
-  command: '"/Applications/<<chrome(Chromium,Google Chrome,Google Chrome Canary)>>.app/Contents/MacOS/<<chrome>>" --app=<<address(http://192.168.4.5:8000/user/kolen/lab,http://192.168.4.7:8000,http://192.168.4.8:8000/user/kolen/lab,http://172.22.2.7:8000,http://lpc-mini.dyn.berkeley.edu:8000,https://jupyter.nersc.gov/user/khcheung/cori-shared-node-cpu/lab)#1: lpc, 2: lpc-local, 3: NERSC>>'
-jp:st:lo:
+  command: '"/Applications/<<chrome(Chromium,Google Chrome,Google Chrome Canary)>>.app/Contents/MacOS/<<chrome>>" -incognito --app=<<address(http://192.168.4.5:8000,http://192.168.4.7:8000,http://192.168.4.8:8000,http://172.22.2.7:8000,https://jupyter.nersc.gov/user/khcheung/cori-shared-node-cpu/lab)#1: 3650-local, 2: lpc-local, 3: server-local, 4: lpc, 5: NERSC>>'
+jupyter:start:local:
   do: exec
   desc: start Jupyter by running a local server
-  command: conda activate jupyterlab && cd && jupyter lab --NotebookApp.iopub_data_rate_limit=10000000000
-jp:st:hub:
+  command: conda activate jupyterlab && jupyter lab
+jupyter:start:hub:
   do: exec
   desc: start Jupyter labhub
-  command: conda activate jupyterlab && jupyterhub labhub
+  command: conda activate jupyterlab && jupyterhub -f=~/.jupyter/jupyterhub_config.py
 pandoc:rst:
   do: exec
   desc: find all rst within current directory and build using pandoc. Ordering is random. Useful to build documentations with "hidden" files not included in their Sphinx build.
