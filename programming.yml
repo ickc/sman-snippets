@@ -70,7 +70,7 @@ ipy:ex:
 jupyter:start:
   do: exec
   desc: start Jupyter
-  command: '"/Applications/<<chrome(Chromium,Google Chrome,Google Chrome Canary)>>.app/Contents/MacOS/<<chrome>>" -incognito --app=<<address(http://192.168.4.5:8000,http://192.168.4.7:8000,http://192.168.4.8:8000,http://172.22.2.7:8000,https://jupyter.nersc.gov/user/khcheung/cori-shared-node-cpu/lab)#1: 3650-local, 2: lpc-local, 3: server-local, 4: lpc, 5: NERSC>>'
+  command: '"/Applications/<<chrome(Chromium,Google Chrome,Google Chrome Canary)>>.app/Contents/MacOS/<<chrome>>" -incognito --app=<<address(https://192.168.4.5:8000,https://192.168.4.7:8000,https://192.168.4.8:8000,https://172.22.2.7:8000,https://jupyter.nersc.gov/user/khcheung/cori-shared-node-cpu/lab)#1: 3650-local, 2: lpc-local, 3: server-local, 4: lpc, 5: NERSC>>'
 jupyter:start:local:
   do: exec
   desc: start Jupyter by running a local server
