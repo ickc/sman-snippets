@@ -29,7 +29,7 @@ git:reset:remote:
 git:reset:upstream:
   do: exec
   desc: reset branch at origin from remote (e.g. origin is forked from an upstream remote)
-  command: git fetch <<remote>> && git checkout <<branch>> && git reset --hard <<remote>>/<<branch>> && git push origin <<branch>> --force
+  command: git fetch <<remote(upstream)>> && git checkout <<branch(master)>> && git reset --hard <<remote>>/<<branch>> && git push origin <<branch>> --force
 git:reset:all:
   do: exec
   desc: remove changes and untracked files
