@@ -2,19 +2,19 @@
 fd:ext:
   do: exec
   desc: show counts of all extensions inside current directory, if no extension, show name instead. Ignore .git
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f | sed -E 's/^.*([./][^./]+)$/\1/'<<caseSensitivity( , | tr '[:upper:]' '[:lower:]' )>>| sort | uniq -c | sort -n
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f | sed -E 's/^.*([./][^./]+)$/\1/'<<caseSensitivity( , | tr '[:upper:]' '[:lower:]' )>>| sort | uniq -c | sort -n
 fd:longext:
   do: exec
   desc: similar to fd:ext, but treat the first . as the beginning of ext e.g. .tar.gz. No extension is regarded as empty string
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f | sed -E 's/^.*\/[^./]*([^/]*)$/\1/'<<caseSensitivity( , | tr '[:upper:]' '[:lower:]' )>>| sort | uniq -c | sort -n
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f | sed -E 's/^.*\/[^./]*([^/]*)$/\1/'<<caseSensitivity( , | tr '[:upper:]' '[:lower:]' )>>| sort | uniq -c | sort -n
 fd:part:ext:
   do: exec
   desc: similar to fd:ext, but ignoring .part
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f | grep -o -E '[./][^./]+\.part$'<<caseSensitivity( , | tr '[:upper:]' '[:lower:]' )>>| sort | uniq -c | sort -n
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f | grep -o -E '[./][^./]+\.part$'<<caseSensitivity( , | tr '[:upper:]' '[:lower:]' )>>| sort | uniq -c | sort -n
 fd:name:
   do: exec
   desc: find a name pattern, show counts of filenames. Ignore .git
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' | sed -E 's/^.*\/([^/]+)$/\1/g' | sort | uniq -c | sort -n
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' | sed -E 's/^.*\/([^/]+)$/\1/g' | sort | uniq -c | sort -n
 fd:unread:
   do: exec
   desc: find unreadable files
@@ -42,19 +42,19 @@ fd:not:git:level:
 fd:dir:
   do: exec
   desc: find a name pattern and show counts of the parent directories. Ignore .git
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' | sed -E 's/^(.*)\/[^/]*$/\1/g' | sort | uniq -c | sort -n
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' | sed -E 's/^(.*)\/[^/]*$/\1/g' | sort | uniq -c | sort -n
 fd:dir1:
   do: exec
   desc: find a name pattern, and show counts per 1st level sub-directory. Ignore .git
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' | awk -F '/' '{print $2}' | sort | uniq -c | sort -n
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' | awk -F '/' '{print $2}' | sort | uniq -c | sort -n
 fd:dir2:
   do: exec
   desc: find a name pattern, and show counts per 2nd level sub-directory. Ignore .git
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' | awk -F '/' '{print $2"/"$3}' | sort | uniq -c | sort -n
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' | awk -F '/' '{print $2"/"$3}' | sort | uniq -c | sort -n
 fd:dir3:
   do: exec
   desc: find a name pattern, and show counts per 3rd level sub-directory. Ignore .git
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' | awk -F '/' '{print $2"/"$3"/"$4}' | sort | uniq -c | sort -n
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' | awk -F '/' '{print $2"/"$3"/"$4}' | sort | uniq -c | sort -n
 fd:poor:name:
   do: exec
   desc: find poor pathnames
@@ -62,11 +62,11 @@ fd:poor:name:
 fd:x:
   do: exec
   desc: Find executables. Ignore .git
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -executable
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -executable
 fd:em:
   do: exec
   desc: find empty files or directories. Ignore .git
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -empty <<options( ,-delete)>>
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -empty <<options( ,-delete)>>
 # aux. files
 fd:conflict:
   do: exec
@@ -83,53 +83,53 @@ fd:mac:dump:
 fd:ncol:
   do: exec
   desc: find number of columns for files with given pattern.
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' -exec awk '{print NF}' {} + | sort -nu
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' -exec awk '{print NF}' {} + | sort -nu
 fd:cat:all:
   do: exec
   desc: find files of a name pattern and cat all
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' -exec <<options(cat,less)>> {} +
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' -exec <<options(cat,less)>> {} +
 fd:cat:dir:
   do: exec
   desc: find files with extension in directories at a certain level and cat & sort together into a file with the same extension besides the directories.
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -mindepth <<level>> -maxdepth <<level>> -type d -exec bash -c 'find $0 -name "*.<<extension>>" | xargs cat | sort > $0.<<extension>>' {} \;
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -mindepth <<level>> -maxdepth <<level>> -type d -exec bash -c 'find $0 -name "*.<<extension>>" | xargs cat | sort > $0.<<extension>>' {} \;
 fd:gp:
   do: exec
   desc: find files of a name pattern and grep another pattern from them
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' -exec grep --color=auto -HnE '<<pattern>>' {} +
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' -exec grep --color=auto -HnE '<<pattern>>' {} +
 fd:gp:match:
   do: exec
   desc: find files of a name pattern and grep another pattern from them, show match only, unique.
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' -exec grep -ho '<<pattern>>' {} + | sort -u
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' -exec grep -ho '<<pattern>>' {} + | sort -u
 fd:gp:time:ram:
   do: exec
   desc: assume <<pattern>> finds output of GNU time, get the row of max. mem. used, cut and sort by the numbers.
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' -exec gre --color=autop -h 'Maximum resident set size' {} + | cut -d' ' -f 6 | sort -n
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' -exec gre --color=autop -h 'Maximum resident set size' {} + | cut -d' ' -f 6 | sort -n
 fd:gp:time:
   do: exec
   desc: assume <<pattern>> finds output of GNU time, get the row of time used, cut and sort by the time.
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' -exec grep --color=auto -h 'Elapsed (wall clock) time' {} + | cut -d' ' -f 8 | sort -V
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' -exec grep --color=auto -h 'Elapsed (wall clock) time' {} + | cut -d' ' -f 8 | sort -V
 # file stat
 fd:size:
   do: exec
   desc: find files with a name pattern and print its size
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' -printf "%kKB %p\n" | sort -h
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' -printf "%kKB %p\n" | sort -h
 # text processing
 fd:level:sed:
   do: exec
   desc: find files with a name pattern at a certain level and run inplace sed substitution on it.
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -maxdepth <<level>> -mindepth <<level>> -name "<<name>>" -exec sed -i 's/<<from>>/<<to>>/g' {} +
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -maxdepth <<level>> -mindepth <<level>> -name "<<name>>" -exec sed -i 's/<<from>>/<<to>>/g' {} +
 fd:py:def:
   do: exec
   desc: find all function definitions in *.py files and print the freq. per function name
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '*.py' -exec grep -ohE 'def[ ]+([^(]+)\(' {} + | sort | uniq -c | sort -n
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '*.py' -exec grep -ohE 'def[ ]+([^(]+)\(' {} + | sort | uniq -c | sort -n
 fd:sed:linefeed:
   do: exec
   desc: Convert carriage return (e.g. from Windows) to line feed
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '<<name>>' -exec sed -i -e 's/\r\n/\n/g' -e 's/\r/\n/g' {} +
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' -exec sed -i -e 's/\r\n/\n/g' -e 's/\r/\n/g' {} +
 fd:md5:
   do: exec
   desc: save md5sum of all files into md5sum.txt
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f \! -name 'md5sum.txt' -exec md5sum {} + | sort > md5sum.txt
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f \! -name 'md5sum.txt' -exec md5sum {} + | sort > md5sum.txt
 fd:check:md5:
   do: exec
   desc: find all md5sum.txt and enter its directory to check all files
@@ -137,11 +137,11 @@ fd:check:md5:
 fd:tar:xz:ext:
   do: exec
   desc: find files with a name pattern and compress them as .tar.xz with level 9
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -name '*.<<ext>>' | XZ_OPT=-9 tar -cJf $(basename $(pwd)).<<ext>>.tar.xz -T -
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '*.<<ext>>' | XZ_OPT=-9 tar -cJf $(basename $(pwd)).<<ext>>.tar.xz -T -
 fd:tar:xz:txt:
   do: exec
   desc: find text files with a predefined name pattern and compress them as .txt.tar.xz with level e9
-  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f -regextype posix-egrep -regex ".*/.*(-stdout_[[:digit:]]*|-stderr_[[:digit:]]*|makefile|.txt|.err|.csv|.out|.time|.in)" | XZ_OPT=-e9 tar -cJf $(basename $(pwd)).txt.tar.xz -T -
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -regextype posix-egrep -regex ".*/.*(-stdout_[[:digit:]]*|-stderr_[[:digit:]]*|makefile|.txt|.err|.csv|.out|.time|.in)" | XZ_OPT=-e9 tar -cJf $(basename $(pwd)).txt.tar.xz -T -
 fd:make:clean:
   do: exec
   desc: find all makefiles in any sub-directories and run 'make clean'
@@ -155,7 +155,7 @@ fd:open:imag:
   do: exec
   desc: find all images and open it. By default on macOS it will all be opened in one single Preview window.
   command: |
-    find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*./.*/*')>> -type f \( \
+    find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f \( \
       -iname '*.tiff' \
       -o -iname '*.gif' \
       -o -iname '*.png' \
