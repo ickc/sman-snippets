@@ -395,3 +395,8 @@ zcompdump:rebuild:
   do: exec
   desc: rebuild .zcompdump after installing new zsh completions
   command: rm -f ~/.zcompdump; compinit
+
+texcount:md:
+  do: exec
+  desc: texcount summary info on markdown files using texcount_processing from dautil-py
+  command: texcount_processing <(pandoc '<<file>>' -s -t latex | texcount -relaxed -)
