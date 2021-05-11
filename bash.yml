@@ -374,7 +374,7 @@ pdfimages:
 server:
   do: exec
   desc: serve current directory
-  command: python3 -m http.server <<port>>
+  command: python3 -m http.server <<port>> <<local( ,--bind 127.0.0.1)>>
 
 # iperf test network
 iperf:s:
