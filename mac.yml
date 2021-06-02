@@ -14,3 +14,15 @@ restart:
   do: exec
   desc: restart macOS without asking for FileVault decryption again
   command: sudo fdesetup authrestart
+default:show:hidden:
+  do: exec
+  desc: show hidden files in macOS Finder
+  command: defaults write com.apple.Finder AppleShowAllFiles true && killall Finder
+check:content:type:
+  do: exec
+  desc: check macOS file content type. May need to double-click file once first to resolve content type if it starts with dyn
+  command: mdls <<file>> | grep kMDItemContentType
+default:vscode:
+  do: exec
+  desc: default opening plain-text by vscode. Hint—add more types by checking file with check:content:type.
+  command: for type in public.plain-text public.yaml net.daringfireball.markdown; do defaults write com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers -array-add "{LSHandlerContentType=$type;LSHandlerRoleAll=com.microsoft.VSCode;}"; done
