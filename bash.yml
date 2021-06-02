@@ -374,7 +374,7 @@ pdfimages:
 server:
   do: exec
   desc: serve current directory
-  command: python3 -m http.server <<port>>
+  command: python3 -m http.server <<port>> <<local( ,--bind 127.0.0.1)>>
 
 # iperf test network
 iperf:s:
@@ -395,3 +395,8 @@ zcompdump:rebuild:
   do: exec
   desc: rebuild .zcompdump after installing new zsh completions
   command: rm -f ~/.zcompdump; compinit
+
+texcount:md:
+  do: exec
+  desc: texcount summary info on markdown files using texcount_processing from dautil-py
+  command: texcount_processing <(pandoc '<<file>>' -s -t latex | texcount -relaxed -)
