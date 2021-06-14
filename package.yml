@@ -36,15 +36,15 @@ conda:ch:
 conda:update:
   do: exec
   desc: update conda and anaconda
-  command: conda update -n base -c defaults conda anaconda
+  command: mamba update -n base -c defaults conda anaconda
 conda:env:update:
   do: exec
   desc: update current conda environment
-  command: conda update --all
+  command: mamba update --all
 conda:clean:
   do: exec
   desc: conda cleanup all
-  command: conda clean --all -y
+  command: mamba clean --all -y
 
 pip:dev:
   do: exec
