@@ -13,7 +13,7 @@ python:coverage:
 python:rm:weave:
   do: exec
   desc: remove scipy weave's cache
-  command: rm -rf ~/.cache/scipy/ ~/.cache/weave/
+  command: rm -rf ~/.cache/weave/; [[ -n "${XDG_CACHE_HOME+x}" ]] && rm -rf $XDG_CACHE_HOME/weave/
 
 python:autopep8:
   do: exec
