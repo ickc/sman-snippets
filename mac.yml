@@ -22,7 +22,7 @@ check:content:type:
   do: exec
   desc: check macOS file content type. May need to double-click file once first to resolve content type if it starts with dyn
   command: mdls <<file>> | grep kMDItemContentType
-default:vscode:
+default:open:
   do: exec
   desc: default opening plain-text by vscode. Hint—add more types by checking file with check:content:type.
-  command: duti < ~/git/source/reproducible-os-environments/macOS/default-vscode.tsv
+  command: duti < ~/git/source/reproducible-os-environments/macOS/default-open.tsv
