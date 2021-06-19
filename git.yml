@@ -10,6 +10,10 @@ git:diff:
   desc: show diff. except deleted files
   command: git diff --name-status --diff-filter=d <<tobranch>>..<<frombranch>>
 # routines
+git:clone:
+  do: exec
+  desc: git clone from GitHub through ssh
+  command: git clone git@github.com:<<user>>/<<repo>>.git
 git:remote:add:
   do: exec
   command: git remote add <<remote>> <<URL>>
