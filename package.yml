@@ -73,11 +73,11 @@ brew:linux:ca:nersc:
 apt:update:
   do: exec
   desc: update ubuntu
-  command: sudo apt -y update && sudo apt -y full-upgrade && sudo apt -y autoremove
+  command: sudo apt -y update && sudo apt -y upgrade && sudo apt -y autoremove
 apt:upgrade:
   do: exec
   desc: upgrade ubuntu to next release
-  command: sudo apt update -y && sudo apt dist-upgrade -y && sudo apt install update-manager-core -y && do-release-upgrade -d
+  command: sudo apt update -y && sudo apt dist-upgrade -y && sudo apt install update-manager-core -y && do-release-upgrade
 apt:ls:
   do: exec
   desc: list installed apt packages
