@@ -90,3 +90,8 @@ sshuttle:
   do: exec
   desc: sshuttle as vpn
   command: sshuttle -r <<server(lpc,khcheung@bolowiki)>> <<address(0/0,128.32.249.102)>> <<exlude( ,-x 10.0.0.0/8 -x 172.16.0.0/12 -x 192.168.0.0/16)>>
+
+git:sync:
+  do: exec
+  desc: rsync from backed up git repos
+  command: rsync -av --stats --delete -e ssh <<host(192.168.4.8)>>:/RAIDZ48TB/Backup/polarbear/lpc-mac/git/<<directory>>/ ~/git/<<directory>>/ <<args( ,-n)>> --exclude=.git
