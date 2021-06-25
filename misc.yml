@@ -27,7 +27,20 @@ routine:
 clear:cache:
   do: exec
   desc: clear commonly found cache stuffs in git repositories that should be completely safe to remove.
-  command: find -type d \( -name __pycache__ -o -name .mypy_cache -o -name .tox -o -name .pytest_cache -o -name .ipynb_checkpoints -o -name '*.egg-info' -o -name .sass-cache \) -exec rm -rf {} +; find -type f -name '.coverage*' -delete
+  command:
+    find -type d
+      \( -name __pycache__
+      -o -name .mypy_cache
+      -o -name .tox
+      -o -name .pytest_cache
+      -o -name .ipynb_checkpoints
+      -o -name '*.egg-info'
+      -o -name .sass-cache
+      \) -exec rm -rf {} +;
+      find -type f
+      \( -name '.coverage*'
+      -o -name '*.pyc'
+      \) -delete
 
 clean:all:
   do: exec
