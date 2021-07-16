@@ -18,10 +18,10 @@ default:show:hidden:
   do: exec
   desc: show hidden files in macOS Finder
   command: defaults write com.apple.Finder AppleShowAllFiles true && killall Finder
-check:content:type:
+check:default:content:type:
   do: exec
   desc: check macOS file content type. May need to double-click file once first to resolve content type if it starts with dyn
-  command: mdls <<file>> | grep kMDItemContentType
+  command: mdls -name kMDItemContentType <<file>>
 default:open:
   do: exec
   desc: default opening plain-text by vscode. Hint—add more types by checking file with check:content:type.
@@ -30,3 +30,7 @@ default:show:
   do: exec
   desc: show default handlers for different UTIs and extensions
   command: defaults read com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers
+default:reload:
+  do: exec
+  desc: rebuild Launch Services Database. See https://discussions.apple.com/thread/7913794
+  command: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -domain u -domain s -domain l -va
