@@ -400,3 +400,8 @@ texcount:md:
   do: exec
   desc: texcount summary info on markdown files using texcount_processing from dautil-py
   command: texcount_processing <(pandoc '<<file>>' -s -t latex | texcount -relaxed -)
+
+directory:summary:
+  do: exec
+  desc: count the frequency of directories up to certain level.
+  command: cut -d'/' -f -<<level>> <<file>> | sort | uniq -c | sort -n
