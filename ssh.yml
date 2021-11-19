@@ -4,8 +4,8 @@ mosh:co:
   command: s r ssh:nersc:gen; mosh $(ssh cori hostname)
 mosh:perlmutter:
   do: exec
-  desc: convenient command to 1) get NERSC key, 2) find cori login node according to load balancer, 3) mosh to that login node 4) ssh to perlmutter
-  command: s r ssh:nersc:gen; mosh $(ssh cori hostname) -- ssh perlmutter
+  desc: convenient command to 1) get NERSC key, 2) mosh to dtn 3) ssh to perlmutter (this also work—mosh coriXX -- ssh perlmutter)
+  command: s r ssh:nersc:gen; mosh --server='/global/common/software/polar/.conda/envs/system39-conda-forge/bin/mosh-server' dtn01 -- ssh perlmutter
 scan:co:
   do: exec
   desc: login to all Cori login nodes once to update known_hosts
