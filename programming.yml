@@ -113,3 +113,11 @@ lint:mypy:
   do: exec
   desc: use mypy to type check
   command: MYPYPATH="$PYTHONPATH" mypy --follow-imports=silent .
+python:format:
+  do: exec
+  desc: format python files
+  command: autoflake --in-place --recursive --expand-star-imports --remove-all-unused-imports --ignore-init-module-imports --remove-duplicate-keys --remove-unused-variables .; black .; isort .
+jupytext:format:
+  do: exec
+  desc: format ipynb files
+  command: find -name '*.ipynb' -exec jupytext <<sync( ,--sync)>> --pipe black --pipe 'isort - --treat-comment-as-code "# %%" --float-to-top' {} +
