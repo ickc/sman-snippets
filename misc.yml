@@ -16,6 +16,7 @@ routine:
     (
       cd ~/git && s r git:batch 2 1
       cd ~/.sman && git pull
+      cd ~/.config/kitty && git pull
       zprezto-update
       [[ "$__HOST" == gordita ]] && {rsync -av --stats ~/git/private/ssh-dir/.ssh/ ~/.ssh/; chmod 700 ~/.ssh && cd ~/.ssh && chmod 600 *}
       [[ "$__HOST" == bolo ]] && s r bolo2github
