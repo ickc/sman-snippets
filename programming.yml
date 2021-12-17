@@ -121,3 +121,7 @@ jupytext:format:
   do: exec
   desc: format ipynb files
   command: find -name '*.ipynb' -exec jupytext <<sync( ,--sync)>> --pipe black --pipe 'isort - --treat-comment-as-code "# %%" --float-to-top' {} +
+mypy:stop:
+  do: exec
+  desc: stop all mypy daemons
+  command: (conda activate all39-defaults && find ~/git -name .dmypy.json -exec bash -c 'cd "${1%/*}" && dmypy stop' bash {} \;)
