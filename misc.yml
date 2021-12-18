@@ -109,3 +109,13 @@ get:cacheline:
   do: exec
   desc: get the cacheline length in bytes
   command: if [[ "$(uname)" == Darwin ]]; then sysctl hw.cachelinesize; else getconf LEVEL1_DCACHE_LINESIZE; fi
+
+kitty:solarized:dark:
+  do: exec
+  desc: change kitty theme to solarized dark. (Ctrl+Cmd+, to reload)
+  command: rm -f ~/.config/kitty/current-theme.conf; ln -s themes/Solarized_Dark_Official.conf ~/.config/kitty/current-theme.conf
+
+kitty:solarized:light:
+  do: exec
+  desc: change kitty theme to solarized dark. (Ctrl+Cmd+, to reload)
+  command: rm -f ~/.config/kitty/current-theme.conf; ln -s themes/Solarized_Light_Official.conf ~/.config/kitty/current-theme.conf
