@@ -21,7 +21,7 @@ routine:
       [[ "$__HOST" == gordita ]] && {rsync -av --stats ~/git/private/ssh-dir/.ssh/ ~/.ssh/; chmod 700 ~/.ssh && cd ~/.ssh && chmod 600 *}
       [[ "$__HOST" == bolo ]] && s r bolo2github
       [[ -n "$NERSC_HOST" ]] && cd ~/git/fork/NERSC-MFA && s r merge:upstream upstream rebase master && git push
-      [[ -d "$HOME/.basher" ]] && cd ~/git/source/reproducible-os-environments/common && ./basher-upgrade.sh
+      [[ -d "$HOME/.basher" ]] && cd ~/git/source/bootstrapping-os-environments/common && ./basher-upgrade.sh
     )
 
 # cleanup

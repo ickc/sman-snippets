@@ -25,7 +25,7 @@ check:default:content:type:
 default:open:
   do: exec
   desc: default opening plain-text by vscode. Hint—add more types by checking file with check:content:type.
-  command: ~/git/source/reproducible-os-environments/macOS/default-open.sh
+  command: ~/git/source/bootstrapping-os-environments/macOS/default-open.sh
 default:show:
   do: exec
   desc: show default handlers for different UTIs and extensions
