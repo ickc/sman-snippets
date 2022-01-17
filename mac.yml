@@ -34,3 +34,7 @@ default:reload:
   do: exec
   desc: rebuild Launch Services Database. See https://discussions.apple.com/thread/7913794
   command: /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -domain u -domain s -domain l -va
+ibooks:path:
+  do: exec
+  desc: go to iBooks PDF location
+  command: cd "$HOME/Library/Mobile Documents/iCloud~com~apple~iBooks/Documents"
