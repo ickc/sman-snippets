@@ -34,10 +34,15 @@ fd:rm:py:aux:
   desc: remove python's auxiliary files
   command: find . \( -type f -name '*.py[co]' -o -type d -name '__pycache__' -o -name '*.egg-info' \) -exec rm -rf {} +
 
-fd:ipy:clear:
+fd:ipynb:clear:
   do: exec
   cesc: find all ipynb and clear output cells
-  command: find . -name '*.ipynb' -exec jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace {} +
+  command: find . \! -path '*/.ipynb_checkpoints/*' -name '*.ipynb' -exec jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace {} +
+
+fd:jupytext:format:
+  do: exec
+  desc: format ipynb files
+  command: find . \! -path '*/.ipynb_checkpoints/*' -name '*.ipynb' -exec jupytext <<sync( ,--sync)>> --pipe black --pipe 'isort - --treat-comment-as-code "# %%" --float-to-top' {} +
 
 jupyter:nb:
   do: exec
@@ -117,10 +122,6 @@ python:format:
   do: exec
   desc: format python files
   command: autoflake --in-place --recursive --expand-star-imports --remove-all-unused-imports --ignore-init-module-imports --remove-duplicate-keys --remove-unused-variables .; black .; isort .
-jupytext:format:
-  do: exec
-  desc: format ipynb files
-  command: find -name '*.ipynb' -exec jupytext <<sync( ,--sync)>> --pipe black --pipe 'isort - --treat-comment-as-code "# %%" --float-to-top' {} +
 mypy:stop:
   do: exec
   desc: stop all mypy daemons
