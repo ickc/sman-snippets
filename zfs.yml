@@ -61,3 +61,7 @@ zfs:get:
   do: exec
   desc: get zpool properties
   command: zpool get <<input( ,autoexpand)>>
+zfs:video:link:
+  do: exec
+  desc: create symlinks
+  command: (cd /Volumes; sudo ln -s RAIDZ48TB/Videos .; sudo ln -s RAIDZ48TB/Videos-original .; sudo ln -s RAIDZ48TB/Videos-original-archive/ .)
