@@ -125,4 +125,4 @@ python:format:
 mypy:stop:
   do: exec
   desc: stop all mypy daemons
-  command: (conda activate all39-defaults && find ~/git -name .dmypy.json -exec bash -c 'cd "${1%/*}" && dmypy stop' bash {} \;)
+  command: (conda activate all310-conda-forge && find ~/git -name .dmypy.json -exec bash -c 'cd "${1%/*}" && dmypy stop' bash {} \;)
