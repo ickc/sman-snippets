@@ -101,9 +101,9 @@ prevent:dss:
   desc: prevent macOS generating .DS_Store on network drives
   command: defaults write com.apple.desktopservices DSDontWriteNetworkStores true
 
-youtube-dl:
+youtube-dlp:
   do: exec
-  command: youtube-dl --write-sub --all-subs "<<url>>" -o "<<filename>>.%(ext)s"
+  command: <<ydl(youtube-dl,yt-dlp)>> --write-sub --all-subs "<<url>>" -o "<<filename>>.%(ext)s"
 
 get:cacheline:
   do: exec
