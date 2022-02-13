@@ -243,8 +243,16 @@ chgrp:
   command: chgrp -R <<group name>> . && chmod -R g+s .
 permission:
   do: exec
-  desc: recursively change ownership, add sticky bit, etc.
+  desc: recursively change ownership, add SetGID, etc.
   command: <<sudo( ,sudo)>> chown -R <<user(kolen,khcheung)>> . && <<sudo>> chgrp -R <<group(kolen,khcheung,polar)>> . && find . -type d -exec <<sudo>> chmod <<permDir(2750,2755)>> {} + && find . -type f -exec <<sudo>> chmod <<permFile(640,644)>> {} +
+permission:group:
+  do: exec
+  desc: change group recursively, add setgid & sticky bit for directories, and make group-readable recursively.
+  command: <<sudo( ,sudo)>> chgrp -R <<group(kolen,khcheung,polar)>> . && find . -type d -exec <<sudo>> chmod g+s {} + -exec <<sudo>> chmod +t {} + && chmod -R g+r .
+permission:group:by:user:
+  do: exec
+  desc: For those owned by $USER, change group recursively, add setgid & sticky bit for directories, and make group-readable recursively.
+  command: find . -user "$USER" -exec chgrp -R <<group(kolen,khcheung,polar)>> {} + && find . -user "$USER" -type d -exec chmod g+s {} + -exec chmod +t {} + && find . -user "$USER" -exec chmod g+r {} +
 # File systems
 df:
   do: exec
