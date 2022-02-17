@@ -38,3 +38,7 @@ ibooks:path:
   do: exec
   desc: go to iBooks PDF location
   command: cd "$HOME/Library/Mobile Documents/iCloud~com~apple~iBooks/Documents"
+disable:python:alert:
+  do: exec
+  desc: Disable Python 2 deprecation alert. See https://github.com/microsoft/vscode/issues/134635#issuecomment-952669199
+  command: defaults write com.apple.python DisablePythonAlert True
