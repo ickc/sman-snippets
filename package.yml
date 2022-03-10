@@ -15,20 +15,20 @@ conda:ls:
   command: conda info --env
 conda:batch:
   do: exec
-  desc: running a certain command across all conda env. excluding root
-  command: conda info --env | grep -v -E '#|root' - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c 'conda activate $0 && <<command>>' {}
+  desc: running a certain command across all conda env. excluding base
+  command: conda info --env | grep -v -E '#|base' - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c ". $(which activate) {} && <<command>>"
 conda:batch:ch:
   do: exec
   desc: similar to conda:batch, but restricted to env. with <<channel>> in the name, and install packages from that channel
-  command: conda info --env | grep -v -E '#|root' - | grep <<channel(defaults,intel)>> - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c 'conda activate $0 && conda install -c <<channel>> <<packages>> -y' {}
+  command: conda info --env | grep -v -E '#|base' - | grep <<channel(defaults,intel)>> - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c ". $(which activate) {} && conda install -c <<channel>> <<packages>> -y"
 conda:batch:rm:
   do: exec
   desc: remove all conda environments
-  command: conda info --env | grep -v -E '#|root' - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c 'conda remove -n $0 --all -y' {}
+  command: conda info --env | grep -v -E '#|base' - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c "$(which conda) remove -n {} --all -y"
 conda:batch:rm:inteldefaults:
   do: exec
   desc: remove all intel/defaults environments
-  command: conda info --env | grep -v -E '#|root' - | grep -E '(defaults|intel)' - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c 'conda remove -n $0 --all -y' {}
+  command: conda info --env | grep -v -E '#|base' - | grep -E '(defaults|intel)' - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c "$(which conda) remove -n {} --all -y"
 conda:batch:update:all:
   do: exec
   desc: update all conda environments
