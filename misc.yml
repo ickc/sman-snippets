@@ -103,7 +103,7 @@ prevent:dss:
 
 youtube-dlp:
   do: exec
-  command: <<ydl(youtube-dl,yt-dlp)>> --write-sub --all-subs "<<url>>" -o "<<filename>>.%(ext)s"
+  command: while \! <<ydl(youtube-dl,yt-dlp)>> --write-sub --all-subs "<<url>>" -o "<<filename>>.%(ext)s"; do echo repeating...; done
 
 get:cacheline:
   do: exec
