@@ -18,6 +18,18 @@ default:show:hidden:
   do: exec
   desc: show hidden files in macOS Finder
   command: defaults write com.apple.Finder AppleShowAllFiles true && killall Finder
+list:metadata:
+  do: exec
+  desc: list all metadata of a file in macOS
+  command: mdls "<<file>>"
+list:xattr:
+  do: exec
+  desc: list all xattr of a file in macOS
+  command: xattr -l "<<file>>"
+list:shared:by:me:
+  do: exec
+  desc: list all iCloud files that is "Shared by Me"
+  command: mdfind -onlyin "<<dir($HOME/Library/Mobile Documents/)>>" 'kMDItemIsShared == 1'
 check:default:content:type:
   do: exec
   desc: check macOS file content type. May need to double-click file once first to resolve content type if it starts with dyn
