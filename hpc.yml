@@ -13,15 +13,20 @@ module:py3:
 module:cuda:
   do: exec
   command: module load cuda
-
-watch:bigmem:
+squeue:sqs:
   do: exec
-  command: watch squeue -M escori -p bigmem
-watch:sqs:
+  desc: squeue sqs
+  command:
+    partition='<<partition(-M escori -p bigmem, )>>';
+    <<watch(watch -n 15,bash -c)>>
+    'squeue
+    -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R"
+    <<partition>>
+    <<me(--me, )>>'
+squeue:cmem:
   do: exec
-  desc: watch sqs, and remove the last 8 lines of notes
-  command: watch -n 15 'squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
-
+  desc: squeue sqs for cmem
+  command: (module load cmem; s r squeue:sqs -- '-p cmem')
 BB:salloc:
   do: exec
   desc: salloc with BB at pb1_lp2_high_0_2
