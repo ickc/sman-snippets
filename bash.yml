@@ -286,6 +286,10 @@ gs:merge:
   do: exec
   desc: use ghostscript to merge PDFs
   command: gs -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile="<<output>>" -f *.pdf
+gs:extract:
+  do: exec
+  desc: use ghostscript to extract page range from PDF
+  command: gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dFirstPage=<<first>> -dLastPage=<<last>> -sOutputFile='<<output>>' '<<input>>'
 
 # misc #########################################################################
 openconnect:
