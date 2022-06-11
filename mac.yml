@@ -54,3 +54,7 @@ disable:python:alert:
   do: exec
   desc: Disable Python 2 deprecation alert. See https://github.com/microsoft/vscode/issues/134635#issuecomment-952669199
   command: defaults write com.apple.python DisablePythonAlert True
+disable:indexing:
+  do: exec
+  desc: Indexing and searching disabled for the drive. See https://apple.stackexchange.com/a/418176/355318
+  command: sudo mdutil -i off -d '/Volumes/<<name>>'; touch '/Volumes/<<name>>/.metadata_never_index'; rm -rf '/Volumes/<<name>>/.fseventsd' '/Volumes/<<name>>/.Spotlight-V100'
