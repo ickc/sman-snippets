@@ -1,6 +1,14 @@
 c:style:
   do: exec
-  command: find . \( -iname "*.c" -o -iname "*.cpp" -o -iname "*.h" -o -iname "*.cu" -o -iname "*.upc" \) -exec clang-format -i -style=WebKit {} \+
+  command: find .
+    -type f
+    \(
+      -iname "*.c" -o
+      -iname "*.cpp" -o
+      -iname "*.h" -o
+      -iname "*.cu" -o
+      -iname "*.upc"
+    \) -exec clang-format -i -style=WebKit {} \+
 
 python:snakeviz:
   do: exec
@@ -32,7 +40,86 @@ fd:rm:ipycp:
 fd:rm:py:aux:
   do: exec
   desc: remove python's auxiliary files
-  command: find . \( -type f -name '*.py[co]' -o -type d -name '__pycache__' -o -name '*.egg-info' \) -exec rm -rf {} +
+  command: find .
+    \(
+      -type f
+      \(
+        -name '*.py[co]' -o
+        -name .dmypy.json -o
+        -name .coverage -o
+        -name coverage.xml -o
+        -name coverage.lcov
+      \) -o
+      -type d
+      \(
+        -name htmlcov -o
+        -name __pycache__ -o
+        -name '*.egg-info' -o
+        -name '*.eggs' -o
+        -name .mypy_cache -o
+        -name .pytest_cache -o
+        -name .ipynb_checkpoints
+      \)
+    \) -exec rm -rf {} +
+
+fd:rm:worker:cache:
+  do: exec
+  desc: remove dask, parsl worker cache directories
+  command: find .
+    -type d
+    \(
+      -name dask-worker-space -o
+      -name runinfo
+    \) -exec rm -rf {} +
+
+fd:rm:tex:aux:
+  do: exec
+  desc: remove LaTeX's auxiliary files, extensions that is not known to collide with other applications only, this excludes .out, .bib, .log, 
+  command: find .
+    -type f
+    \(
+      -name '*.aux' -o
+      -name '*.bbl' -o
+      -name '*.bcf' -o
+      -name '*.blg' -o
+      -name '*.fdb_latexmk' -o
+      -name '*.fls' -o
+      -name '*.toc' -o
+      -name '*.xdv'
+    \) -delete
+
+fd:rm:idea:
+  do: exec
+  desc: remove .idea directories by Jetbrains
+  command: find .
+    -type d
+    -name .idea
+    -exec rm -rf {} +
+
+fd:rm:stack:cache:
+  do: exec
+  desc: remove stack's cache
+  command: find .
+    \(
+    -type f
+    -name stack.yaml.lock -o
+    -type d
+    -name .stack-work
+    \) -exec rm -rf {} +
+
+fd:rm:node:cache:
+  do: exec
+  desc: remove node's cache and vscode package (.vsix)
+  command: find .
+    \(
+      -type f
+      \(
+        -name package-lock.json -o
+        -name '*.vsix'
+      \)
+      -type d
+      -name node_modules
+    \) -exec rm -rf {} +
 
 fd:ipynb:clear:
   do: exec
