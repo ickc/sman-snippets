@@ -415,5 +415,5 @@ texcount:md:
 
 directory:summary:
   do: exec
-  desc: count the frequency of directories up to certain level.
-  command: cut -d'/' -f -<<level>> <<file>> | sort | uniq -c | sort -n
+  desc: In a file with multiple lines of paths, count the occurence of parents at certain level.
+  command: cut -d/ -f-<<level>> <<file>> | sort | uniq -c | sort -n
