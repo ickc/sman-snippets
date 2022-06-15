@@ -417,3 +417,8 @@ directory:summary:
   do: exec
   desc: In a file with multiple lines of paths, count the occurence of parents at certain level.
   command: cut -d/ -f-<<level>> <<file>> | sort | uniq -c | sort -n
+
+directory:grep:summary:
+  do: exec
+  desc: similar to directory summary, but filtered by a grep-ing a parent directory first.
+  command: grep '^<<parent>>/' <<file>> | cut -d/ -f-<<level>> | sort | uniq -c | sort -n
