@@ -77,8 +77,19 @@ identify:dynamic:desktop:
       printf "%s %*.*s %sx%s\n" "$0" 0 $((padlength - $nameLength - ${#count} )) "$pad" "$count" "$(exiftool -ImageSize "$0" | cut -d':' -f 2)"
     ' {} \;
     )
-application:stat:
+application:stat:plain:
   do: exec
   desc: |
-    statistics of application arch-kind. Note: generate file using "System Information > Save..."
-  command: grep -A 1 '<key>arch_kind</key>' '<<file>>' | sort | uniq -c | sort -n
+    statistics of application arch-kind.
+  command: |
+    system_profiler SPApplicationsDataType | grep 'Kind: ' | sort | uniq -c | sort -n
+application:stat:json:
+  do: exec
+  desc: |
+    statistics of application arch-kind, using json format.
+  command: system_profiler -json SPApplicationsDataType | grep '"arch_kind"' | sort | uniq -c | sort -n
+application:stat:xml:
+  do: exec
+  desc: |
+    statistics of application arch-kind, using xml format. Note: json format is better, as '-A 1' is used in xml format.
+  command: system_profiler -xml SPApplicationsDataType | grep -A 1 '<key>arch_kind</key>' | sort | uniq -c | sort -n
