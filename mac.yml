@@ -77,3 +77,8 @@ identify:dynamic:desktop:
       printf "%s %*.*s %sx%s\n" "$0" 0 $((padlength - $nameLength - ${#count} )) "$pad" "$count" "$(exiftool -ImageSize "$0" | cut -d':' -f 2)"
     ' {} \;
     )
+application:stat:
+  do: exec
+  desc: |
+    statistics of application arch-kind. Note: generate file using "System Information > Save..."
+  command: grep -A 1 '<key>arch_kind</key>' '<<file>>' | sort | uniq -c | sort -n
