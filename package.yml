@@ -171,6 +171,10 @@ port:ls:
   do: exec
   desc: list installed packages
   command: port installed
+port:check:x86_64:
+  do: exec
+  desc: list all macports package that's x86_64
+  command: find /opt/local/bin -exec file {} + | grep -A 1 x86_64
 
 linux:update:terminal:
   do: exec
