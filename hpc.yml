@@ -45,3 +45,8 @@ otp:
   do: exec
   desc: generate totp
   command: (conda activate all310-conda-forge && s r dautil-py && totp.py ~/.nersc.totp)
+
+tail:stdout:
+  do: exec
+  desc: tail and follow stdout/stderr files
+  command: tail -n 100 -f <<prefix>><<jobid>>.out <<prefix>><<jobid>>.err
