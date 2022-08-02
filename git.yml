@@ -50,10 +50,10 @@ git:rm:tag:
   do: exec
   desc: remove a git tag both locally and remotely
   command: git tag -d <<tag>> && git push origin :<<tag>>
-git:cp:
+git:cherrypick:
   do: exec
   desc: git cherry-pick a range
-  command: git cherry-pick <<from>>^..<<to>>
+  command: git cherry-pick '<<from>>^..<<to>>'
 git:batch:
   do: exec
   desc: batch pull/psuh at all repositories at a certain level. GitHub seems to able to handle 100 concurrent pull only.
