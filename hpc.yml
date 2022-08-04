@@ -13,7 +13,7 @@ module:py3:
 module:cuda:
   do: exec
   command: module load cuda
-squeue:sqs:
+squeue:sqs:o:
   do: exec
   desc: squeue sqs
   command:
@@ -23,10 +23,37 @@ squeue:sqs:
     -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R"
     <<partition>>
     <<me(--me, )>>'
-squeue:cmem:
+squeue:sqs:O:
+  do: exec
+  desc: squeue sqs
+  command:
+    partition='<<partition(-M escori -p bigmem, )>>';
+    <<watch(watch -n 15,bash -c)>>
+    'squeue
+    -O "JobID:17,StateCompact:3,UserName:10,Name:25,NumNodes:6,TimeLimit:.11,TimeUsed:.11,SubmitTime:21,QOS:16,StartTime:21,Feature:15,ReasonList:16"
+    <<partition>>
+    <<me(--me, )>>'
+squeue:sqs:python:
+  do: exec
+  desc: squeue sqs formatted by Pandas.
+  command:
+    partition='<<partition(-M escori -p bigmem, )>>';
+    <<watch(watch -n 15,bash -c)>>
+    '~/git/source/dautil-py/bin/squeue.py
+    <<partition>>
+    <<me(--me, )>>'
+squeue:cmem:o:
   do: exec
   desc: squeue sqs for cmem
-  command: (module load cmem; s r squeue:sqs -- '-p cmem')
+  command: (module load cmem; s r squeue:sqs:o -- '-p cmem')
+squeue:cmem:O:
+  do: exec
+  desc: squeue sqs for cmem
+  command: (module load cmem; s r squeue:sqs:O -- '-p cmem')
+squeue:cmem:python:
+  do: exec
+  desc: squeue sqs for cmem
+  command: (module load cmem; s r squeue:sqs:python -- '-p cmem')
 BB:salloc:
   do: exec
   desc: salloc with BB at pb1_lp2_high_0_2
