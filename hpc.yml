@@ -37,11 +37,14 @@ squeue:sqs:python:
   do: exec
   desc: squeue sqs formatted by Pandas.
   command:
-    partition='<<partition(-M escori -p bigmem, )>>';
-    <<watch(watch -n 15,bash -c)>>
-    '~/git/source/dautil-py/bin/squeue.py
-    <<partition>>
-    <<me(--me, )>>'
+    (
+      conda activate common-20210519-all3-defaults-cray;
+      partition='<<partition(-M escori -p bigmem, )>>';
+      <<watch(watch -n 15,bash -c)>>
+      '~/git/source/dautil-py/bin/squeue.py
+      <<partition>>
+      <<me(--me, )>>'
+    )
 squeue:cmem:o:
   do: exec
   desc: squeue sqs for cmem
