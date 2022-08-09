@@ -422,3 +422,14 @@ directory:grep:summary:
   do: exec
   desc: similar to directory summary, but filtered by a grep-ing a parent directory first.
   command: grep '^<<parent>>/' <<file>> | cut -d/ -f-<<level>> | sort | uniq -c | sort -n
+
+batch:convert:
+  do: exec
+  desc: batch running a filter command from one file to another with a different parent and extension. Hint—cd into the directory containing the files first!
+  command: |
+    mkdir -p '../<<parent>>';
+    find . -name '*.<<ext>>' -exec bash -c '
+      for file do
+      <<echo(echo, )>> <<command>> <<flagsBefore>> "$file" <<flagsAfter>> > "../<<parent>>/${file%.<<ext>>}.<<outExt>>"
+      done
+    ' bash {} +
