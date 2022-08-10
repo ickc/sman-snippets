@@ -433,3 +433,8 @@ batch:convert:
       <<echo(echo, )>> <<command>> <<flagsBefore>> "$file" <<flagsAfter>> > "../<<parent>>/${file%.<<ext>>}.<<outExt>>"
       done
     ' bash {} +
+
+unzip:to:subdir:
+  do: exec
+  desc: unzip to a subdir with the same stem of the zip file
+  command: (file=<<file>>; unzip "$file" -d "${file%.*}")
