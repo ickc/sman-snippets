@@ -54,13 +54,17 @@ git:cherrypick:
   do: exec
   desc: git cherry-pick a range
   command: git cherry-pick '<<from>>^..<<to>>'
-git:batch:
+git:batch:recursive:
   do: exec
-  desc: batch pull/psuh at all repositories at a certain level. GitHub seems to able to handle 100 concurrent pull only.
+  desc: batch pull/push at all repositories recursively. GitHub seems to able to handle 100 concurrent pull only.
+  command: find . -type d -name '.git' -print0 | xargs -0 -n1 -P100 bash -c 'cd $0/.. && until git <<action(pull,push)>>; do echo retry git <<action>> $0; done'
+git:batch:level:
+  do: exec
+  desc: batch pull/push at all repositories at a certain level. GitHub seems to able to handle 100 concurrent pull only.
   command: level=$((<<level>> + 1)); find . -maxdepth $level -mindepth $level -type d -name '.git' -print0 | xargs -0 -n1 -P100 bash -c 'cd $0/.. && until git <<action(pull,push)>>; do echo retry git <<action>> $0; done'
-git:batch:debug:
+git:batch:level:debug:
   do: exec
-  desc: batch pull/psuh at all repositories at a certain level
+  desc: batch pull/push at all repositories at a certain level
   command: level=$((<<level>> + 1)); find . -maxdepth $level -mindepth $level -type d -name '.git' -print0 | xargs -0 -n1 -P1 bash -c 'echo $0 && cd $0/.. && git <<action(pull,push)>>'
 git:reset:batch:
   do: exec
