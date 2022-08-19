@@ -93,3 +93,15 @@ application:stat:xml:
   desc: |
     statistics of application arch-kind, using xml format. Note: json format is better, as '-A 1' is used in xml format.
   command: system_profiler -xml SPApplicationsDataType | grep -A 1 '<key>arch_kind</key>' | sort | uniq -c | sort -n
+diskutil:list:
+  do: exec
+  desc: list all disks.
+  command: diskutil list
+diskutil:partition:disk:
+  do: exec
+  desc: format disk.
+  command: diskutil partitionDisk '/dev/disk<<N>>' GPT JHFS+ '<<name>>' 100%
+format:disk:
+  do: exec
+  desc: format disks.
+  command: s r diskutil:list; s r diskutil:partition:disk
