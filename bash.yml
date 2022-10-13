@@ -438,3 +438,21 @@ unzip:to:subdir:
   do: exec
   desc: unzip to a subdir with the same stem of the zip file
   command: (file=<<file>>; unzip "$file" -d "${file%.*}")
+
+obsidian:diff:
+  do: exec
+  desc: diff of config files between 2 .obsidian directories
+  command: for file in app.json appearance.json community-plugins.json core-plugins.json hotkeys.json; do difft <<inDir>>/.obsidian/$file <<outDir>>/.obsidian/$file; done
+
+obsidian:sort:json:
+  do: exec
+  desc: sort json config file in .obsidian directory
+  command: |
+    for file in app.json appearance.json hotkeys.json; do
+      jq '.' -S < <<inDir(.)>>/.obsidian/$file > <<inDir>>/.obsidian/$file.out;
+      mv -f <<inDir>>/.obsidian/$file.out <<inDir>>/.obsidian/$file;
+    done
+    for file in community-plugins.json core-plugins.json; do
+      jq 'sort' < <<inDir(.)>>/.obsidian/$file > <<inDir>>/.obsidian/$file.out;
+      mv -f <<inDir>>/.obsidian/$file.out <<inDir>>/.obsidian/$file;
+    done
