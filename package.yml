@@ -39,8 +39,8 @@ conda:ch:
   command: conda config --prepend channels <<channel(defaults,intel)>> && cat ~/.condarc
 conda:update:
   do: exec
-  desc: update conda and anaconda
-  command: mamba update -n base -c defaults conda anaconda
+  desc: update conda
+  command: mamba update -n base --all
 conda:env:update:
   do: exec
   desc: update current conda environment
