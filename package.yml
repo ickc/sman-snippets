@@ -180,3 +180,8 @@ linux:update:terminal:
   do: exec
   desc: choose the default terminal emulator when Ctrl-Alt-T is pressed.
   command: sudo update-alternatives --config x-terminal-emulator
+
+install:reload-browser:
+  do: exec
+  desc: install reload-browser for entr
+  command: (cd ~/.local/bin; wget http://eradman.com/entrproject/scripts/reload-browser; chmod +x reload-browser)
