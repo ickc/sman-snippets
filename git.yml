@@ -94,3 +94,11 @@ git:ignore:
   do: exec
   desc: check git ignored files, ignoring common patterns
   command: s r dautil-sh; gitignored.sh | grep -vE '(/__pycache__/|/\.pytest_cache/|/\.mypy_cache/|/\.sass-cache/|/\.tox/|/\.vscode/|/[^/]+\.pyc|/[^/]+\.egg-info|/\.ipynb_checkpoints/|/\.coverage|/coverage\.xml|/htmlcov/|/\.doit\.db\.db|/Gemfile\.lock|/dask-worker-space/)'
+git:remove:domain:
+  do: exec
+  desc: remove domain from known hosts, useful when their signature changed
+  command: ssh-keygen -R <<domain>>
+git:reset:from:remote:
+  do: exec
+  desc: force pull from a branch from remote
+  command: git reset --hard <<remote(origin)>>/<<branch(master,main)>>
