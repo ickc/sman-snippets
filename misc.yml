@@ -120,3 +120,8 @@ kitty:solarized:light:
   do: exec
   desc: change kitty theme to solarized dark. (Ctrl+Cmd+, to reload)
   command: rm -f ~/.config/kitty/current-theme.conf; ln -s themes/Solarized_Light_Official.conf ~/.config/kitty/current-theme.conf
+
+image:trim:
+  do: exec
+  desc: trim all white spaces around images
+  command: mogrify -trim *.<<ext(png,jpg)>>
