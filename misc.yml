@@ -17,7 +17,7 @@ routine:
       cd ~/git && s r git:batch:level 2 1
       cd ~/.sman && git pull
       cd ~/.config/kitty && git pull
-      zprezto-update
+      zimfw upgrade && zimfw update
       [[ "$__HOST" == gordita ]] && {rsync -av --stats ~/git/private/ssh-dir/.ssh/ ~/.ssh/; chmod 700 ~/.ssh && cd ~/.ssh && chmod 600 *}
       [[ "$__HOST" == bolo ]] && s r bolo2github
       [[ -n "$NERSC_HOST" ]] && cd ~/git/fork/NERSC-MFA && s r merge:upstream upstream rebase master && git push
