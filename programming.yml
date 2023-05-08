@@ -162,7 +162,7 @@ ipy:ex:
 jupyter:start:
   do: exec
   desc: start Jupyter
-  command: '"/Applications/<<chrome(Chromium,Google Chrome,Google Chrome Canary)>>.app/Contents/MacOS/<<chrome>>" -incognito --app=<<address(https://192.168.4.5:8000,https://192.168.4.7:8000,https://192.168.4.8:8000,https://172.22.2.7:8000,https://jupyter.nersc.gov/user/khcheung/cori-shared-node-cpu/lab,https://jupyter.nersc.gov/user/khcheung/perlmutter-shared-node-cpu/)#1: 3650-local, 2: lpc-local, 3: server-local, 4: lpc, 5: NERSC>>'
+  command: '"/Applications/<<chrome(Chromium,Google Chrome,Google Chrome Canary)>>.app/Contents/MacOS/<<chrome>>" -incognito --app=<<address(https://192.168.4.5:8000,https://192.168.4.7:8000,https://192.168.4.8:8000,https://172.22.2.7:8000,https://jupyter.nersc.gov/user/khcheung/cori-shared-node-cpu/lab,https://jupyter.nersc.gov/user/khcheung/perlmutter-shared-node-cpu/,https://172.22.2.99:8000/user/khcheung/lab,https://130.88.24.13:8000/user/khcheung/lab)#1: 3650-local, 2: lpc-local, 3: server-local, 4: lpc, 5: NERSC>>'
 jupyter:start:local:
   do: exec
   desc: start Jupyter by running a local server
