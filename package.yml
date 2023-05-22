@@ -176,6 +176,19 @@ port:check:x86_64:
   desc: list all macports package that's x86_64
   command: find /opt/local/bin -exec file {} + | grep -A 1 x86_64
 
+rhel:check:subscription:
+  do: exec
+  desc: check if valid RHEL subscription exists
+  command: sudo subscription-manager list --installed
+rhel:update:
+  do: exec
+  desc: update packages on RHEL
+  command: sudo dnf update
+rhel:ls:
+  do: exec
+  desc: list user installed packages on RHEL
+  command: dnf history userinstalled
+
 linux:update:terminal:
   do: exec
   desc: choose the default terminal emulator when Ctrl-Alt-T is pressed.
