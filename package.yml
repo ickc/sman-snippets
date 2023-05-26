@@ -94,6 +94,18 @@ gpg:aurutils:
   desc: trust gpg key of aurutils
   command: gpg --recv-keys DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A
 
+pacman:refresh:mirror:
+  do: exec
+  desc: refresh pacman mirror list
+  command: rate-mirrors arch | sudo tee /etc/pacman.d/mirrorlist
+
+pacman:refresh:mirror:upgrade:
+  do: exec
+  desc: refresh pacman mirror list and then upgrade
+  command: |
+    rate-mirrors arch | sudo tee /etc/pacman.d/mirrorlist
+    yay -Syyu --sudoloop --nomakepkgconf --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade --nocleanmenu --nodiffmenu --noeditmenu --noupgrademenu --norebuild --noredownload --overwrite
+
 pacman:upgrade:
   do: exec
   desc: yay upgrade all
