@@ -106,10 +106,34 @@ pacman:rm:orphan:
   do: exec
   desc: removing orphans and their configuration files (run this recursively until none)
   command: yay -Rns $(yay -Qtdq)
+pacman:ls:
+  do: exec
+  desc: List all explicitly installed packages
+  command: pacman -Qe
 pacman:ls:local:
   do: exec
-  desc: list locally installed packages (likely from AUR)
-  command: yay -Qm
+  desc: List all foreign packages (typically manually downloaded and installed or packages removed from the repositories a.k.a. AUR)
+  command: pacman -Qm
+pacman:ls:native:
+  do: exec
+  desc: List all native packages (installed from the sync database)
+  command: pacman -Qn
+pacman:ls:native:explicit:
+  do: exec
+  desc: List all explicitly installed native packages (i.e. present in the sync database) that are not direct or optional dependencies
+  command: pacman -Qent
+pacman:ls:date:
+  do: exec
+  desc: List installed packages by date
+  command: expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort
+pacman:ls:dependencies:
+  do: exec
+  desc: List dependencies of a given package
+  command: pacman -Qi <<package>>
+pacman:search:
+  do: exec
+  desc: search package (ERE supported)
+  command: yay -Ss '<<package>>'
 pacman:clean:
   do: exec
   desc: remove all but 1 past version of cache of installed packages
