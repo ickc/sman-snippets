@@ -94,23 +94,23 @@ gpg:aurutils:
   desc: trust gpg key of aurutils
   command: gpg --recv-keys DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A
 
-pm:upgrade:
+pacman:upgrade:
   do: exec
   desc: yay upgrade all
   command: yay -Syu --sudoloop --nomakepkgconf --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade --nocleanmenu --nodiffmenu --noeditmenu --noupgrademenu --norebuild --noredownload --overwrite
-pm:rm:
+pacman:rm:
   do: exec
   desc: remove a package using yay
   command: yay -Rs <<package>>
-pm:rm:orphan:
+pacman:rm:orphan:
   do: exec
   desc: removing orphans and their configuration files (run this recursively until none)
   command: yay -Rns $(yay -Qtdq)
-pm:ls:local:
+pacman:ls:local:
   do: exec
   desc: list locally installed packages (likely from AUR)
   command: yay -Qm
-pm:clean:
+pacman:clean:
   do: exec
   desc: remove all but 1 past version of cache of installed packages
   command: sudo pacman -Sc && paccache --remove --keep 1
