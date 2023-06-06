@@ -48,7 +48,7 @@ conda:env:update:
 conda:clean:
   do: exec
   desc: conda cleanup all
-  command: mamba clean --all -y; mamba clean --force-pkgs-dirs -y
+  command: mamba clean --all -y; mamba clean --force-pkgs-dirs -y; mamba build purge
 
 pip:dev:
   do: exec
