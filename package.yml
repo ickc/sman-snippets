@@ -284,6 +284,10 @@ rhel:update:all:
   do: exec
   desc: update packages on RHEL
   command: sudo dnf upgrade --refresh
+rhel:clean:
+  do: exec
+  desc: Performs cleanup of temporary files kept for repositories. This includes any such data left behind from disabled or removed repositories as well as for different distribution release versions.
+  command: sudo dnf clean all
 
 # RHEL specific
 
