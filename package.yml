@@ -212,19 +212,6 @@ port:check:x86_64:
   desc: list all macports package that's x86_64
   command: find /opt/local/bin -exec file {} + | grep -A 1 x86_64
 
-rhel:check:subscription:
-  do: exec
-  desc: check if valid RHEL subscription exists
-  command: sudo subscription-manager list --installed
-rhel:update:
-  do: exec
-  desc: update packages on RHEL
-  command: sudo dnf update
-rhel:ls:
-  do: exec
-  desc: list user installed packages on RHEL
-  command: dnf history userinstalled
-
 linux:update:terminal:
   do: exec
   desc: choose the default terminal emulator when Ctrl-Alt-T is pressed.
@@ -234,3 +221,73 @@ install:reload-browser:
   do: exec
   desc: install reload-browser for entr
   command: (cd ~/.local/bin; wget http://eradman.com/entrproject/scripts/reload-browser; chmod +x reload-browser)
+
+# package managers #####################################################################################################
+
+# command that does a full distro upgrade should not be provided unless it is very standard without manual intervention
+# standard commands
+# - provide: check what package provides this executables
+# - info: get info about a package
+# - install: install packages
+# - remove: uninstall packages
+# - remove:orphan: remove orphan packages
+# - ls: list all installed packages
+# - ls:all: list all installed packages
+# - ls:available: list all available packages
+# - ls:repo: list all enabled repos
+# - update: update a package
+# - update:all: update all packages
+
+# RHEL ################################################################################################################
+
+rhel:provide:
+  do: exec
+  desc: check what package provides this executables
+  command: dnf provides <<executable>>
+rhel:info:
+  do: exec
+  desc: get info about a package
+  command: dnf info <<package>>
+rhel:install:
+  do: exec
+  desc: install packages on RHEL
+  command: sudo dnf install <<package>>
+rhel:remove:
+  do: exec
+  desc: uninstall packages on RHEL
+  command: sudo dnf remove <<package>>
+rhel:remove:orphan:
+  do: exec
+  desc: remove orphan packages on RHEL
+  command: sudo dnf autoremove
+rhel:ls:
+  do: exec
+  desc: list user installed packages on RHEL
+  command: dnf history userinstalled
+rhel:ls:all:
+  do: exec
+  desc: list all installed packages on RHEL
+  command: dnf list installed
+rhel:ls:available:
+  do: exec
+  desc: list all available packages
+  command: dnf list available
+rhel:ls:repo:
+  do: exec
+  desc: list all enabled repos
+  command: dnf repolist
+rhel:update:
+  do: exec
+  desc: update a package on RHEL
+  command: sudo dnf update <<package>>
+rhel:update:all:
+  do: exec
+  desc: update packages on RHEL
+  command: sudo dnf upgrade --refresh
+
+# RHEL specific
+
+rhel:ls:subscription:
+  do: exec
+  desc: check if valid RHEL subscription exists
+  command: sudo subscription-manager list --installed
