@@ -73,20 +73,6 @@ brew:linux:ca:nersc:
   do: exec
   desc: ln ca cert on NERSC
   command: ln -s /etc/ssl/certs ~/.linuxbrew/etc/openssl && ln -s /var/lib/ca-certificates/ca-bundle.pem ~/.linuxbrew/etc/openssl/cert.pem && ~/.linuxbrew/opt/openssl/bin/c_rehash
-# linux apt
-apt:update:
-  do: exec
-  desc: update ubuntu
-  command: (while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &; sudo apt -y update && sudo apt -y upgrade && sudo apt -y autoremove)
-apt:upgrade:
-  do: exec
-  desc: upgrade ubuntu to next release
-  command: (while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &; sudo apt update -y && sudo apt dist-upgrade -y && sudo apt install update-manager-core -y && do-release-upgrade)
-apt:ls:
-  do: exec
-  desc: list installed apt packages
-  command: |
-    comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
 
 # go
 go:update:
@@ -325,3 +311,39 @@ arch:ls:all:date:
   do: exec
   desc: List installed packages by date
   command: expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort
+
+# apt ##################################################################################################################
+
+apt:search:
+  do: exec
+  desc: search for packages
+  command: apt search <<package>>
+apt:info:
+  do: exec
+  desc: get info about a package
+  command: apt show <<package>>
+apt:install:
+  do: exec
+  desc: install packages on ubuntu
+  command: sudo apt -y install <<package>>
+apt:remove:
+  do: exec
+  desc: uninstall packages on ubuntu
+  command: sudo apt -y autoremove <<package>>
+apt:remove:orphan:
+  do: exec
+  desc: Remove dependencies that are no longer needed (orphans), because e.g. the package which needed the dependencies was removed.
+  command: sudo apt -y autoremove
+apt:ls:all:
+  do: exec
+  desc: list installed apt packages
+  command: |
+    comm -23 <(apt-mark showmanual | sort -u) <(gzip -dc /var/log/installer/initial-status.gz | sed -n 's/^Package: //p' | sort -u)
+apt:update:all:
+  do: exec
+  desc: update ubuntu
+  command: (while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &; sudo apt -y update && sudo apt -y upgrade)
+apt:clean:
+  do: exec
+  desc: remove all but 1 past version of cache of installed packages
+  command: sudo apt -y clean
