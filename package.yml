@@ -237,6 +237,7 @@ install:reload-browser:
 # - ls:repo: list all enabled repos
 # - update: update a package
 # - update:all: update all packages
+# - clean: clean cache
 
 # RHEL ################################################################################################################
 
