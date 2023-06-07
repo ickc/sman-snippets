@@ -154,21 +154,30 @@ install:reload-browser:
 
 # command that does a full distro upgrade should not be provided unless it is very standard without manual intervention
 # standard commands
+# - search: search for packages
 # - provide: check what package provides this executables
 # - info: get info about a package
+# - require: list dependencies of a package
+# - whatrequire: list reverse dependencies of a package
 # - install: install packages
 # - remove: uninstall packages
 # - remove:orphan: remove orphan packages
-# - ls: list all installed packages
+# - ls: list all user-installed packages
 # - ls:all: list all installed packages
 # - ls:available: list all available packages
-# - ls:repo: list all enabled repos
-# - update: update a package
+# - ls:repo: list all enabled repos  # pacman has no such concept
+# - update: update a package  # pacman has no such concept
 # - update:all: update all packages
 # - clean: clean cache
 
+# see https://wiki.archlinux.org/title/Pacman/Rosetta
+
 # RHEL ################################################################################################################
 
+rhel:search:
+  do: exec
+  desc: search for packages on RHEL
+  command: dnf search <<package>>
 rhel:provide:
   do: exec
   desc: check what package provides this executables
@@ -177,6 +186,14 @@ rhel:info:
   do: exec
   desc: get info about a package
   command: dnf info <<package>>
+rhel:require:
+  do: exec
+  desc: list dependencies of a package
+  command: dnf repoquery --requires <<package>>
+rhel:whatrequire:
+  do: exec
+  desc: list reverse dependencies of a package
+  command: dnf repoquery --alldeps --whatrequires <<package>>
 rhel:install:
   do: exec
   desc: install packages on RHEL
@@ -225,74 +242,86 @@ rhel:ls:subscription:
   desc: check if valid RHEL subscription exists
   command: sudo subscription-manager list --installed
 
-# arch
-gpg:aurutils:
-  do: exec
-  desc: trust gpg key of aurutils
-  command: gpg --recv-keys DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A
+# arch #################################################################################################################
 
-pacman:refresh:mirror:
-  do: exec
-  desc: refresh pacman mirror list
-  command: rate-mirrors arch | sudo tee /etc/pacman.d/mirrorlist
-
-pacman:refresh:mirror:upgrade:
-  do: exec
-  desc: refresh pacman mirror list and then upgrade
-  command: |
-    rate-mirrors arch | sudo tee /etc/pacman.d/mirrorlist
-    yay -Syyu --sudoloop --nomakepkgconf --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade --nocleanmenu --nodiffmenu --noeditmenu --noupgrademenu --norebuild --noredownload --overwrite
-
-pacman:upgrade:
-  do: exec
-  desc: yay upgrade all
-  command: yay -Syu --sudoloop --nomakepkgconf --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade --nocleanmenu --nodiffmenu --noeditmenu --noupgrademenu --norebuild --noredownload --overwrite
-pacman:rm:
-  do: exec
-  desc: remove a package using yay
-  command: yay -Rs <<package>>
-pacman:rm:orphan:
-  do: exec
-  desc: removing orphans and their configuration files (run this recursively until none)
-  command: yay -Rns $(yay -Qtdq)
-pacman:ls:
-  do: exec
-  desc: List all explicitly installed packages
-  command: pacman -Qe
-pacman:ls:local:
-  do: exec
-  desc: List all foreign packages (typically manually downloaded and installed or packages removed from the repositories a.k.a. AUR)
-  command: pacman -Qm
-pacman:ls:native:
-  do: exec
-  desc: List all native packages (installed from the sync database)
-  command: pacman -Qn
-pacman:ls:native:explicit:
-  do: exec
-  desc: List all explicitly installed native packages (i.e. present in the sync database) that are not direct or optional dependencies
-  command: pacman -Qent
-pacman:ls:date:
-  do: exec
-  desc: List installed packages by date
-  command: expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort
-pacman:ls:dependencies:
-  do: exec
-  desc: List dependencies of a given package
-  command: pacman -Qi <<package>>
-pacman:search:
+arch:search:
   do: exec
   desc: search package (ERE supported)
   command: yay -Ss '<<package>>'
-pacman:clean:
+arch:provide:
+  do: exec
+  desc: check what package provides this executables
+  command: yay -Fy && yay -F '<<executable>>'
+arch:info:
+  do: exec
+  desc: get info about a package
+  command: yay -Si '<<package>>'
+arch:require:
+  do: exec
+  desc: list dependencies of a package
+  command: yay -Si '<<package>>'
+arch:whatrequire:
+  do: exec
+  desc: list reverse dependencies of a package
+  command: yay -Sii '<<package>>'
+arch:install:
+  do: exec
+  desc: install packages
+  command: yay -S '<<package>>'
+arch:remove:
+  do: exec
+  desc: remove a package using yay
+  command: yay -Rs '<<package>>'
+arch:remove:orphan:
+  do: exec
+  desc: removing orphans and their configuration files (run this recursively until none)
+  command: yay -Rns $(yay -Qtdq)
+arch:ls:
+  do: exec
+  desc: List all explicitly installed packages
+  command: pacman -Qe
+arch:ls:all:
+  do: exec
+  desc: List all installed packages
+  command: yay -Q
+arch:ls:available:
+  do: exec
+  desc: List all available packages
+  command: yay -Sl
+arch:update:all:
+  do: exec
+  desc: yay upgrade all
+  command: yay -Syyu --sudoloop --nomakepkgconf --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade --nocleanmenu --nodiffmenu --noeditmenu --noupgrademenu --norebuild --noredownload --overwrite
+arch:clean:
   do: exec
   desc: remove all but 1 past version of cache of installed packages
   command: sudo pacman -Sc && paccache --remove --keep 1
 
-aur:install:
+# Arch specific
+
+arch:refresh:mirror:
   do: exec
-  desc: install packages from AUR
-  command: aursync <<package>>
-aur:upgrade:
+  desc: refresh pacman mirror list
+  command: rate-mirrors arch | sudo tee /etc/pacman.d/mirrorlist
+arch:refresh:update:all:
   do: exec
-  desc: upgrade packages form AUR
-  command: aursync -cu
+  desc: refresh pacman mirror list and then upgrade
+  command: |
+    s r arch:refresh:mirror && s r arch:update:all
+
+arch:ls:local:
+  do: exec
+  desc: List all foreign packages (typically manually downloaded and installed or packages removed from the repositories a.k.a. AUR)
+  command: pacman -Qm
+arch:ls:native:
+  do: exec
+  desc: List all explicitly installed native packages (i.e. present in the sync database) that are not direct or optional dependencies
+  command: pacman -Qent
+arch:ls:native:all:
+  do: exec
+  desc: List all native packages (installed from the sync database)
+  command: pacman -Qn
+arch:ls:all:date:
+  do: exec
+  desc: List installed packages by date
+  command: expac --timefmt='%Y-%m-%d %T' '%l\t%n' | sort
