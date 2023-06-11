@@ -45,3 +45,8 @@ ip:interface:
   do: exec
   desc: self-assign an IP to an interface, set MTU
   command: sudo ip link set <<interface(enx245ebe399ef8)>> mtu <<mtu(9000)>> && sudo ip address add <<ip>>/24 broadcast + dev <<interface>>; ip address; ethtool <<interface>>
+
+mkfs:xfs:
+  do: exec
+  desc: use the full device and format to XFS
+  command: sudo parted /dev/<<device>> mklabel gpt mkpart XFS 0% 100% && sudo mkfs.xfs -s size=4096 /dev/<<device>>p1
