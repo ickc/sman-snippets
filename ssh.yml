@@ -66,6 +66,10 @@ sshfs:pgrep:
   do: exec
   desc: show running sshfs processes.
   command: pgrep -lf sshfs
+ssh:remove:host_key:
+  do: exec
+  desc: remove a host key, e.g. when you see the following message - Host key for <<host>> has changed and you have requested strict checking.
+  command: ssh-keygen -R <<host>>
 
 # mount lpc
 lpc:git:nfs:
