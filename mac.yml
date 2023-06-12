@@ -105,3 +105,7 @@ format:disk:
   do: exec
   desc: format disks.
   command: s r diskutil:list; s r diskutil:partition:disk
+zerotier:restart:
+  do: exec
+  desc: restart zerotier one on macOS
+  command: sudo launchctl stop /Library/LaunchDaemons/com.zerotier.one.plist && sudo launchctl start /Library/LaunchDaemons/com.zerotier.one.plist
