@@ -50,3 +50,8 @@ mkfs:xfs:
   do: exec
   desc: use the full device and format to XFS
   command: sudo parted /dev/<<device>> mklabel gpt mkpart XFS 0% 100% && sudo mkfs.xfs -s size=4096 /dev/<<device>>p1
+
+detect:vm:
+  do: exec
+  desc: determine if running in a VM without sudo; if not a VM, return none.
+  command: systemd-detect-virt
