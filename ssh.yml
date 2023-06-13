@@ -103,3 +103,8 @@ git:sync:
   do: exec
   desc: rsync from backed up git repos
   command: rsync -av --stats --delete -e ssh <<host(192.168.4.8)>>:/RAIDZ48TB/Backup/polarbear/lpc-mac/git/<<directory>>/ ~/git/<<directory>>/ <<args( ,-n)>> --exclude=.git
+
+ssh:fix:permission:
+  do: exec
+  desc: fix permission issue of ~/.ssh. Some systems don't like a symlinked ~.ssh directory. Use rsync and fix permission instead. See https://superuser.com/a/1145465/1211805
+  command: rm -f ~/.ssh && rsync -av --stats ~/git/private/ssh-dir/.ssh/ ~/.ssh/ && chmod u+rwX,go-rwX,-t ~/{.ssh/,.ssh/authorized_keys}
