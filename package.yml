@@ -134,7 +134,7 @@ linux:update:terminal:
 install:reload-browser:
   do: exec
   desc: install reload-browser for entr
-  command: (cd ~/.local/bin; wget http://eradman.com/entrproject/scripts/reload-browser; chmod +x reload-browser)
+  command: (cd <<prefix(~/.local/bin)>>; wget http://eradman.com/entrproject/scripts/reload-browser; chmod +x reload-browser)
 
 # package managers #####################################################################################################
 
