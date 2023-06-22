@@ -54,6 +54,38 @@ pandoc:cleanup:md:
   desc: cleanup markdown files using pandoc
   command: pandoc -s -o '<<filename>>' '<<filename>>' -f markdown+abbreviations+autolink_bare_uris+markdown_attribute+mmd_header_identifiers+mmd_link_attributes+mmd_title_block+tex_math_double_backslash-latex_macros -t markdown+raw_tex-native_spans-simple_tables-multiline_tables-grid_tables-latex_macros -s --wrap=none --column=999 --atx-headers --reference-location=block --file-scope
 
+pandoc:convert:
+  do: exec
+  desc: Convert using pandoc with sensible defaults
+  command: |
+    filename='<<filename>>'
+    pandoc \
+      --toc \
+      --toc-depth=6 \
+      --pdf-engine=lualatex \
+      -M mainfont='TeX Gyre Schola' \
+      -M mathfont='TeX Gyre Schola Math' \
+      -M fontsize=10pt \
+      -M hyperrefoptions=bookmarksnumbered \
+      -M hyperrefoptions=pdfpagelabels \
+      -M hyperrefoptions=pagebackref \
+      -M hyperrefoptions='hypertexnames=false' \
+      -M hyperrefoptions='linktocpage=true' \
+      -M lof \
+      -M lot \
+      -M colorlinks \
+      -M linkcolor=blue \
+      -M filecolor=blue \
+      -M citecolor=blue \
+      -M urlcolor=blue \
+      -M toccolor=blue \
+      -M documentclass=memoir \
+      -M classoption=article \
+      -M geometry='inner=0.5in, outer=0.5in, top=0.5in, bottom=0.75in' \
+      --standalone \
+      --output="${filename%.*}.<<ext>>" \
+      "$filename"
+
 minify:
   do: exec
   desc: minify (written in go)
