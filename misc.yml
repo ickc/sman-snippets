@@ -71,8 +71,6 @@ pandoc:convert:
       -M hyperrefoptions=pagebackref \
       -M hyperrefoptions='hypertexnames=false' \
       -M hyperrefoptions='linktocpage=true' \
-      -M lof \
-      -M lot \
       -M colorlinks \
       -M linkcolor=blue \
       -M filecolor=blue \
