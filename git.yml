@@ -102,3 +102,7 @@ git:reset:from:remote:
   do: exec
   desc: force pull from a branch from remote
   command: git reset --hard <<remote(origin)>>/<<branch(master,main)>>
+git:force:pull:
+  do: exec
+  desc: git pull while ignoring local changes. Useful when merge conflict happens on git pull, e.g. when known_hosts is in a git repo. See https://stackoverflow.com/a/29206075/5769446
+  command: git fetch --all && git reset --hard origin/master && git pull
