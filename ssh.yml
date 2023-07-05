@@ -93,7 +93,7 @@ nx:fix:
 sshuttle:
   do: exec
   desc: sshuttle as vpn. For clearing DNS cache, see https://github.com/sshuttle/sshuttle/issues/652
-  command: sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder; sshuttle -r <<server(lpc,khcheung@bolowiki)>> <<address(0/0,128.32.249.102)>> <<exlude( ,-x 10.0.0.0/8 -x 172.16.0.0/12 -x 192.168.0.0/16)>>
+  command: sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder; sshuttle -r <<server(lpc,khcheung@bolowiki,nobel)>> <<address(0/0,128.32.249.102)>> <<exlude( ,-x 10.0.0.0/8 -x 172.16.0.0/12 -x 192.168.0.0/16)>>
 
 git:sync:
   do: exec
