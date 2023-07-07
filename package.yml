@@ -55,25 +55,6 @@ pip:dev:
   desc: pip install current directory in editable mode
   command: pip install -e .
 
-# macOS brew
-brew:update:
-  do: exec
-  command: (while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &; brew update && brew update && brew upgrade && brew cleanup && brew doctor)
-brew:ls:
-  do: exec
-  command: brew leaves
-brew:lsv:
-  do: exec
-  command: brew ls --versions $(brew leaves)
-brew:cleanup:
-  do: exec
-  desc: force cleanup and clear cache
-  command: brew cleanup -s && rm -rf $(brew --cache)
-brew:linux:ca:nersc:
-  do: exec
-  desc: ln ca cert on NERSC
-  command: ln -s /etc/ssl/certs ~/.linuxbrew/etc/openssl && ln -s /var/lib/ca-certificates/ca-bundle.pem ~/.linuxbrew/etc/openssl/cert.pem && ~/.linuxbrew/opt/openssl/bin/c_rehash
-
 # go
 go:update:
   do: exec
@@ -341,6 +322,89 @@ apt:clean:
   do: exec
   desc: remove all but 1 past version of cache of installed packages
   command: sudo apt -y clean
+
+# brew #################################################################################################################
+
+brew:search:
+  do: exec
+  desc: search for packages
+  command: brew search <<package>>
+
+brew:info:
+  do: exec
+  desc: get info about a package
+  command: brew info <<package>>
+
+brew:require:
+  do: exec
+  desc: list dependencies of a package
+  command: brew deps --tree <<package>>
+
+brew:whatrequire:
+  do: exec
+  desc: list reverse dependencies of a package
+  command: brew uses --eval-all --recursive <<package>>
+
+brew:install:
+  do: exec
+  desc: install packages
+  command: brew install <<package>>
+
+brew:remove:
+  do: exec
+  desc: uninstall packages
+  command: brew uninstall <<package>>
+
+brew:remove:orphan:
+  do: exec
+  desc: remove orphan packages
+  command: brew autoremove
+
+brew:ls:
+  do: exec
+  desc: list installed packages
+  command: brew leaves
+
+brew:ls:all:
+  do: exec
+  desc: list all installed packages
+  command: brew list
+
+brew:ls:available:
+  do: exec
+  desc: list all available packages
+  command: brew search '*'
+
+brew:ls:repo:
+  do: exec
+  desc: list all enabled repos
+  command: brew tap
+
+brew:update:
+  do: exec
+  desc: update a package
+  command: brew upgrade <<package>>
+
+brew:update:all:
+  do: exec
+  command: brew update && brew upgrade
+
+brew:clean:
+  do: exec
+  desc: clean cache
+  command: brew cleanup --prune=all -s && rm -rf "$(brew --cache)"
+
+# brew specific
+
+brew:ls:version:
+  do: exec
+  desc: list all installed packages with version
+  command: brew ls --versions $(brew leaves)
+
+brew:doctor:
+  do: exec
+  desc: run brew doctor
+  command: brew doctor
 
 # vscode ###############################################################################################################
 
