@@ -94,12 +94,6 @@ jupyter:ls:
   desc: list installed jupyter lab extensions
   command: jupyter labextension list
 
-# vscode
-code:ls:
-  do: exec
-  desc: list vscode installed extensions
-  command: code --list-extensions 2>/dev/null
-
 xcode:
   do: exec
   desc: install xcode command line tools.
@@ -347,3 +341,20 @@ apt:clean:
   do: exec
   desc: remove all but 1 past version of cache of installed packages
   command: sudo apt -y clean
+
+# vscode ###############################################################################################################
+
+code:install:
+  do: exec
+  desc: install vscode extensions
+  command: code --install-extension <<extension>>
+
+code:remove:
+  do: exec
+  desc: remove vscode extensions
+  command: code --uninstall-extension <<extension>>
+
+code:ls:
+  do: exec
+  desc: list installed vscode extensions
+  command: code --list-extensions
