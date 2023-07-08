@@ -55,3 +55,8 @@ detect:vm:
   do: exec
   desc: determine if running in a VM without sudo; if not a VM, return none.
   command: systemd-detect-virt
+
+linux:update:terminal:
+  do: exec
+  desc: choose the default terminal emulator when Ctrl-Alt-T is pressed.
+  command: sudo update-alternatives --config x-terminal-emulator
