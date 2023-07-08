@@ -387,7 +387,22 @@ brew:update:
 
 brew:update:all:
   do: exec
-  command: brew update && brew upgrade
+  desc: update all packages with a sudo loop. For the sudo-loop, see https://stackoverflow.com/a/30547074/5769446
+  command: |
+    startsudo() {
+      sudo -v
+      ( while true; do sudo -v; sleep 50; done; ) &
+      SUDO_PID="$!"
+      trap stopsudo SIGINT SIGTERM
+    }
+    stopsudo() {
+      kill "$SUDO_PID"
+      trap - SIGINT SIGTERM
+      sudo -k
+    }
+    startsudo
+    brew update && brew upgrade
+    stopsudo
 
 brew:clean:
   do: exec
