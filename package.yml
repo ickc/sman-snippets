@@ -1,8 +1,3 @@
-install:reload-browser:
-  do: exec
-  desc: install reload-browser for entr
-  command: (cd <<prefix(~/.local/bin)>>; wget http://eradman.com/entrproject/scripts/reload-browser; chmod +x reload-browser)
-
 # package managers #####################################################################################################
 
 # command that does a full distro upgrade should not be provided unless it is very standard without manual intervention
