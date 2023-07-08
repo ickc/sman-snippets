@@ -352,7 +352,22 @@ port:remove:
 port:remove:orphan:
   do: exec
   desc: remove orphan packages
-  command: sudo port uninstall rleaves && sudo port uninstall inactive
+  command: |
+    startsudo() {
+      sudo -v
+      ( while true; do sudo -v; sleep 50; done; ) &
+      SUDO_PID="$!"
+      trap stopsudo SIGINT SIGTERM
+    }
+    stopsudo() {
+      kill "$SUDO_PID"
+      trap - SIGINT SIGTERM
+      sudo -k
+    }
+    startsudo
+    sudo port uninstall rleaves
+    sudo port uninstall inactive
+    stopsudo
 
 port:ls:
   do: exec
@@ -396,8 +411,8 @@ port:update:all:
 
 port:clean:
   do: exec
-  desc: cleanup macports
-  command: sudo port -f clean --all all && sudo port -f uninstall inactive
+  desc: cleanup macports.
+  command: sudo port -f clean --all all
 
 # port specific
 
@@ -489,7 +504,8 @@ brew:update:all:
       sudo -k
     }
     startsudo
-    brew update && brew upgrade
+    brew update
+    brew upgrade
     stopsudo
 
 brew:clean:
