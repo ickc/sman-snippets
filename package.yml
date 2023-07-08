@@ -1,9 +1,3 @@
-# go
-go:update:
-  do: exec
-  desc: update all go packages
-  command: go get -u all
-
 xcode:
   do: exec
   desc: install xcode command line tools.
@@ -629,6 +623,13 @@ jupyter:update:all:
 jupyter:ls:env:
   do: exec
   command: jupyter kernelspec list
+
+# go ###################################################################################################################
+
+go:update:all:
+  do: exec
+  desc: update all go packages
+  command: go get -u all
 
 # vscode ###############################################################################################################
 
