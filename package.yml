@@ -1,26 +1,8 @@
-jupyter:ls:
-  do: exec
-  command: jupyter kernelspec list
-
 # go
 go:update:
   do: exec
   desc: update all go packages
   command: go get -u all
-
-# jupyter
-jupyter:install:
-  do: exec
-  desc: install a jupyter lab extension
-  command: jupyter labextension install <<extension>>
-jupyter:update:
-  do: exec
-  desc: update all packages
-  command: jupyter labextension update --all
-jupyter:ls:
-  do: exec
-  desc: list installed jupyter lab extensions
-  command: jupyter labextension list
 
 xcode:
   do: exec
@@ -619,6 +601,34 @@ conda:batch:update:all:
   do: exec
   desc: update all conda environments
   command: mamba info --json | python -c 'import json; import sys; list(map(print, json.load(sys.stdin)["envs"]))' | grep -v '^/Applications' | xargs -n1 mamba update --all -y -p
+
+# jupyter ##############################################################################################################
+
+jupyter:install:
+  do: exec
+  desc: install a jupyter lab extension
+  command: jupyter labextension install <<extension>>
+
+jupyter:remove:
+  do: exec
+  desc: remove a jupyter lab extension
+  command: jupyter labextension uninstall <<extension>>
+
+jupyter:ls:
+  do: exec
+  desc: list installed jupyter lab extensions
+  command: jupyter labextension list
+
+jupyter:update:all:
+  do: exec
+  desc: update all packages
+  command: jupyter labextension update --all
+
+# jupyter specific
+
+jupyter:ls:env:
+  do: exec
+  command: jupyter kernelspec list
 
 # vscode ###############################################################################################################
 
