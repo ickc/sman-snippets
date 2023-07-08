@@ -1,8 +1,3 @@
-xcode:
-  do: exec
-  desc: install xcode command line tools.
-  command: xcode-select --install && sudo xcodebuild -license accept
-
 linux:update:terminal:
   do: exec
   desc: choose the default terminal emulator when Ctrl-Alt-T is pressed.
