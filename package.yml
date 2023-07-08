@@ -80,27 +80,6 @@ xcode:
   desc: install xcode command line tools.
   command: xcode-select --install && sudo xcodebuild -license accept
 
-port:update:
-  do: exec
-  desc: update macports
-  command: (while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &; sudo port selfupdate && sudo port upgrade outdated)
-port:cleanup:
-  do: exec
-  desc: cleanup macports
-  command: sudo port -f clean --all all && sudo port -f uninstall inactive
-port:cutleaves:
-  do: exec
-  desc: remove "leaves" in macports
-  command: sudo port_cutleaves -b
-port:ls:
-  do: exec
-  desc: list installed packages
-  command: port installed
-port:check:x86_64:
-  do: exec
-  desc: list all macports package that's x86_64
-  command: find /opt/local/bin -exec file {} + | grep -A 1 x86_64
-
 linux:update:terminal:
   do: exec
   desc: choose the default terminal emulator when Ctrl-Alt-T is pressed.
@@ -322,6 +301,100 @@ apt:clean:
   do: exec
   desc: remove all but 1 past version of cache of installed packages
   command: sudo apt -y clean
+
+# port #################################################################################################################
+
+port:search:
+  do: exec
+  desc: search for packages
+  command: port search <<package>>
+
+port:info:
+  do: exec
+  desc: get info about a package
+  command: port info <<package>>
+
+port:require:
+  do: exec
+  desc: list dependencies of a package
+  command: port deps <<package>>
+
+port:whatrequire:
+  do: exec
+  desc: list reverse dependencies of a package
+  command: port echo depends:<<package>>
+
+port:install:
+  do: exec
+  desc: install packages
+  command: sudo port install <<package>>
+
+port:remove:
+  do: exec
+  desc: uninstall packages
+  command: sudo port uninstall <<package>>
+
+port:remove:orphan:
+  do: exec
+  desc: remove orphan packages
+  command: sudo port uninstall rleaves && sudo port uninstall inactive
+
+port:ls:
+  do: exec
+  desc: list installed packages
+  command: port installed requested
+
+port:ls:all:
+  do: exec
+  desc: list all installed packages
+  command: port installed
+
+port:ls:available:
+  do: exec
+  desc: list all available packages
+  command: port list
+
+port:update:
+  do: exec
+  desc: update a package
+  command: sudo port upgrade <<package>>
+
+port:update:all:
+  do: exec
+  desc: update macports. For the sudo-loop, see https://stackoverflow.com/a/30547074/5769446
+  command: |
+    startsudo() {
+      sudo -v
+      ( while true; do sudo -v; sleep 50; done; ) &
+      SUDO_PID="$!"
+      trap stopsudo SIGINT SIGTERM
+    }
+    stopsudo() {
+      kill "$SUDO_PID"
+      trap - SIGINT SIGTERM
+      sudo -k
+    }
+    startsudo
+    sudo port selfupdate
+    sudo port upgrade outdated
+    stopsudo
+
+port:clean:
+  do: exec
+  desc: cleanup macports
+  command: sudo port -f clean --all all && sudo port -f uninstall inactive
+
+# port specific
+
+port:cutleaves:
+  do: exec
+  desc: remove orphan packages interactively
+  command: sudo port_cutleaves
+
+port:check:x86_64:
+  do: exec
+  desc: list all macports package that's x86_64
+  command: find /opt/local/bin -exec file {} + | grep -A 1 x86_64
 
 # brew #################################################################################################################
 
