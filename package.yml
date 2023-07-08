@@ -1,19 +1,6 @@
-pip:update:
-  do: exec
-  command: pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U
-pip:install:
-  do: exec
-  desc: Always access PyPI with no-cache-dir. This may help if the cache got stuck.
-  command: pip install -U --no-cache-dir <<packages>>
-
 jupyter:ls:
   do: exec
   command: jupyter kernelspec list
-
-pip:dev:
-  do: exec
-  desc: pip install current directory in editable mode
-  command: pip install -e .
 
 # go
 go:update:
@@ -484,6 +471,55 @@ brew:doctor:
   do: exec
   desc: run brew doctor
   command: brew doctor
+
+# pip ##################################################################################################################
+
+pip:info:
+  do: exec
+  desc: get info about a package. Note that it can only shows packages that are installed.
+  command: python -m pip show <<package>>
+
+pip:install:
+  do: exec
+  desc: install packages
+  command: python -m pip install <<package>>
+
+pip:remove:
+  do: exec
+  desc: uninstall packages
+  command: python -m pip uninstall <<package>>
+
+pip:ls:
+  do: exec
+  desc: list installed packages
+  command: python -m pip list --not-required
+
+pip:ls:all:
+  do: exec
+  desc: list installed packages
+  command: python -m pip list
+
+pip:update:
+  do: exec
+  desc: update a package
+  command: python -m pip install -U <<package>>
+
+pip:update:all:
+  do: exec
+  desc: update all packages
+  command: python -m pip install -U -r <(pip freeze | cut -d = -f 1 | cut -d @ -f 1)
+
+pip:clean:
+  do: exec
+  desc: clean cache
+  command: python -m pip cache purge
+
+# pip specific
+
+pip:editable:
+  do: exec
+  desc: pip install current directory in editable mode
+  command: python -m pip install -e . <<args( ,--no-dependencies)>>
 
 # conda ################################################################################################################
 
