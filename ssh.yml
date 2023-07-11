@@ -38,6 +38,10 @@ rsync:to:
 rsync:fm:
   do: exec
   command: rsync -avmz <<DELETE( ,--delete)>> --stats -e ssh --cvs-exclude --exclude='.DS_Store' --exclude .git/ --exclude .gitignore <<host>>:<<inDir>> <<outDir>>
+rsync:from:blackett-interactive:
+  do: exec
+  desc: rsync from blackett-interactive back to blackett
+  command: rsync -av --stats -e ssh <<indir>> $USER@vm77.tier2.hep.manchester.ac.uk:<<outdir>>
 
 sshfs:perl:
   do: exec
