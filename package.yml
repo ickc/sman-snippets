@@ -139,7 +139,7 @@ arch:ls:available:
 arch:update:all:
   do: exec
   desc: yay upgrade all
-  command: yay -Syyu --sudoloop --nomakepkgconf --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade --nocleanmenu --nodiffmenu --noeditmenu --noupgrademenu --norebuild --noredownload --overwrite
+  command: yay -Syyu --sudoloop --nomakepkgconf --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade --nocleanmenu --nodiffmenu --noeditmenu --norebuild --noredownload --overwrite
 arch:clean:
   do: exec
   desc: remove all but 1 past version of cache of installed packages
