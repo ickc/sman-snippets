@@ -225,6 +225,38 @@ apt:clean:
   desc: remove all but 1 past version of cache of installed packages
   command: sudo apt -y clean
 
+# mas ##################################################################################################################
+
+mas:info:
+  do: exec
+  desc: get info about a package
+  command: mas info <<package>>
+
+mas:install:
+  do: exec
+  desc: install packages
+  command: mas install <<package>>
+
+mas:remove:
+  do: exec
+  desc: uninstall packages
+  command: mas uninstall <<package>>
+
+mas:ls:
+  do: exec
+  desc: list installed packages
+  command: mas list
+
+mas:update:
+  do: exec
+  desc: update a package
+  command: mas upgrade <<package>>
+
+mas:update:all:
+  do: exec
+  desc: update all packages
+  command: mas upgrade
+
 # port #################################################################################################################
 
 port:search:
