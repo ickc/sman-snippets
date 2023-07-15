@@ -554,7 +554,7 @@ conda:remove:
 conda:remove:orphan:
   do: exec
   desc: remove orphan packages. Note that this also update the environments, which is the only way to remove orphan packages. See https://github.com/conda/conda/issues/62#issuecomment-468982110
-  command: mamba update --prune --all
+  command: mamba update --all --prune
 
 conda:ls:
   do: exec
@@ -595,28 +595,28 @@ conda:clean:
 
 conda:ls:env:
   do: exec
-  command: conda info --env
+  command: mamba info --envs
 
 conda:batch:
   do: exec
+  desc: running a certain command across all conda env.
+  command: mamba info --json | jq '.envs[]' | xargs -i -n1 -P1 bash -c '. activate {} && <<command>>'
+conda:batch:env:
+  do: exec
   desc: running a certain command across all conda env. excluding base
-  command: conda info --env | grep -v -E '#|base' - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c ". $(which activate) {} && <<command>>"
-conda:batch:ch:
+  command: mamba info --json | jq '.envs[]' | grep '/envs/' | xargs -i -n1 -P1 bash -c '. activate {} && <<command>>'
+conda:batch:remove:orphan:
   do: exec
-  desc: similar to conda:batch, but restricted to env. with <<channel>> in the name, and install packages from that channel
-  command: conda info --env | grep -v -E '#|base' - | grep <<channel(defaults,intel)>> - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c ". $(which activate) {} && conda install -c <<channel>> <<packages>> -y"
-conda:batch:rm:
-  do: exec
-  desc: remove all conda environments
-  command: conda info --env | grep -v -E '#|base' - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c "$(which conda) remove -n {} --all -y"
-conda:batch:rm:inteldefaults:
-  do: exec
-  desc: remove all intel/defaults environments
-  command: conda info --env | grep -v -E '#|base' - | grep -E '(defaults|intel)' - | cut -d' ' -f1 | xargs -i -n1 -P1 bash -c "$(which conda) remove -n {} --all -y"
+  desc: batch remove orphan packages. Note that this also update the environments, which is the only way to remove orphan packages. See https://github.com/conda/conda/issues/62#issuecomment-468982110
+  command: s r conda:batch:env 'mamba update --all --prune'
 conda:batch:update:all:
   do: exec
   desc: update all conda environments
-  command: mamba info --json | python -c 'import json; import sys; list(map(print, json.load(sys.stdin)["envs"]))' | grep -v '^/Applications' | xargs -n1 mamba update --all -y -p
+  command: s r conda:batch 'mamba update --all --prune'
+conda:batch:clean:
+  do: exec
+  desc: clean all conda environments
+  command: s r conda:batch 'mamba clean --all -y; mamba clean --force-pkgs-dirs -y; mamba build purge'
 
 # jupyter ##############################################################################################################
 
