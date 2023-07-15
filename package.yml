@@ -455,6 +455,11 @@ brew:clean:
 
 # brew specific
 
+brew:ls:cask:
+  do: exec
+  desc: list all installed casks
+  command: brew list --cask
+
 brew:ls:version:
   do: exec
   desc: list all installed packages with version
