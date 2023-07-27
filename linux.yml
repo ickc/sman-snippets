@@ -60,3 +60,33 @@ linux:update:terminal:
   do: exec
   desc: choose the default terminal emulator when Ctrl-Alt-T is pressed.
   command: sudo update-alternatives --config x-terminal-emulator
+
+firewall-cmd:ls:
+  do: exec
+  desc: list firewall rules using firewall-cmd
+  command: sudo firewall-cmd --list-ports
+
+firewall-cmd:remove:
+  do: exec
+  desc: remove a port from the firewall
+  command: sudo firewall-cmd --remove-port=<<port>>/<<protocol(tcp,udp)>> --permanent
+
+firewall-cmd:add:
+  do: exec
+  desc: add a port to the firewall
+  command: sudo firewall-cmd --add-port=<<port>>/<<protocol(tcp,udp)>> --permanent
+
+firewall-cmd:make-permanent:
+  do: exec
+  desc: make firewall rules permanent
+  command: sudo firewall-cmd --runtime-to-permanent
+
+firewall-cmd:ls:all:
+  do: exec
+  desc: list all firewall rules
+  command: sudo firewall-cmd --list-all
+
+firewall-cmd:reload:
+  do: exec
+  desc: reload firewall rules
+  command: sudo firewall-cmd --reload
