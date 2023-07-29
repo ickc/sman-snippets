@@ -113,6 +113,10 @@ find:size:
   do: exec
   desc: find files with a name pattern and print its size
   command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' -printf "%kKB %p\n" | sort -h
+find:sort:modification_time:
+  do: exec
+  desc: find files with a name pattern and sort by modification time. See https://superuser.com/a/546900/1211805
+  command: find . <<filter>> -printf '%T@,%Tc\t%p\n' | sort -n | sed -E 's/^[^,]+,//'
 # text processing
 find:level:sed:
   do: exec
