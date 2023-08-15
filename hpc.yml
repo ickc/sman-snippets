@@ -88,7 +88,9 @@ condor:status:constraint:all:
     (machine == "wn1905340.in.tier2.hep.manchester.ac.uk") ||
     (machine == "wn5914090.in.tier2.hep.manchester.ac.uk") ||
     (machine == "wn5916090.in.tier2.hep.manchester.ac.uk") ||
-    (machine == "wn5916340.in.tier2.hep.manchester.ac.uk")'
+    (machine == "wn5916340.in.tier2.hep.manchester.ac.uk") ||
+    (machine == "wn5914340.in.tier2.hep.manchester.ac.uk") ||
+    (machine == "wn5917090.in.tier2.hep.manchester.ac.uk")'
 
 condor:status:constraint:each:
   do: exec
