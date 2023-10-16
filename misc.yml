@@ -155,3 +155,30 @@ image:trim:
   do: exec
   desc: trim all white spaces around images
   command: mogrify -trim *.<<ext(png,jpg)>>
+
+ffmpeg:to:wav:
+  do: exec
+  desc: use ffmpeg to convert media to wav
+  command: ffmpeg -i '<<input>>' -ar 16000 -ac 1 -c:a pcm_s16le '<<output>>.wav'
+
+apple:to:wav:
+  do: exec
+  desc: use afconvert to convert media to wav
+  command: afconvert -f WAVE -d LEI16 '<<input>>' '<<output>>.wav'
+
+whisper:
+  do: exec
+  desc: whisper to convert wav into vtt
+  command: |
+    /opt/whisper/bin/main \
+      --model ~/git/read-only/whisper.cpp/models/ggml-large.bin \
+      --processors $(nproc) \
+      --output-vtt \
+      --output-file '<<output>>' \
+      --file '<<intermediate>>.wav' \
+      --language <<lang(en,zh)>>
+
+vtt:to:txt:
+  do: exec
+  desc: convert vtt to txt
+  command: ~/git/private/rewind-whisper/src/vtt2txt.py '<<file>>.vtt' -o '<<file>>.txt'
