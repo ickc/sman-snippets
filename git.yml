@@ -57,7 +57,7 @@ git:cherrypick:
 git:batch:recursive:
   do: exec
   desc: batch pull/push at all repositories recursively. GitHub seems to able to handle 100 concurrent pull only.
-  command: find . -type d -name '.git' -print0 | xargs -0 -n1 -P100 bash -c 'cd $0/.. && until git <<action(pull,push)>>; do echo retry git <<action>> $0; done'
+  command: find . -type d -name '.git' -print0 | xargs -0 -n1 -P100 bash -c 'cd $0/.. && until git <<action(pull,push)>>; do echo retry git <<action>> $0 in 60s...; sleep 60; done'
 git:batch:level:
   do: exec
   desc: batch pull/push at all repositories at a certain level. GitHub seems to able to handle 100 concurrent pull only.
