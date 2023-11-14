@@ -107,3 +107,12 @@ condor:status:constraint:each:
       printf '=== %s =================================================================================\n' $i
       sudo condor_status -constraint "(machine == \"$i.in.tier2.hep.manchester.ac.uk\")"
     done
+
+pkcs12:split:cert:
+  do: exec
+  desc: split a PKCS 12 bundle into a certificate and a key. Import password needed.
+  command: openssl pkcs12 -in <<certBundle>>.p12 -clcerts -nokeys -out <<cert>>.pem
+pkcs12:split:key:
+  do: exec
+  desc: split a PKCS 12 bundle into a certificate and a key. Import password needed. New PEM pass phrase needed.
+  command: openssl pkcs12 -in <<certBundle>>.p12 -nocerts  -out <<key>>.pem
