@@ -176,7 +176,7 @@ whisper:
       --output-vtt \
       --output-file '<<output>>' \
       --file '<<intermediate>>.wav' \
-      --language <<lang(en,zh)>>
+      --language <<lang(en,zh)>> <<translate(--translate, )>>
 
 vtt:to:txt:
   do: exec
