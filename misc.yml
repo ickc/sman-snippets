@@ -170,13 +170,20 @@ whisper:
   do: exec
   desc: whisper to convert wav into vtt
   command: |
-    /opt/whisper/bin/main \
-      --model ~/git/read-only/whisper.cpp/models/ggml-large.bin \
-      --processors $(nproc) \
+    export GGML_METAL_PATH_RESOURCES=~/git/read-only/whisper.cpp
+    command time -v whisper-cpp \
+      --threads $(nproc) \
+      --max-context 224 \
+      --best-of 5 \
+      --beam-size 5 \
+      --entropy-thold 3.2 \
       --output-vtt \
       --output-file '<<output>>' \
-      --file '<<intermediate>>.wav' \
-      --language <<lang(en,zh)>> <<translate(--translate, )>>
+      --print-progress \
+      --language <<lang(en,zh)>> \
+      <<translate(--translate, )>>  \
+      --model ~/git/read-only/whisper.cpp/models/ggml-large.bin \
+      --file '<<intermediate>>.wav'
 
 vtt:to:txt:
   do: exec
