@@ -92,6 +92,10 @@ find:cat:dir:
   do: exec
   desc: find files with extension in directories at a certain level and cat & sort together into a file with the same extension besides the directories.
   command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -mindepth <<level>> -maxdepth <<level>> -type d -exec bash -c 'find $0 -name "*.<<extension>>" | xargs cat | sort > $0.<<extension>>' {} \;
+find:cat:fzf:
+  do: exec
+  desc: find files of a name pattern and cat all to fzf
+  command: find . <<ignorePath( ,\! -path '*/.git/*',\! -path '*/.*/*')>> -type f -name '<<name>>' -exec cat {} + | fzf
 find:grep:
   do: exec
   desc: find files of a name pattern and grep another pattern from them
@@ -195,6 +199,12 @@ grep:taskpaper:tag:
   do: exec
   desc: show all unique tags in TaskPaper format.
   command: grep -o '@[^( ]\+' '<<filename#taskpaper file>>' | sort -u
+
+# rg ###########################################################################
+
+rg:pattern:
+  do: exec
+  command: rg '<<pattern>>' --iglob '<<file>>' --only-matching --no-filename --no-line-number
 
 # tar ##########################################################################
 
