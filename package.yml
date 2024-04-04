@@ -20,6 +20,69 @@
 
 # see https://wiki.archlinux.org/title/Pacman/Rosetta
 
+# SUSE ################################################################################################################
+suse:search:
+  do: exec
+  desc: search for packages on SUSE
+  command: zypper search <<package>>
+
+suse:provide:
+  do: exec
+  desc: check what package provides this executables
+  command: zypper what-provides <<executable>>
+
+suse:info:
+  do: exec
+  desc: get info about a package
+  command: zypper info <<package>>
+
+suse:require:
+  do: exec
+  desc: list dependencies of a package
+  command: zypper info --requires <<package>>
+
+suse:install:
+  do: exec
+  desc: install packages on SUSE
+  command: sudo transactional-update pkg install <<package>>
+
+suse:remove:
+  do: exec
+  desc: uninstall packages on SUSE
+  command: sudo transactional-update pkg remove <<package>>
+
+suse:ls:all:
+  do: exec
+  desc: list all installed packages on SUSE
+  command: zypper se --installed-only
+
+suse:ls:available:
+  do: exec
+  desc: list all available packages
+  command: zypper se
+
+suse:ls:repo:
+  do: exec
+  desc: list all enabled repos
+  command: zypper lr
+
+suse:update:all:
+  do: exec
+  desc: update packages on SUSE
+  command: sudo transactional-update up
+
+suse:clean:
+  do: exec
+  desc: clean cache
+  command: sudo transactional-update cleanup
+
+# SUSE specific
+
+suse:command-not-found:
+  do: exec
+  desc: lookup the package that contains it
+  command: cnf <<command>>
+
 # RHEL ################################################################################################################
 
 rhel:search:
