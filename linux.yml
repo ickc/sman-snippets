@@ -49,7 +49,12 @@ ip:interface:
 mkfs:xfs:
   do: exec
   desc: use the full device and format to XFS
-  command: sudo parted /dev/<<device>> mklabel gpt mkpart XFS 0% 100% && sudo mkfs.xfs -s size=4096 /dev/<<device>>p1
+  command: sudo parted /dev/<<device>> mklabel gpt mkpart XFS 0% 100% && sudo mkfs.xfs -s size=4096 /dev/<<partition>>
+
+mkfs:fat:
+  do: exec
+  desc: use the full device and format to FAT32
+  command: sudo parted /dev/<<device>> mklabel msdos mkpart FAT32 0% 100% && sudo mkfs.fat -F 32 /dev/<<partition>>
 
 detect:vm:
   do: exec
