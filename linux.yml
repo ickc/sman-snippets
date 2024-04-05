@@ -95,3 +95,12 @@ firewall-cmd:reload:
   do: exec
   desc: reload firewall rules
   command: sudo firewall-cmd --reload
+
+mce:summary:
+  do: exec
+  desc: show Machine Check Exception summary
+  command: sudo ras-mc-ctl --summary
+mce:error_count:
+  do: exec
+  desc: show Machine Check Exception error count
+  command: sudo ras-mc-ctl --error-count
