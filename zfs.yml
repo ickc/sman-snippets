@@ -44,15 +44,15 @@ zfs:sdrc:
 zfs:version:
   do: exec
   desc: check zfs version
-  command: if [[ $(uname) == Darwin ]]; then sysctl -a | grep -E '(zfs|spl)\.kext'; else dmesg | grep ZFS; fi
+  command: if [[ $(uname) == Darwin ]]; then sysctl -a | grep -E '(zfs|spl)\.kext'; else sudo zfs --version; fi
 zfs:space:
   do: exec
   desc: show zfs space usage, sort by snapshot usage
-  command: zfs list -o space | sort -hk4
+  command: sudo zfs list -o space | sort -hk4
 zfs:size:
   do: exec
   desc: show zfs dataset sizes in bytes
-  command: zfs get -o name,value -Hp used
+  command: sudo zfs get -o name,value -Hp used
 zfs:autoexpand:
   do: exec
   desc: set zpool to auto-expand
@@ -60,7 +60,7 @@ zfs:autoexpand:
 zfs:get:
   do: exec
   desc: get zpool properties
-  command: zpool get <<input( ,autoexpand)>>
+  command: sudo zpool get <<input( ,autoexpand)>>
 zfs:video:link:
   do: exec
   desc: create symlinks
