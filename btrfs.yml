@@ -1,0 +1,52 @@
+btrfs:stats:
+  do: exec
+  desc: "Display statistics for the Btrfs devices at a specified mount point. This command is useful for monitoring the health and performance of Btrfs devices."
+  command: sudo btrfs device stats <<mount_point>>
+btrfs:show:
+  do: exec
+  desc: "Show detailed information about all Btrfs filesystems on the system, including device usage and mount points. Useful for getting an overview of Btrfs filesystems."
+  command: sudo btrfs filesystem show
+btrfs:list:
+  do: exec
+  desc: "List all subvolumes within a specified Btrfs filesystem path, including their properties and hierarchical structure. This command is essential for managing Btrfs subvolumes."
+  command: sudo btrfs subvolume list -t <<path_to_btrfs_mount>>
+btrfs:df:
+  do: exec
+  desc: "Display disk space usage information for a Btrfs filesystem at a given mount point, showing data related to different Btrfs space allocation groups. Offers a detailed view of space usage compared to traditional `df`."
+  command: btrfs filesystem df <<mount_point>>
+btrfs:scrub:start:
+  do: exec
+  desc: "Start a Btrfs scrub operation on a specified Btrfs device or mount point. Scrubbing is essential for detecting and correcting errors in Btrfs filesystems."
+  command: sudo btrfs scrub start <<device_or_mount_point>>
+btrfs:scrub:cancel:
+  do: exec
+  desc: "Cancel an ongoing Btrfs scrub operation on a specified device or mount point. Useful for stopping scrubbing if needed."
+  command: sudo btrfs scrub cancel <<device_or_mount_point>>
+btrfs:scrub:status:
+  do: exec
+  desc: "Check the status of an ongoing Btrfs scrub operation on a specified device or mount point. Useful for monitoring the progress and completion of scrubbing."
+  command: sudo btrfs scrub status <<device_or_mount_point>>
+btrfs:scrub:resume:
+  do: exec
+  desc: "Resume a paused Btrfs scrub operation on a specified device or mount point. Useful for continuing scrubbing after a pause."
+  command: sudo btrfs scrub resume <<device_or_mount_point>>
+btrfs:balance:start:
+  do: exec
+  desc: "Start a Btrfs balance operation on a specified Btrfs filesystem or mount point. Balancing is essential for optimizing data distribution and improving performance in Btrfs."
+  command: sudo btrfs balance start -v -d -m <<path_to_btrfs_mount>>
+btrfs:balance:pause:
+  do: exec
+  desc: "Pause an ongoing Btrfs balance operation on a specified filesystem or mount point. Useful for temporarily halting balancing without canceling it."
+  command: sudo btrfs balance pause <<path_to_btrfs_mount>>
+btrfs:balance:cancel:
+  do: exec
+  desc: "Cancel an ongoing Btrfs balance operation on a specified filesystem or mount point. Useful for stopping balancing if needed."
+  command: sudo btrfs balance cancel <<path_to_btrfs_mount>>
+btrfs:balance:resume:
+  do: exec
+  desc: "Resume a paused Btrfs balance operation on a specified filesystem or mount point. Useful for continuing balancing after a pause."
+  command: sudo btrfs balance resume <<path_to_btrfs_mount>>
+btrfs:balance:status:
+  do: exec
+  desc: "Check the status of an ongoing Btrfs balance operation on a specified filesystem or mount point. Useful for monitoring the progress and completion of balancing."
+  command: sudo btrfs balance status <<path_to_btrfs_mount>>
