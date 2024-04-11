@@ -13,7 +13,7 @@ btrfs:list:
 btrfs:df:
   do: exec
   desc: "Display disk space usage information for a Btrfs filesystem at a given mount point, showing data related to different Btrfs space allocation groups. Offers a detailed view of space usage compared to traditional `df`."
-  command: btrfs filesystem df <<mount_point>>
+  command: sudo btrfs filesystem df <<mount_point>>
 btrfs:scrub:start:
   do: exec
   desc: "Start a Btrfs scrub operation on a specified Btrfs device or mount point. Scrubbing is essential for detecting and correcting errors in Btrfs filesystems."
