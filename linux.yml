@@ -104,3 +104,8 @@ mce:error_count:
   do: exec
   desc: show Machine Check Exception error count
   command: sudo ras-mc-ctl --error-count
+
+mount:exfat:
+  do: exec
+  desc: mount an exFAT filesystem
+  command: sudo mount -t exfat -o uid=$(id -u),gid=$(id -g) /dev/<<device>> <<mountpoint>>
