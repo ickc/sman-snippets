@@ -109,3 +109,7 @@ zerotier:restart:
   do: exec
   desc: restart zerotier one on macOS
   command: sudo launchctl stop /Library/LaunchDaemons/com.zerotier.one.plist && sudo launchctl start /Library/LaunchDaemons/com.zerotier.one.plist
+erase:fat:
+  do: exec
+  desc: erase disk in FAT format
+  command: diskutil unmountDisk /dev/disk<<N>>; diskutil eraseDisk FAT32 <<name>> MBRFormat /dev/disk<<N>>
