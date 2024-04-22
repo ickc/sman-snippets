@@ -202,8 +202,18 @@ arch:ls:available:
 arch:update:all:
   do: exec
   desc: yay upgrade all
-  command: yay -Syyu --sudoloop --nomakepkgconf --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade --nocleanmenu --nodiffmenu --noeditmenu --norebuild --noredownload --overwrite
-arch:clean:
+  command: |
+    yay --sync --refresh --sysupgrade \
+      --nomakepkgconf \
+      --sudoloop \
+      --answerclean None \
+      --answerdiff None \
+      --answeredit None \
+      --answerupgrade None \
+      --noremovemake \
+      --norebuild \
+      --noredownload
+aarch:clean:
   do: exec
   desc: remove all but 1 past version of cache of installed packages
   command: sudo pacman -Sc && paccache --remove --keep 1
