@@ -109,3 +109,8 @@ mount:exfat:
   do: exec
   desc: mount an exFAT filesystem
   command: sudo mount -t exfat -o uid=$(id -u),gid=$(id -g) /dev/<<device>> <<mountpoint>>
+
+dev:info:
+  do: exec
+  desc: show udev info for a device
+  command: udevadm info --query=all --name=/dev/<<device>>
