@@ -86,7 +86,7 @@ wake:
   do: exec
   desc: wake on LAN
   command: |
-    wakeonlan <<address(1c:1b:0d:ec:19:de,D0:50:99:C0:50:BB,78:7b:8a:b8:14:59)#1: lpc, 2: server, 3: thunderbolt ethernet>> || wol <<address>>
+    wakeonlan <<address(1c:1b:0d:ec:19:de,D0:50:99:C0:50:BA,F4:8E:38:B4:42:11)#1: lpc, 2: server, 3: 3650>> || wol <<address>>
 
 nx:fix:
   do: exec
