@@ -278,17 +278,6 @@ apt:update:all:
   do: exec
   desc: update ubuntu. For the sudo-loop, see https://stackoverflow.com/a/30547074/5769446
   command: |
-    startsudo() {
-      sudo -v
-      ( while true; do sudo -v; sleep 50; done; ) &
-      SUDO_PID="$!"
-      trap stopsudo SIGINT SIGTERM
-    }
-    stopsudo() {
-      kill "$SUDO_PID"
-      trap - SIGINT SIGTERM
-      sudo -k
-    }
     startsudo
     sudo apt -y update
     sudo apt -y upgrade
@@ -366,17 +355,6 @@ port:remove:orphan:
   do: exec
   desc: remove orphan packages
   command: |
-    startsudo() {
-      sudo -v
-      ( while true; do sudo -v; sleep 50; done; ) &
-      SUDO_PID="$!"
-      trap stopsudo SIGINT SIGTERM
-    }
-    stopsudo() {
-      kill "$SUDO_PID"
-      trap - SIGINT SIGTERM
-      sudo -k
-    }
     startsudo
     sudo port uninstall rleaves
     sudo port uninstall inactive
@@ -406,17 +384,6 @@ port:update:all:
   do: exec
   desc: update macports. For the sudo-loop, see https://stackoverflow.com/a/30547074/5769446
   command: |
-    startsudo() {
-      sudo -v
-      ( while true; do sudo -v; sleep 50; done; ) &
-      SUDO_PID="$!"
-      trap stopsudo SIGINT SIGTERM
-    }
-    stopsudo() {
-      kill "$SUDO_PID"
-      trap - SIGINT SIGTERM
-      sudo -k
-    }
     startsudo
     sudo port selfupdate
     sudo port upgrade outdated
@@ -505,17 +472,6 @@ brew:update:all:
   do: exec
   desc: update all packages with a sudo loop. For the sudo-loop, see https://stackoverflow.com/a/30547074/5769446
   command: |
-    startsudo() {
-      sudo -v
-      ( while true; do sudo -v; sleep 50; done; ) &
-      SUDO_PID="$!"
-      trap stopsudo SIGINT SIGTERM
-    }
-    stopsudo() {
-      kill "$SUDO_PID"
-      trap - SIGINT SIGTERM
-      sudo -k
-    }
     startsudo
     brew update
     brew upgrade
