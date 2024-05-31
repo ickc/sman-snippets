@@ -205,10 +205,23 @@ lint:mypy:
   do: exec
   desc: use mypy to type check
   command: MYPYPATH="$PYTHONPATH" mypy --follow-imports=silent .
-python:format:
+format:python:
   do: exec
   desc: format python files
   command: autoflake --in-place --recursive --expand-star-imports --remove-all-unused-imports --ignore-init-module-imports --remove-duplicate-keys --remove-unused-variables .; black .; isort .
+format:shell:
+  do: exec
+  desc: format shell files
+  command: |
+      find . -type f -name '*.sh' \
+        -exec sed -i -E 's/\$$([a-zA-Z_][a-zA-Z0-9_]*)/$${\1}/g' {} + \
+        -exec shfmt \
+          --write \
+          --simplify \
+          --indent 4 \
+          --case-indent \
+          --space-redirects \
+          {} +
 mypy:stop:
   do: exec
   desc: stop all mypy daemons
