@@ -7,7 +7,7 @@ mosh:perlmutter:
   desc: convenient command to 1) get NERSC key, 2) mosh to dtn 3) ssh to perlmutter
   command: |
     s r ssh:nersc:gen
-    ssh dtn01 '/global/u2/k/khcheung/git/fork/NERSC-MFA/sshproxy.sh -u khcheung'
+    rsync -a -e 'ssh -i ~/.ssh/nersc' --include 'nersc*' --exclude '*' ~/.ssh/ khcheung@dtn01.nersc.gov:/global/u2/k/khcheung/.ssh/
     mosh --server='/global/u2/k/khcheung/.conda/envs/system312-conda-forge/bin/mosh-server' dtn01 -- ssh -i /global/u2/k/khcheung/.ssh/nersc 128.55.151.46
 ssh:nersc:gen:
   do: exec
