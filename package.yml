@@ -618,7 +618,7 @@ conda:update:all:
 conda:clean:
   do: exec
   desc: conda cleanup all
-  command: mamba clean --all -y; mamba clean --force-pkgs-dirs -y; mamba build purge
+  command: mamba clean --all -y; mamba build purge
 
 # conda specific
 
@@ -642,10 +642,6 @@ conda:batch:update:all:
   do: exec
   desc: update all conda environments
   command: s r conda:batch 'mamba update --all --prune'
-conda:batch:clean:
-  do: exec
-  desc: clean all conda environments
-  command: s r conda:batch 'mamba clean --all -y; mamba clean --force-pkgs-dirs -y; mamba build purge'
 
 # jupyter ##############################################################################################################
 
