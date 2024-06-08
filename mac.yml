@@ -113,3 +113,7 @@ erase:fat:
   do: exec
   desc: erase disk in FAT format
   command: diskutil unmountDisk /dev/disk<<N>>; diskutil eraseDisk FAT32 <<name>> MBRFormat /dev/disk<<N>>
+mac:clean:
+  do: exec
+  desc: clean macOS caches
+  command: rm -rf ~/Library/Caches/; mkdir -p ~/Library/Caches/
