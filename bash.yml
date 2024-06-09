@@ -470,3 +470,8 @@ obsidian:sort:json:
       jq 'sort' < <<inDir(.)>>/.obsidian/$file > <<inDir>>/.obsidian/$file.out;
       mv -f <<inDir>>/.obsidian/$file.out <<inDir>>/.obsidian/$file;
     done
+
+clean:trash:
+  do: exec
+  desc: clean trash
+  command: rm -rf ~/.local/share/Trash/
