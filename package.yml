@@ -391,8 +391,8 @@ port:update:all:
 
 port:clean:
   do: exec
-  desc: cleanup macports.
-  command: sudo port -f clean --all all
+  desc: cleanup macports. https://superuser.com/a/165670
+  command: sudo port -f clean --all all; sudo port -f uninstall inactive
 
 # port specific
 
