@@ -319,6 +319,17 @@ mas:update:all:
   desc: update all packages
   command: mas upgrade
 
+# nix ##################################################################################################################
+
+nix:update:all:
+  do: exec
+  desc: update nix w.r.t. config
+  command: startsudo; if [[ $(uname) == Darwin ]]; then darwin-rebuild switch --flake ~/.config/nix-darwin; fi; stopsudo
+nix:clean:
+  do: exec
+  desc: clean nix cache
+  command: nix-collect-garbage -d && nix-store --optimise
+
 # port #################################################################################################################
 
 port:search:
