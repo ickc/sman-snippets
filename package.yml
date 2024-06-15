@@ -324,7 +324,12 @@ mas:update:all:
 nix:update:all:
   do: exec
   desc: update nix w.r.t. config
-  command: startsudo; if [[ $(uname) == Darwin ]]; then darwin-rebuild switch --flake ~/.config/nix-darwin; fi; stopsudo
+  command: |
+    startsudo
+    if [[ $(uname) == Darwin ]]; then
+      darwin-rebuild switch --flake ~/.config/nix-darwin
+    fi
+    stopsudo
 nix:clean:
   do: exec
   desc: clean nix cache
