@@ -357,6 +357,11 @@ find:pandoc:
 
 # IP related
 
+url:resolve:
+  do: exec
+  desc: resolve url to where it is redirected to
+  command: curl -s -o /dev/null -w '%{url_effective}' '<<url>>'
+
 ip:public:
   do: exec
   desc: check public IP (even if it is behind another router). See https://www.linuxtrainingacademy.com/determine-public-ip-address-command-line-curl/
