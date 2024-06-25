@@ -328,12 +328,11 @@ mas:update:all:
 
 nix:update:all:
   do: exec
-  desc: update nix w.r.t. config
+  desc: update nix
   command: |
     startsudo
     if [[ $(uname) == Darwin ]]; then
       cd ~/.config/nix-darwin
-      nix flake update
       darwin-rebuild switch --flake '.#simple'
     fi
     stopsudo
@@ -341,6 +340,16 @@ nix:clean:
   do: exec
   desc: clean nix cache
   command: nix-collect-garbage -d && nix-store --optimise
+
+# nix specific
+nix:update:config:
+  do: exec
+  desc: update nix flake config
+  command: |
+    if [[ $(uname) == Darwin ]]; then
+      cd ~/.config/nix-darwin
+      nix flake update
+    fi
 
 # port #################################################################################################################
 
