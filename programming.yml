@@ -1,4 +1,4 @@
-c:style:
+format:c:
   do: exec
   command: find .
     -type f
