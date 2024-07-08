@@ -208,7 +208,7 @@ format:c:
 format:python:
   do: exec
   desc: format python files
-  command: autoflake --in-place --recursive --expand-star-imports --remove-all-unused-imports --ignore-init-module-imports --remove-duplicate-keys --remove-unused-variables .; black .; isort .
+  command: autoflake --in-place --recursive --expand-star-imports --remove-all-unused-imports --ignore-init-module-imports --remove-duplicate-keys --remove-unused-variables <<path>>; black <<path>>; isort <<path>>
 format:rust:
   do: exec
   desc: format rust files
@@ -219,7 +219,7 @@ format:shell:
   command: |
       find . -type f -name '*.sh' \
         -exec sed -i -E \
-          -e 's/\$([a-zA-Z_][a-zA-Z0-9_]*)/${\1}/g' \
+          -e 's/\$([a-zA-Z_][a-zA-Z0-9_]*|[0-9]+)/${\1}/g' \
           -e 's/([^[])\[ ([^]]+) \]/\1[[ \2 ]]/g' \
           {} + \
         -exec shfmt \
