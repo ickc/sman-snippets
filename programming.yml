@@ -229,6 +229,10 @@ format:shell:
           --case-indent \
           --space-redirects \
           {} +
+format:nix:
+  do: exec
+  desc: format nix files
+  command: find . -name '*.nix' -exec nixfmt {} +
 mypy:stop:
   do: exec
   desc: stop all mypy daemons
