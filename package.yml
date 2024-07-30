@@ -338,7 +338,7 @@ nix:update:all:
     stopsudo
 nix:clean:
   do: exec
-  desc: clean nix cache
+  desc: 'Clean nix cache. Hint: run devbox:clean before this.'
   command: nix-collect-garbage -d && nix-store --optimise
 
 # nix specific
@@ -350,6 +350,16 @@ nix:update:config:
       cd ~/.config/nix-darwin
       nix flake update
     fi
+
+# devbox
+devbox:update:all:
+  do: exec
+  desc: update devbox
+  command: cd ~/git; devbox update --all-projects --sync-lock
+devbox:clean:
+  do: exec
+  desc: run devbox garbage collection.
+  command: find ~/git -type d -name .devbox -exec bash -c 'env="${1%/*}"; echo "Running gc at ${env}"; cd "${env}" && devbox run -- nix store gc --extra-experimental-features nix-command' bash {} \;
 
 # port #################################################################################################################
 
