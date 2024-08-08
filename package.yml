@@ -355,7 +355,7 @@ nix:update:config:
 devbox:update:all:
   do: exec
   desc: update devbox
-  command: cd ~/git; devbox update --all-projects --sync-lock
+  command: find ~/git -type d -name .devbox -exec bash -c 'env="${1%/*}"; echo "Updating at ${env}"; cd "${env}" && devbox update' bash {} \;
 devbox:clean:
   do: exec
   desc: run devbox garbage collection.
