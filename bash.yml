@@ -199,6 +199,10 @@ grep:taskpaper:tag:
   do: exec
   desc: show all unique tags in TaskPaper format.
   command: grep -o '@[^( ]\+' '<<filename#taskpaper file>>' | sort -u
+grep:unicode:
+  do: exec
+  desc: grep all unicode characters from file
+  command: grep --color=auto -P -n '[^\x00-\x7F]' '<<filename>>'
 
 # rg ###########################################################################
 
