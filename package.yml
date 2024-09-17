@@ -546,49 +546,49 @@ brew:doctor:
 pip:info:
   do: exec
   desc: get info about a package. Note that it can only shows packages that are installed.
-  command: python -m pip show <<package>>
+  command: python3 -m pip show <<package>>
 
 pip:install:
   do: exec
   desc: install packages
-  command: python -m pip install <<package>>
+  command: python3 -m pip install <<package>>
 
 pip:remove:
   do: exec
   desc: uninstall packages
-  command: python -m pip uninstall <<package>>
+  command: python3 -m pip uninstall <<package>>
 
 pip:ls:
   do: exec
   desc: list installed packages
-  command: python -m pip list --not-required
+  command: python3 -m pip list --not-required
 
 pip:ls:all:
   do: exec
   desc: list installed packages
-  command: python -m pip list
+  command: python3 -m pip list
 
 pip:update:
   do: exec
   desc: update a package
-  command: python -m pip install -U <<package>>
+  command: python3 -m pip install -U <<package>>
 
 pip:update:all:
   do: exec
   desc: update all packages
-  command: python -m pip install -U -r <(pip freeze | cut -d = -f 1 | cut -d @ -f 1)
+  command: python3 -m pip install -U -r <(pip freeze | cut -d = -f 1 | cut -d @ -f 1)
 
 pip:clean:
   do: exec
   desc: clean cache
-  command: python -m pip cache purge
+  command: python3 -m pip cache purge
 
 # pip specific
 
 pip:editable:
   do: exec
   desc: pip install current directory in editable mode
-  command: python -m pip install -e . <<args( ,--no-dependencies)>>
+  command: python3 -m pip install -e . <<args( ,--no-dependencies)>>
 
 # conda ################################################################################################################
 

@@ -240,7 +240,7 @@ mypy:stop:
 random:string:
   do: exec
   desc: generate a random string. See https://stackoverflow.com/a/2257449/5769446
-  command: python -c 'import random; import string; print("".join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(<<N(44)>>)))'
+  command: python3 -c 'import random; import string; print("".join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(<<N(44)>>)))'
 
 list:dynamic:link:
   do: exec

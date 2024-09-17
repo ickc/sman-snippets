@@ -56,7 +56,7 @@ squeue:cmem:O:
 squeue:cmem:python:
   do: exec
   desc: squeue sqs for cmem
-  command: (module load cmem; s r squeue:sqs:python -- '-p cmem')
+  command: (module load cmem; s r squeue:sqs:python3 -- '-p cmem')
 BB:salloc:
   do: exec
   desc: salloc with BB at pb1_lp2_high_0_2
