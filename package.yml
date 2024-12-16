@@ -713,6 +713,15 @@ jupyter:ls:env:
   do: exec
   command: jupyter kernelspec list
 
+jupyter:ipykernel:install:
+  do: exec
+  desc: install a kernel for jupyter
+  command: |
+    (
+      mamba activate '<<name>>' &&
+      python -m ipykernel install --user --name '<<name>>' --display-name '<<name>>'
+    )
+
 # go ###################################################################################################################
 
 go:update:all:
