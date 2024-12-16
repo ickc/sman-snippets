@@ -55,6 +55,10 @@ mkfs:fat:
   do: exec
   desc: use the full device and format to FAT32
   command: sudo parted /dev/<<device>> --script mklabel msdos mkpart primary FAT32 0% 100% && sudo mkfs.fat -F 32 /dev/<<partition>>
+mkfs:exfat:
+ do: exec
+ desc: use the full device and format to exFAT
+ command: sudo parted /dev/<<device>> --script mklabel gpt mkpart EXFAT 0% 100% && sudo mkfs.exfat /dev/<<partition>>
 
 detect:vm:
   do: exec
