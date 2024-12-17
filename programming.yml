@@ -62,7 +62,7 @@ fd:rm:worker:cache:
 
 fd:rm:tex:aux:
   do: exec
-  desc: remove LaTeX's auxiliary files, extensions that is not known to collide with other applications only, this excludes .out, .bib, .log, 
+  desc: remove LaTeX's auxiliary files, extensions that is not known to collide with other applications only, this excludes .out, .bib, .log,
   command: find .
     -type f
     \(
@@ -207,8 +207,12 @@ format:c:
     \) -exec clang-format -i -style=WebKit {} \+
 format:python:
   do: exec
-  desc: format python files
+  desc: 'format python files. TODO: replace this by ruff below.'
   command: autoflake --in-place --recursive --expand-star-imports --remove-all-unused-imports --ignore-init-module-imports --remove-duplicate-keys --remove-unused-variables <<path>>; black <<path>>; isort <<path>>
+format:ruff:
+  do: exec
+  desc: Format python files using ruff
+  command: ruff check <<path>> --select F,I --fix --ignore F401 --extend-select F841 && ruff format <<path>>
 format:rust:
   do: exec
   desc: format rust files
