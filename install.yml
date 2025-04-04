@@ -27,7 +27,3 @@ install:dotfiles:
     git clone https://github.com/ickc/dotfiles.git
     cd dotfiles
     make uninstall && make install && make
-reinstall:mfa:
-  do: exec
-  desc: reinstall NERSC-MFA
-  command: rm -rf ~/git/fork/NERSC-MFA; cd ~/git/fork && git clone git@github.com:ickc/NERSC-MFA.git

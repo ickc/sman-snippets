@@ -19,7 +19,6 @@ routine:
       cd ~/.sman && git pull
       zimfw upgrade && zimfw update
       [[ "$__HOST" == bolo ]] && s r bolo2github
-      [[ -n "$NERSC_HOST" ]] && cd ~/git/fork/NERSC-MFA && s r merge:upstream upstream rebase master && git push
       [[ -d "$HOME/.basher" ]] && cd ~/git/source/bootstrapping-os-environments/common && ./basher-upgrade.sh
       [[ -d "$HOME/obsidian" ]] && cd ~/obsidian && s r git:batch:recursive 1
       [[ -d ~/.local/share/pandoc ]] && cd ~/.local/share/pandoc && git pull

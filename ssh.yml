@@ -1,32 +1,11 @@
-mosh:dtn:
-  do: exec
-  desc: convenient command to 1) get NERSC key, 2) mosh to dtn
-  command: s r ssh:nersc:gen; mosh --server='/global/common/software/polar/opt/system/bin/mosh-server' dtn01
-mosh:perlmutter:
-  do: exec
-  desc: convenient command to 1) get NERSC key, 2) mosh to dtn 3) ssh to perlmutter
-  command: |
-    s r ssh:nersc:gen
-    rsync -a -e 'ssh -i ~/.ssh/nersc' --include 'nersc*' --exclude '*' ~/.ssh/ khcheung@dtn01.nersc.gov:/global/homes/k/khcheung/.ssh/
-    mosh --server='/global/common/software/polar/opt/system/bin/mosh-server' dtn01 -- ssh -i /global/homes/k/khcheung/.ssh/nersc login01.chn.perlmutter.nersc.gov
-ssh:nersc:gen:
-  do: exec
-  desc: generate NERSC ssh key
-  command: ~/git/fork/NERSC-MFA/sshproxy.sh -u khcheung
 ssh:tunnel:
   do: exec
   desc: tunnel a port from client to server.
-  command: ssh <<identity( ,-i ~/.ssh/nersc)>> -N -<<direction(L,R)#R to reverse>> localhost:<<port(8080,8989,8096,52698)#8080-snakeviz; 8989-Juptyer; 8096-emby; 52698-rmate.>>:localhost:<<port>> <<URL(khcheung@gordita.physics.berkeley.edu, )>>
+  command: ssh -N -<<direction(L,R)#R to reverse>> localhost:<<port(8080,8989,8096,52698)#8080-snakeviz; 8989-Juptyer; 8096-emby; 52698-rmate.>>:localhost:<<port>> <<URL(khcheung@gordita.physics.berkeley.edu, )>>
 
 rsync:
   do: exec
   command: rsync -avmz <<DELETE( ,--delete)>> --stats --cvs-exclude --exclude='.DS_Store' --exclude .git/ --exclude .gitignore <<inDir>> <<outDir>>
-rsync:to:perl:
-  do: exec
-  command: rsync -avmz <<DELETE( ,--delete)>> --stats -e 'ssh -i ~/.ssh/nersc' --cvs-exclude --exclude='.DS_Store' --exclude .git/ --exclude .gitignore <<inDir>> khcheung@perlmutter.nersc.gov:<<outDir>>
-rsync:fm:perl:
-  do: exec
-  command: rsync -avmz <<DELETE( ,--delete)>> --stats -e 'ssh -i ~/.ssh/nersc' --cvs-exclude --exclude='.DS_Store' --exclude .git/ --exclude .gitignore khcheung@perlmutter.nersc.gov:<<inDir>> <<outDir>>
 
 rsync:to:go:
   do: exec
@@ -46,9 +25,6 @@ rsync:from:blackett-interactive:
   desc: rsync from blackett-interactive back to blackett
   command: rsync -av --stats -e ssh <<indir>> $USER@vm77.tier2.hep.manchester.ac.uk:<<outdir>>
 
-sshfs:perl:
-  do: exec
-  command: sudo sshfs -o IdentityFile=~/.ssh/nersc,allow_other,defer_permissions,volname=perl khcheung@perlmutter.nersc.gov:/ /mnt/perl/
 sshfs:go:
   do: exec
   command: sudo sshfs -o IdentityFile=~/.ssh/id_rsa,allow_other,defer_permissions,volname=gordita khcheung@gordita.physics.berkeley.edu:/ /mnt/gordita/
