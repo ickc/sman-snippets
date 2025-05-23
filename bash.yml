@@ -404,7 +404,7 @@ ip:mac_address:
 pdfimages:
   do: exec
   desc: extract original images from PDF
-  command: pdfimages -all -p <<input>> <<outputPrefix>>
+  command: mkdir -p "$(dirname '<<outputPrefix>>')"; pdfimages -all -p '<<input>>' '<<outputPrefix>>'
 
 server:
   do: exec
