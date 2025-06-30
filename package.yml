@@ -625,7 +625,7 @@ conda:remove:
 conda:remove:orphan:
   do: exec
   desc: remove orphan packages. Note that this also update the environments, which is the only way to remove orphan packages. See https://github.com/conda/conda/issues/62#issuecomment-468982110
-  command: mamba update --all --prune
+  command: mamba update --all
 
 conda:ls:
   do: exec
@@ -655,7 +655,7 @@ conda:update:
 conda:update:all:
   do: exec
   desc: update current conda environment
-  command: mamba update --all --prune
+  command: mamba update --all
 
 conda:clean:
   do: exec
@@ -679,11 +679,11 @@ conda:batch:env:
 conda:batch:remove:orphan:
   do: exec
   desc: batch remove orphan packages. Note that this also update the environments, which is the only way to remove orphan packages. See https://github.com/conda/conda/issues/62#issuecomment-468982110
-  command: s r conda:batch:env 'mamba update --all --prune'
+  command: s r conda:batch:env 'mamba update --all'
 conda:batch:update:all:
   do: exec
   desc: update all conda environments
-  command: s r conda:batch 'mamba update --all --prune'
+  command: s r conda:batch 'mamba update --all'
 
 # jupyter ##############################################################################################################
 
