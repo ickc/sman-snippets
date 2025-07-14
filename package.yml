@@ -333,7 +333,7 @@ nix:update:all:
     startsudo
     if [[ $(uname) == Darwin ]]; then
       cd ~/.config/nix-darwin
-      darwin-rebuild switch --flake '.#simple'
+      sudo darwin-rebuild switch --flake '.#simple'
     fi
     stopsudo
 nix:clean:
