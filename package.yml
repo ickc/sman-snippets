@@ -350,6 +350,10 @@ nix:update:config:
       cd ~/.config/nix-darwin
       nix flake update
     fi
+nix:check:PrimaryGroupID:
+  do: exec
+  desc: check nix-darwin PrimaryGroupID
+  command: dscl . -read /Groups/nixbld PrimaryGroupID
 
 # devbox
 devbox:update:all:
