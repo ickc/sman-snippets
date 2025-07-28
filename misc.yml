@@ -165,12 +165,16 @@ apple:to:wav:
   desc: use afconvert to convert media to wav
   command: afconvert -f WAVE -d LEI16 '<<input>>' '<<output>>.wav'
 
+download:whisper:model:
+  do: exec
+  desc: Download whisper model
+  command: '(cd ~/.local/share/whisper-cpp; whisper-cpp-download-ggml-model <<model(large-v3-turbo-q5_0)>>)'
+
 whisper:
   do: exec
   desc: whisper to convert wav into vtt
   command: |
-    export GGML_METAL_PATH_RESOURCES=~/git/read-only/whisper.cpp
-    command time -v whisper-cpp \
+    command time -v whisper-cli \
       --threads $(nproc) \
       --max-context 224 \
       --best-of 5 \
@@ -181,7 +185,7 @@ whisper:
       --print-progress \
       --language <<lang(en,zh)>> \
       <<translate(--translate, )>>  \
-      --model ~/git/read-only/whisper.cpp/models/ggml-large.bin \
+      --model ~/.local/share/whisper-cpp/ggml-<<model(large-v3-turbo-q5_0)>>.bin \
       --file '<<intermediate>>.wav'
 
 vtt:to:txt:
