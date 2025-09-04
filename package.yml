@@ -153,6 +153,12 @@ rhel:ls:subscription:
   desc: check if valid RHEL subscription exists
   command: sudo subscription-manager list --installed
 
+# rpm specific (SUSE/RHEL)
+rpm:fingerprint:
+  do: exec
+  desc: show all gpg fingerprints
+  command: rpm -q gpg-pubkey --qf '%{NAME}-%{VERSION}-%{RELEASE}\n' | while read key; do echo "=== $key ==="; rpm -q --queryformat '%{SUMMARY}\n' "$key"; rpm -q --queryformat '%{DESCRIPTION}' "$key" | gpg --show-keys --fingerprint; echo; done
+
 # arch #################################################################################################################
 
 arch:search:
