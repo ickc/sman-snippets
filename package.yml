@@ -695,6 +695,18 @@ conda:batch:update:all:
   desc: update all conda environments
   command: s r conda:batch 'mamba update --all'
 
+# pixi specific
+
+pixi:clean:
+  do: exec
+  desc: clean pixi cache
+  command: pixi clean cache
+
+pixi:clean:all:
+  do: exec
+  desc: find all pixi environments and clean it
+  command: find ~/git -type d -name .pixi -exec bash -c 'env="${1%/*}"; echo "Cleaning at ${env}"; cd "${env}" && pixi clean' bash {} \;
+
 # jupyter ##############################################################################################################
 
 jupyter:install:
