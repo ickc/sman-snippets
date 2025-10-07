@@ -338,7 +338,7 @@ nix:update:all:
   command: |
     startsudo
     if [[ $(uname) == Darwin ]]; then
-      cd ~/.config/nix-darwin
+      cd ~/.config/nix
       sudo darwin-rebuild switch --flake '.#simple'
     fi
     stopsudo
@@ -353,7 +353,7 @@ nix:update:config:
   desc: update nix flake config
   command: |
     if [[ $(uname) == Darwin ]]; then
-      cd ~/.config/nix-darwin
+      cd ~/.config/nix
       nix flake update
     fi
 nix:check:PrimaryGroupID:
