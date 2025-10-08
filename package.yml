@@ -339,7 +339,7 @@ nix:update:all:
     startsudo
     if [[ $(uname) == Darwin ]]; then
       cd ~/git/source/envoy/nix
-      sudo darwin-rebuild switch --flake '.#simple'
+      sudo darwin-rebuild switch --flake .
     fi
     stopsudo
 nix:clean:
