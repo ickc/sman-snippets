@@ -695,11 +695,11 @@ conda:ls:env:
 conda:batch:
   do: exec
   desc: running a certain command across all conda env.
-  command: mamba info --json | jq '.envs[]' | xargs -i -n1 -P1 bash -c '. activate {} && <<command>>'
+  command: conda info --json | jq '.envs[]' | xargs -i -n1 -P1 bash -c '. activate {} && <<command>>'
 conda:batch:env:
   do: exec
   desc: running a certain command across all conda env. excluding base
-  command: mamba info --json | jq '.envs[]' | grep '/envs/' | xargs -i -n1 -P1 bash -c '. activate {} && <<command>>'
+  command: conda info --json | jq '.envs[]' | grep '/envs/' | xargs -i -n1 -P1 bash -c '. activate {} && <<command>>'
 conda:batch:remove:orphan:
   do: exec
   desc: batch remove orphan packages. Note that this also update the environments, which is the only way to remove orphan packages. See https://github.com/conda/conda/issues/62#issuecomment-468982110
