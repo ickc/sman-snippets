@@ -332,6 +332,16 @@ mas:update:all:
 
 # nix ##################################################################################################################
 
+nix:search:
+  do: exec
+  desc: search for packages
+  command: nix search nixpkgs '<<package>>'
+
+nix:info:
+  do: exec
+  desc: get info about a package
+  command: nix eval --json 'nixpkgs#<<package>>.meta' | jq
+
 nix:update:all:
   do: exec
   desc: update nix
