@@ -358,6 +358,10 @@ nix:clean:
   command: nix-collect-garbage -d && nix-store --optimise
 
 # nix specific
+nix:info:unstable:
+  do: exec
+  desc: get info about a package in unstable channel
+  command: nix eval --json 'github:NixOS/nixpkgs/nixpkgs-unstable#<<package>>.meta' | jq
 nix:update:config:
   do: exec
   desc: update nix flake config
