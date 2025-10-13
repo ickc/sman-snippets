@@ -419,7 +419,7 @@ iperf:s:
 iperf:c:
   do: exec
   desc: testing network performance. Start iperf client connecting...
-  command: iperf3 -c <<ip>> -l <<size(64,128,256)>>K -w <<size>>K
+  command: iperf3 -c <<ip>> -l <<size(64,128,256)>>K -w <<size>>K -t <<time(10,60)>> -P <<parallel(1)>> <<bidir( ,--bidir)>>
 
 bit:
   do: exec
