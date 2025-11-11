@@ -42,6 +42,10 @@ git:merge:upstream:
   do: exec
   desc: merge from upstream
   command: git fetch <<remote(upstream)>> && git <<strategy(rebase,merge)>> <<remote>>/<<branch(master)>>
+git:fastforward:upstream:
+  do: exec
+  desc: fastforward to upstream's branch
+  command: git fetch <<remote(upstream)>> && git checkout <<branch(main)>> && git merge --ff-only <<remote>>/<<branch>> && git push
 git:rm:branch:
   do: exec
   desc: remove a git branch both locally and remotely
