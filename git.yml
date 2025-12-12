@@ -114,3 +114,7 @@ git:force:pull:
   do: exec
   desc: git pull while ignoring local changes. Useful when merge conflict happens on git pull, e.g. when known_hosts is in a git repo. See https://stackoverflow.com/a/29206075/5769446
   command: git fetch --all && git reset --hard origin/master && git pull
+git:create:workingtree:
+  do: exec
+  desc: create a new branch based on current branch with the given name and then create working tree at ../$name
+  command: git worktree add -b '<<name>>' '../<<name>>' && cd '../<<name>>'
