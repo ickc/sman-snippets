@@ -401,10 +401,15 @@ ip:mac_address:
   desc: get mac address
   command: if [[ $(uname) == Darwin ]]; then networksetup -listallhardwareports; else ip link show; fi
 
-pdfimages:
+extract:pdf:images:
   do: exec
   desc: extract original images from PDF
   command: mkdir -p "$(dirname '<<outputPrefix>>')"; pdfimages -all -p '<<input>>' '<<outputPrefix>>'
+
+pdf:to:images:
+  do: exec
+  desc: convert each page of PDF to images using pdftoppm
+  command: mkdir -p "$(dirname '<<outputPrefix>>')"; pdftoppm -r <<resolution(150)>> -png '<<input>>' '<<outputPrefix>>'
 
 server:
   do: exec
