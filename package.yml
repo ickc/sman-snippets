@@ -348,8 +348,8 @@ nix:update:all:
   command: |
     startsudo
     if [[ $(uname) == Darwin ]]; then
-      cd ~/git/source/envoy/nix
-      sudo darwin-rebuild switch --flake .
+      cd ~/git/source/envoy
+      pixi run nix-update-all
     fi
     stopsudo
 nix:clean:
@@ -367,8 +367,8 @@ nix:update:config:
   desc: update nix flake config
   command: |
     if [[ $(uname) == Darwin ]]; then
-      cd ~/git/source/envoy/nix
-      nix flake update
+      cd ~/git/source/envoy
+      pixi run nix-update-config
     fi
 nix:check:PrimaryGroupID:
   do: exec
