@@ -7,5 +7,6 @@ Snippets for [sman](https://github.com/ickc/sman).
 Expected install location: `$XDG_DATA_HOME/sman/snippets` (default: `~/.local/share/sman/snippets`)
 
 ```bash
+mkdir -p "${XDG_DATA_HOME:-${HOME}/.local/share}/sman"
 git clone git@github.com:ickc/sman-snippets.git "${XDG_DATA_HOME:-${HOME}/.local/share}/sman/snippets"
 ```
