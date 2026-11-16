@@ -348,7 +348,7 @@ nix:update:all:
   command: |
     startsudo
     if [[ $(uname) == Darwin ]]; then
-      cd ~/git/source/envoy
+      cd "$XDG_DATA_HOME/envoy"
       pixi run nix-update-all
     fi
     stopsudo
@@ -367,7 +367,7 @@ nix:update:config:
   desc: update nix flake config
   command: |
     if [[ $(uname) == Darwin ]]; then
-      cd ~/git/source/envoy
+      cd "$XDG_DATA_HOME/envoy"
       pixi run nix-update-config
     fi
 nix:check:PrimaryGroupID:
