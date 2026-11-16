@@ -16,7 +16,7 @@ routine:
     (
       cd ~/.ssh && git pull
       cd ~/git && s r git:batch:level 2 1
-      cd ~/.sman && git pull
+      cd "$SMAN_SNIPPET_DIR" && git pull
       [[ "$__HOST" == bolo ]] && s r bolo2github
       [[ -d "$HOME/.basher" ]] && cd ~/git/source/bootstrapping-os-environments/common && ./basher-upgrade.sh
       [[ -d "$HOME/obsidian" ]] && cd ~/obsidian && s r git:batch:recursive 1
