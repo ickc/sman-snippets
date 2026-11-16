@@ -7,7 +7,7 @@ Install sman first if not already:
 For system with Python 3.7+:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/ickc/envoy/main/install/sman.py | python3 - install
+curl -fsSL https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/install/sman.py | python3 - install
 ```
 
 Or bootstrap pixi for newer version of python if needed:
@@ -19,7 +19,7 @@ export PIXI_BIN_DIR="${PIXI_HOME}/bin"
 export PIXI_NO_PATH_UPDATE=1
 curl -fsSL https://pixi.sh/install.sh | sh
 # then run it like this:
-curl -fsSL https://raw.githubusercontent.com/ickc/envoy/main/install/sman.py | "${PIXI_BIN_DIR}/pixi" exec --spec python python3 - install
+curl -fsSL https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/install/sman.py | "${PIXI_BIN_DIR}/pixi" exec --spec python python3 - install
 ```
 
 Then add these to your rc files,
